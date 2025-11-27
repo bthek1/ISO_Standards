@@ -1,16 +1,12 @@
 from datetime import UTC
 from datetime import datetime as dt
-from datetime import timedelta
 
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    Group,
     PermissionsMixin,
 )
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 def get_utc_now():
@@ -45,9 +41,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
-
-    # TODO: Uncomment the following line and add the required fields
-    # REQUIRED_FIELDS = ["first_name", "last_name"]
+    # TODO: Add required fields when ready
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     def __str__(self):
         return self.email

@@ -2,16 +2,16 @@ from .base import *
 
 # Development-specific settings
 DEBUG = True
-ALLOWED_HOSTS = ['localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # Add development apps
 INSTALLED_APPS += [
-    'debug_toolbar',
-    'django_extensions',
+    "debug_toolbar",
+    "django_extensions",
 ]
 
 # Add debug toolbar middleware
-MIDDLEWARE.insert(4, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.insert(4, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 # Database (SQLite for development)
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases

@@ -1,4 +1,4 @@
-.PHONY: help pull-deploy push-deploy makemigrations migrate runserver createsuperuser collectstatic test install-nginx uninstall-nginx install-gunicorn uninstall-gunicorn
+.PHONY: help pull-deploy push-deploy makemigrations migrate runserver createsuperuser collectstatic test install-nginx uninstall-nginx install-gunicorn uninstall-gunicorn lint format check-lint check-types check-all pre-commit-install pre-commit-run
 
 # Makefile
 
@@ -31,6 +31,51 @@ collectstatic: ## Collect static files
 
 test: ## Run tests
 	pytest
+
+# === Code Quality & Linting ===
+
+format: ## Auto-format code with Black and Ruff
+	@echo "Running Black formatter..."
+	black .
+	@echo "Running Ruff formatter..."
+	ruff format .
+	@echo "Running Ruff auto-fixes..."
+	ruff check --fix .
+
+check-lint: ## Check code with Ruff linter (no auto-fix)
+	@echo "Running Ruff linter..."
+	ruff check .
+
+lint: ## Run Ruff linter with auto-fix
+	@echo "Running Ruff linter with auto-fix..."
+	ruff check --fix .
+
+check-types: ## Run mypy type checker
+	@echo "Running mypy type checker..."
+	mypy .
+
+check-all: check-lint check-types ## Run all code quality checks
+	@echo "All code quality checks completed!"
+
+pre-commit-install: ## Install pre-commit hooks
+	@echo "Installing pre-commit hooks..."
+	pre-commit install
+	@echo "Pre-commit hooks installed. They will run automatically on git commit."
+
+pre-commit-run: ## Run pre-commit on all files
+	@echo "Running pre-commit on all files..."
+	pre-commit run --all-files
+
+pre-commit-update: ## Update pre-commit hooks to latest versions
+	@echo "Updating pre-commit hooks..."
+	pre-commit autoupdate
+
+ci-lint: ## Run CI-style linting (used in CI/CD)
+	@echo "Running CI linting checks..."
+	ruff check .
+	black --check .
+	mypy .
+	@echo "CI linting passed!"
 
 flush: debug_wrap ## Flush the database (delete all data!) 
 	@if [ -z "$(DEBUG)" ]; then python manage.py flush; else python manage.py flush --noinput; fi

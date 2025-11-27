@@ -1,5 +1,6 @@
 # accounts/tests/test_models.py
 import pytest
+
 from accounts.models import CustomUser
 
 
