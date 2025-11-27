@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "djangox"
+name = "ISO_Standards"
 version = "0.1.0"
 description = ""
 authors = ["Benedict Thekkel <bthekkel1@gmail.com>"]
 readme = "README.md"
+requires-python = ">=3.13"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.12"
 django = "5.1.2"
 asgiref = "3.8.1"
 certifi = "2022.12.7"
@@ -47,38 +47,108 @@ django-phonenumber-field = "^8.0.0"
 phonenumbers = "^8.13.53"
 
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.hatch.metadata]
+allow-direct-references = true
 
+[tool.uv.sources]
+cliniko-api-client = { path = "crms/cliniko/cliniko-api-client" }
 
 [tool.pytest.ini_options]
-log_cli = true
+log_cli = false  # Only show logs for failed tests
 log_cli_level = "INFO"
-addopts = "--capture=no" # show print statements
+addopts = "--tb=short --show-capture=no -ra"  # short tracebacks, show all except passed
+DJANGO_SETTINGS_MODULE = "rmproject.settings.dev"
 python_files = ["*test*.py","tests/*.py"]
+console_output_style = "progress"  # Show dots for passing tests
+filterwarnings = [
+    "ignore:pkg_resources is deprecated as an API:DeprecationWarning:polymorphic",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests requiring external APIs",
+]
 
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+    "jupyterlab>=4.4.2",
+    "pytest-cov>=6.3.0",
+]
+
+[tool.ruff]
+line-length = 88
+exclude = ["migrations", ".venv", "static", "media"]
+extend-include = ["*.ipynb"]
+target-version = "py313"
+fix = true
+
+[tool.nbqa.mutate]
+ruff = true
+
+[tool.nbqa.addopts]
+ruff = ["--fix", "--exit-zero"]
+
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+
+[tool.ruff.lint]
+select = [
+    "W",   # pycodestyle warnings
+    "UP",  # pyupgrade
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "PT",  # flake8-pytest-style
+    "Q",   # flake8-quotes
+    # "E",    # pycodestyle errors
+    # "F",    # pyflakes
+    # "A",    # flake8-builtins
+    # "ANN",  # flake8-annotations
+    # "ARG",  # flake8-unused-arguments
+    # "ASYNC",# flake8-async
+    # "C4",   # flake8-comprehensions
+    # "C90",  # mccabe (complexity)
+    # "DTZ",  # flake8-datetimez
+    # "D",    # pydocstyle
+    # "DJ",   # flake8-django
+    # "EM",   # flake8-errmsg
+    # "ERA",  # eradicate
+    # "EXE",  # flake8-executable
+    # "G",    # flake8-logging-format
+    # "ICN",  # flake8-import-conventions
+    # "INP",  # flake8-no-pep420
+    # "ISC",  # flake8-implicit-str-concat
+    # "N",    # pep8-naming
+    # "PD",   # pandas-vet
+    # "PGH",  # pygrep-hooks
+    # "PIE",  # flake8-pie
+    # "PL",   # pylint
+    # "PLE",  # pylint error
+    # "PLR",  # pylint refactor
+    # "PLW",  # pylint warning
+    # "RSE",  # flake8-raise
+    # "RET",  # flake8-return
+    # "RUF",  # Ruff-specific rules
+    # "S",    # flake8-bandit
+    # "SIM",  # flake8-simplify
+    # "SLF",  # flake8-self
+    # "T10",  # flake8-debugger
+    # "T20",  # flake8-print
+    # "TID",  # flake8-tidy-imports
+    # "TRY",  # tryceratops
+]
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
-include = '\.pyi?$'
+target-version = ['py313']
 exclude = '''
 /(
-    \.git
-  | \.mypy_cache
-  | \.pytest_cache
-  | \.tox
-  | _build
-  | buck-out
-  | build
-  | dist
+    \.venv
+  | migrations
+  | static
+  | templates
+  | .*\.pyi
 )/
 '''
-
-[tool.ruff]
-select = ["E", "F", "W"]  # Enable specific linting rules
-ignore = ["W503"]         # Ignore specific rules
-exclude = ["migrations", "__init__.py"]
-line-length = 88          # Set maximum line length
-fixable = ["F401", "E501"] # Rules that Ruff is allowed to fix
