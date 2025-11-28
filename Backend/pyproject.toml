@@ -86,7 +86,7 @@ allow-direct-references = true
 log_cli = false  # Only show logs for failed tests
 log_cli_level = "INFO"
 addopts = "--tb=short --show-capture=no -ra"  # short tracebacks, show all except passed
-DJANGO_SETTINGS_MODULE = "rmproject.settings.dev"
+DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["*test*.py","tests/*.py"]
 console_output_style = "progress"  # Show dots for passing tests
 filterwarnings = [
