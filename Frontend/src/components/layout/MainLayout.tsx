@@ -10,10 +10,19 @@ export const MainLayout = () => {
         display: 'flex',
         flexDirection: 'column',
         minHeight: '100vh',
+        width: '100%',
       }}
     >
       <Header />
-      <Box component="main" sx={{ flex: 1, py: 4 }}>
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <Outlet />
       </Box>
       <Footer />

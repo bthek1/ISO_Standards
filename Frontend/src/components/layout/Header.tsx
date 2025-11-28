@@ -9,6 +9,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { useState } from 'react';
@@ -33,31 +34,77 @@ export const Header = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography
-          variant="h6"
-          sx={{ flexGrow: 1, cursor: 'pointer' }}
-          onClick={() => navigate('/')}
-        >
-          ISO Standards
-        </Typography>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: '#ffffff',
+        color: '#1a3a52',
+        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+        borderBottom: '1px solid #e0e0e0',
+      }}
+    >
+      <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{
+              cursor: 'pointer',
+              fontWeight: 700,
+              color: '#1e88e5',
+              fontSize: '1.3rem',
+              '&:hover': { color: '#1565c0' },
+            }}
+            onClick={() => navigate('/')}
+          >
+            ISO Standards
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: '#666',
+              fontSize: '0.85rem',
+              borderLeft: '1px solid #e0e0e0',
+              pl: 2,
+            }}
+          >
+            Global Standards Platform
+          </Typography>
+        </Box>
 
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <Button color="inherit" onClick={() => navigate('/search')}>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <Button
+            color="inherit"
+            onClick={() => navigate('/search')}
+            startIcon={<SearchIcon />}
+            sx={{
+              textTransform: 'none',
+              fontSize: '0.95rem',
+              '&:hover': { backgroundColor: 'rgba(30, 136, 229, 0.08)' },
+            }}
+          >
             Search
           </Button>
 
           {isAuthenticated ? (
             <>
-              <Button color="inherit" onClick={() => navigate('/dashboard')}>
+              <Button
+                color="inherit"
+                onClick={() => navigate('/dashboard')}
+                sx={{
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  '&:hover': { backgroundColor: 'rgba(30, 136, 229, 0.08)' },
+                }}
+              >
                 Dashboard
               </Button>
 
               <IconButton
-                color="inherit"
                 onClick={handleMenuOpen}
-                aria-label="account menu"
+                sx={{
+                  color: '#1e88e5',
+                  '&:hover': { backgroundColor: 'rgba(30, 136, 229, 0.08)' },
+                }}
               >
                 <AccountCircleIcon />
               </IconButton>
@@ -79,14 +126,26 @@ export const Header = () => {
               <Button
                 color="inherit"
                 onClick={() => navigate('/login')}
+                sx={{
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  '&:hover': { backgroundColor: 'rgba(30, 136, 229, 0.08)' },
+                }}
               >
-                Login
+                Sign In
               </Button>
               <Button
                 variant="contained"
                 onClick={() => navigate('/register')}
+                sx={{
+                  backgroundColor: '#1e88e5',
+                  color: 'white',
+                  textTransform: 'none',
+                  fontSize: '0.95rem',
+                  '&:hover': { backgroundColor: '#1565c0' },
+                }}
               >
-                Sign Up
+                Register
               </Button>
             </>
           )}
