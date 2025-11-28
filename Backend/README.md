@@ -1,53 +1,29 @@
-> A batteries-included Django starter project. To learn more visit [LearnDjango.com](https://learndjango.com).
+# ISO Standards Backend
 
+A Django REST API for the ISO Standards platform - enabling intelligent search and access to global standards documentation powered by RAG (Retrieval Augmented Generation).
 
-https://github.com/wsvincent/djangox/assets/766418/a73ea730-a7b4-4e53-bf51-aa68f6816d6a
+## 🎯 Project Purpose
 
+This backend serves as the foundation for a comprehensive standards exploration platform that:
+- Stores and manages ISO, IEEE, ASTM, and other global standards
+- Implements RAG with PostgreSQL + pgvector for semantic search
+- Provides REST API endpoints for the React frontend
+- Handles user authentication and authorization
+- Processes and indexes standards documents for AI-powered search
 
 ## 🚀 Features
 
-- Django 5.1 & Python 3.12
-- Install via [Pip](https://pypi.org/project/pip/) or [Docker](https://www.docker.com/)
-- User log in/out, sign up, password reset via [django-allauth](https://github.com/pennersr/django-allauth)
-- Static files configured with [Whitenoise](http://whitenoise.evans.io/en/stable/index.html)
-- Styling with [Bootstrap v5](https://getbootstrap.com/)
-- Debugging with [django-debug-toolbar](https://github.com/jazzband/django-debug-toolbar)
-- DRY forms with [django-crispy-forms](https://github.com/django-crispy-forms/django-crispy-forms)
-- Custom 404, 500, and 403 error pages
-----
-
-## Table of Contents
-* **[Installation](#installation)**
-  * [Pip](#pip)
-  * [Docker](#docker)
-* [Next Steps](#next-steps)
-* [Contributing](#contributing)
-* [Support](#support)
-* [License](#license)
-
-----
+- **Django 5.2 & Python 3.13**
+- **Django REST Framework** for API endpoints
+- **PostgreSQL with pgvector** for vector embeddings
+- **Custom User Model** with email-based authentication
+- **django-allauth** for user management
+- **Type hints** throughout the codebase
+- **Comprehensive test coverage** with pytest
+- **ASGI support** for async operations
+- **AWS RDS** ready for production
 
 ## 📖 Installation
-DjangoX can be installed via Pip or Docker. To start, clone the repo to your local computer and change into the proper directory.
-
-```
-$ git clone https://github.com/wsvincent/djangox.git
-$ cd djangox
-```
-
-### Pip
-
-```
-$ python -m venv .venv
-
-# Windows
-$ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-$ .venv\Scripts\Activate.ps1
-
-# macOS
-$ source .venv/bin/activate
-
-(.venv) $ pip install -r requirements.txt
 (.venv) $ python manage.py migrate
 (.venv) $ python manage.py createsuperuser
 (.venv) $ python manage.py runserver
