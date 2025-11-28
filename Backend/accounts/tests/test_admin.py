@@ -67,6 +67,7 @@ class TestCustomUserAdmin:
         """Admin should have properly structured fieldsets."""
         admin_instance = CustomUserAdmin(CustomUser, AdminSite())
         fieldsets = admin_instance.fieldsets
+        assert fieldsets is not None
         assert len(fieldsets) == 4  # None, Personal Info, Permissions, Important dates
 
         # Check first fieldset (None - credentials)
@@ -248,7 +249,8 @@ class TestAdminDisplay:
         CustomUser.objects.create_user(email="muser@example.com", password="pass")
 
         admin_instance = CustomUserAdmin(CustomUser, AdminSite())
-        users = list(CustomUser.objects.all().order_by(*admin_instance.ordering))
+        ordering = admin_instance.ordering or []
+        users = list(CustomUser.objects.all().order_by(*ordering))
         assert users[0].email == "auser@example.com"
         assert users[1].email == "muser@example.com"
         assert users[2].email == "zuser@example.com"

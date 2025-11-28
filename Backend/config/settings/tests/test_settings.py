@@ -30,7 +30,7 @@ class TestBaseSettings:
 
     def test_base_dir_structure(self):
         """Verify expected directories exist within BASE_DIR."""
-        expected_dirs = ["templates", "static", "config", "accounts", "pages"]
+        expected_dirs = ["templates", "static", "config", "accounts"]
         for dir_name in expected_dirs:
             dir_path = settings.BASE_DIR / dir_name
             assert dir_path.exists(), f"Expected directory {dir_name} not found"
@@ -64,7 +64,7 @@ class TestBaseSettings:
 
     def test_custom_apps_installed(self):
         """Verify custom apps are installed."""
-        custom_apps = ["accounts", "pages"]
+        custom_apps = ["accounts"]
         for app in custom_apps:
             assert app in settings.INSTALLED_APPS, f"{app} not in INSTALLED_APPS"
 

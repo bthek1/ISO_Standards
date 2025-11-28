@@ -263,7 +263,7 @@ addopts = "--tb=short --show-capture=no -ra"
 
 ```bash
 # Run with coverage
-pytest --cov=config --cov=accounts --cov=pages
+pytest --cov=config --cov=accounts
 
 # Generate HTML report
 pytest --cov=config --cov-report=html

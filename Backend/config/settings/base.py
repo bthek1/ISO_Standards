@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     "rest_framework",
     # Local
     "accounts",
-    "pages",
 ]
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware

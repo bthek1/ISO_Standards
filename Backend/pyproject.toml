@@ -76,7 +76,7 @@ requires = ["setuptools>=80.1.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["config", "accounts", "pages"]
+packages = ["config", "accounts"]
 
 [tool.hatch.metadata]
 allow-direct-references = true

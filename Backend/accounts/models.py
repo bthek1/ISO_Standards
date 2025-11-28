@@ -1,5 +1,6 @@
 from datetime import UTC
 from datetime import datetime as dt
+from typing import Any
 
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -13,8 +14,13 @@ def get_utc_now():
     return dt.now(UTC)
 
 
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **extra_fields):
+class CustomUserManager(BaseUserManager["CustomUser"]):
+    def create_user(
+        self,
+        email: str,
+        password: str | None = None,
+        **extra_fields: Any,
+    ) -> "CustomUser":
         if not email:
             raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
@@ -23,7 +29,12 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(
+        self,
+        email: str,
+        password: str | None = None,
+        **extra_fields: Any,
+    ) -> "CustomUser":
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -31,6 +42,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    id: int  # Django auto-generated primary key
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
@@ -38,7 +50,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=get_utc_now)
 
-    objects = CustomUserManager()
+    objects: CustomUserManager = CustomUserManager()  # type: ignore[assignment]
 
     USERNAME_FIELD = "email"
     # TODO: Add required fields when ready

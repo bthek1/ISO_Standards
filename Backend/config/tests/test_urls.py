@@ -27,26 +27,6 @@ class TestURLPatterns:
         resolver = resolve("/admin/")
         assert resolver is not None
 
-    def test_home_url_exists(self):
-        """Home URL should be configured."""
-        url = reverse("home")
-        assert url == "/"
-
-    def test_home_url_resolves(self):
-        """Home URL should resolve correctly."""
-        resolver = resolve("/")
-        assert resolver.view_name == "home"
-
-    def test_about_url_exists(self):
-        """About URL should be configured."""
-        url = reverse("about")
-        assert url == "/about/"
-
-    def test_about_url_resolves(self):
-        """About URL should resolve correctly."""
-        resolver = resolve("/about/")
-        assert resolver.view_name == "about"
-
     def test_allauth_login_url(self):
         """Allauth login URL should be configured."""
         url = reverse("account_login")

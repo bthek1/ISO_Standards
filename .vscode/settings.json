@@ -10,7 +10,6 @@
   },
 
   // Ruff settings
-  "ruff.lint.run": "onSave",
   "ruff.enable": true,
   "ruff.fixAll": true,
   "ruff.organizeImports": true,
