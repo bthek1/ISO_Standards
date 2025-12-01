@@ -1,0 +1,76 @@
+name: Deploy Frontend to AWS S3 + CloudFront
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'Frontend/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: Frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: Frontend
+        run: npm run build
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::762233760445:role/github-actions-role
+          aws-region: ap-southeast-2
+
+      - name: Deploy to S3
+        working-directory: Frontend
+        run: |
+          aws s3 sync dist/ s3://iso-standards-frontend \
+            --delete \
+            --cache-control "public, max-age=3600" \
+            --exclude "*.html" \
+            --exclude "index.html"
+
+          # Upload HTML files with no-cache
+          aws s3 cp dist/index.html s3://iso-standards-frontend/index.html \
+            --cache-control "public, max-age=0, no-cache, no-store, must-revalidate" \
+            --content-type "text/html"
+
+          # Upload any HTML files in subdirectories
+          find dist -name "*.html" -not -name "index.html" -exec bash -c \
+            'aws s3 cp "$1" "s3://iso-standards-frontend/${1#dist/}" \
+            --cache-control "public, max-age=0, no-cache, no-store, must-revalidate" \
+            --content-type "text/html"' \
+            _ {} \;
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E2494N0PGM4KTG \
+            --paths "/*"
+
+      - name: Deployment summary
+        run: |
+          echo "✅ Deployment completed successfully!"
+          echo "🌐 Frontend URL: https://d1pjttps83iyey.cloudfront.net"
+          echo "📦 Bucket: iso-standards-frontend"
+          echo "🚀 CloudFront Distribution: E2494N0PGM4KTG"

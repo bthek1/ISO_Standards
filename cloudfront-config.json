@@ -1,0 +1,39 @@
+{
+  "CallerReference": "iso-standards-frontend-iso-standards-frontend-1764507855",
+  "DefaultRootObject": "index.html",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "iso-standards-s3",
+        "DomainName": "iso-standards-frontend.s3.ap-southeast-2.amazonaws.com",
+        "S3OriginConfig": {
+          "OriginAccessIdentity": ""
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "iso-standards-s3",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none"
+      }
+    },
+    "MinTTL": 0,
+    "DefaultTTL": 86400,
+    "MaxTTL": 31536000
+  },
+  "CacheBehaviors": {
+    "Quantity": 0,
+    "Items": []
+  },
+  "Enabled": true,
+  "Comment": "CloudFront distribution for ISO Standards Frontend"
+}
