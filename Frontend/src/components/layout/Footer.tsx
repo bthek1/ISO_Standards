@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Grid, Link, Divider } from '@mui/material';
+import { Box, Container, Typography, Link } from '@mui/material';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,9 +21,16 @@ export const Footer = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={4} sx={{ mb: 4 }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr 1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr 1fr' },
+            gap: 4,
+            mb: 4,
+          }}
+        >
           {Object.entries(footerLinks).map(([section, links]) => (
-            <Grid item xs={12} sm={6} md={3} key={section}>
+            <Box key={section}>
               <Typography
                 variant="subtitle1"
                 sx={{
@@ -55,11 +62,11 @@ export const Footer = () => {
                   </Link>
                 ))}
               </Box>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
 
-        <Divider sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', my: 3 }} />
+        <Box sx={{ backgroundColor: 'rgba(255, 255, 255, 0.2)', my: 3, height: '1px' }} />
 
         <Box
           sx={{

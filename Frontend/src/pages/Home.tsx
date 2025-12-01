@@ -3,7 +3,6 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   TextField,
@@ -128,9 +127,15 @@ export const Home = () => {
       {/* Statistics Section */}
       <Box sx={{ backgroundColor: '#f8f9fa', py: 4 }}>
         <Container maxWidth="lg">
-          <Grid container spacing={4}>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr 1fr', md: 'repeat(4, 1fr)' },
+              gap: 4,
+            }}
+          >
             {stats.map((stat) => (
-              <Grid item xs={6} md={3} key={stat.label}>
+              <Box key={stat.label} sx={{ textAlign: 'center' }}>
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography
                     variant="h4"
@@ -146,9 +151,9 @@ export const Home = () => {
                     {stat.label}
                   </Typography>
                 </Box>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -166,9 +171,15 @@ export const Home = () => {
           Why Choose Our Platform
         </Typography>
 
-        <Grid container spacing={4}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' },
+            gap: 4,
+          }}
+        >
           {features.map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Box key={index}>
               <Card
                 sx={{
                   height: '100%',
@@ -201,9 +212,9 @@ export const Home = () => {
                   </Typography>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* CTA Section */}
