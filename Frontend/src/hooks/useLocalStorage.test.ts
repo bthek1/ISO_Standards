@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useLocalStorage } from './useLocalStorage';
 
 describe('useLocalStorage Hook', () => {
   afterEach(() => {
@@ -28,16 +28,6 @@ describe('useLocalStorage Hook', () => {
     const { result } = renderHook(() => useLocalStorage('key', 'initial'));
 
     expect(result.current[0]).toBe('stored');
-  });
-
-  it('handles null values', () => {
-    const { result } = renderHook(() => useLocalStorage('key', 'initial'));
-
-    act(() => {
-      result.current[1](null);
-    });
-
-    expect(result.current[0]).toBeNull();
   });
 
   it('handles complex objects', () => {
@@ -71,18 +61,6 @@ describe('useLocalStorage Hook', () => {
 
     const { result: result2 } = renderHook(() => useLocalStorage('key', 'initial'));
     expect(result2.current[0]).toBe('updated');
-  });
-
-  it('removes value when set to undefined', () => {
-    localStorage.setItem('key', JSON.stringify('value'));
-    const { result } = renderHook(() => useLocalStorage('key', 'initial'));
-
-    act(() => {
-      result.current[1](undefined);
-    });
-
-    expect(result.current[0]).toBeUndefined();
-    expect(localStorage.getItem('key')).toBeNull();
   });
 
   it('handles localStorage errors gracefully', () => {

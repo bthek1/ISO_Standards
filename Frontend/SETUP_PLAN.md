@@ -68,7 +68,7 @@ npm install -D msw
 
 ### 2.1 Create Directory Structure
 
-```
+```text
 src/
 ├── components/
 │   ├── ui/                     # Reusable UI components
@@ -724,6 +724,7 @@ npm install i18next react-i18next
 ## Implementation Checklist
 
 ### Phase 1: Foundation ✓
+
 - [ ] Initialize Vite + React + TypeScript project
 - [ ] Install all dependencies
 - [ ] Setup directory structure
@@ -731,6 +732,7 @@ npm install i18next react-i18next
 - [ ] Setup Vite config with path aliases
 
 ### Phase 2: Core Setup
+
 - [ ] Configure Material-UI theme
 - [ ] Setup React Router
 - [ ] Configure TanStack Query
@@ -739,12 +741,14 @@ npm install i18next react-i18next
 - [ ] Setup environment variables
 
 ### Phase 3: Layout Components
+
 - [ ] Header component
 - [ ] Footer component
 - [ ] MainLayout component
 - [ ] Sidebar component (optional)
 
 ### Phase 4: Authentication
+
 - [ ] Login page
 - [ ] Register page
 - [ ] Auth store (Zustand)
@@ -752,6 +756,7 @@ npm install i18next react-i18next
 - [ ] Auth service
 
 ### Phase 5: Standards Features
+
 - [ ] Home page with featured standards
 - [ ] Search page with filters
 - [ ] Standard detail page
@@ -760,6 +765,7 @@ npm install i18next react-i18next
 - [ ] Standards service & hooks
 
 ### Phase 6: RAG Features
+
 - [ ] RAG chat page
 - [ ] Chat interface component
 - [ ] Message components
@@ -767,12 +773,14 @@ npm install i18next react-i18next
 - [ ] RAG service & hooks
 
 ### Phase 7: User Dashboard
+
 - [ ] Dashboard page
 - [ ] Saved standards
 - [ ] Search history
 - [ ] User preferences
 
 ### Phase 8: Testing
+
 - [ ] Setup Vitest
 - [ ] Write component tests
 - [ ] Write hook tests
@@ -780,6 +788,7 @@ npm install i18next react-i18next
 - [ ] Integration tests
 
 ### Phase 9: Polish
+
 - [ ] Error boundaries
 - [ ] Loading states
 - [ ] Empty states
@@ -789,6 +798,7 @@ npm install i18next react-i18next
 - [ ] Dark mode support
 
 ### Phase 10: Deployment
+
 - [ ] Build optimization
 - [ ] Environment configuration
 - [ ] Docker configuration
@@ -799,7 +809,7 @@ npm install i18next react-i18next
 ## Key Technologies Summary
 
 | Category | Technology | Purpose |
-|----------|-----------|---------|
+| -------- | ---------- | ------- |
 | Framework | React 18 | UI library |
 | Language | TypeScript | Type safety |
 | Build Tool | Vite | Fast development & building |
@@ -817,27 +827,32 @@ npm install i18next react-i18next
 ## Development Workflow
 
 1. **Start Development Server**
+
    ```bash
    npm run dev
    ```
 
 2. **Run Tests in Watch Mode**
+
    ```bash
    npm test
    ```
 
 3. **Check Types**
+
    ```bash
    npm run type-check
    ```
 
 4. **Lint & Format**
+
    ```bash
    npm run lint:fix
    npm run format
    ```
 
 5. **Build for Production**
+
    ```bash
    npm run build
    npm run preview

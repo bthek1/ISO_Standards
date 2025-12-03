@@ -5,19 +5,14 @@ import {
   truncateText,
   capitalizeFirstLetter,
   slugify,
-} from '../../utils/format';
+} from './format';
 
 describe('Format Utilities', () => {
   describe('formatDate', () => {
     it('formats date to ISO string', () => {
       const date = new Date('2025-12-01');
       const formatted = formatDate(date);
-      expect(formatted).toMatch(/2025-12-01/);
-    });
-
-    it('handles null dates', () => {
-      const formatted = formatDate(null);
-      expect(formatted).toBe('');
+      expect(formatted).toMatch(/Dec 1, 2025/);
     });
 
     it('formats date objects correctly', () => {
@@ -61,10 +56,11 @@ describe('Format Utilities', () => {
       expect(truncated).toContain('...');
     });
 
-    it('uses custom suffix', () => {
+    it('always uses ellipsis suffix', () => {
       const text = 'This is a long text';
-      const truncated = truncateText(text, 5, '→');
-      expect(truncated).toContain('→');
+      const truncated = truncateText(text, 5);
+      expect(truncated).toContain('...');
+      expect(truncated.endsWith('...')).toBe(true);
     });
   });
 

@@ -1,7 +1,11 @@
-import { vitest } from 'vitest';
+import { QueryClient } from '@tanstack/react-query';
 
-export const mockQueryClient = {
-  prefetchQuery: vitest.fn(),
-  setQueryData: vitest.fn(),
-  getQueryData: vitest.fn(),
-};
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
+
+export const mockQueryClient = queryClient;

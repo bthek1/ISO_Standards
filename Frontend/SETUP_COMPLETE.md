@@ -7,12 +7,14 @@ This Frontend has been fully initialized with a modern React + TypeScript stack 
 ### 📦 Project Initialization Completed
 
 #### Phase 1: Foundation ✓
+
 - ✅ Vite + React 18 + TypeScript project created
 - ✅ All core dependencies installed (MUI, React Router, TanStack Query, Zustand, etc.)
 - ✅ All dev dependencies installed (Vitest, ESLint, Prettier, etc.)
 - ✅ Complete directory structure created
 
 #### Phase 2: Configuration ✓
+
 - ✅ TypeScript configuration with path aliases (`@/*`)
 - ✅ Vite config with dev server proxy (port 3000)
 - ✅ Environment variables setup (`.env`)
@@ -21,48 +23,56 @@ This Frontend has been fully initialized with a modern React + TypeScript stack 
 - ✅ Vitest configuration
 
 #### Phase 3: Material-UI Theme ✓
+
 - ✅ Theme configuration with custom colors and typography
 - ✅ MUI theme provider setup in main.tsx
 - ✅ CssBaseline and ThemeProvider wrapped App
 - ✅ Color palette with primary, secondary, error, warning, success
 
 #### Phase 4: Core Infrastructure ✓
+
 - ✅ React Router setup with BrowserRouter
 - ✅ TanStack Query with QueryClientProvider
 - ✅ React Query DevTools integration
 - ✅ CssBaseline for consistent styling
 
 #### Phase 5: Services Layer ✓
+
 - ✅ Axios API client with interceptors
 - ✅ Authentication service (login, register, logout, getCurrentUser)
 - ✅ Standards service (getAll, getById, search)
 - ✅ Token management in interceptors
 
 #### Phase 6: State Management ✓
+
 - ✅ Zustand auth store with persistence
 - ✅ User state with login, register, logout actions
 - ✅ Token management (access + refresh)
 - ✅ Auth error handling
 
 #### Phase 7: Custom Hooks ✓
+
 - ✅ `useAuth` - Auth state and actions
 - ✅ `useDebounce` - Debounce values
 - ✅ `useLocalStorage` - Local storage hook
 - ✅ `useMediaQuery` - Responsive design hooks (isMobile, isTablet, isDesktop)
 
 #### Phase 8: Layout Components ✓
+
 - ✅ Header component with navigation and user menu
 - ✅ Footer component with links
 - ✅ MainLayout wrapper component
 - ✅ Responsive design with MUI
 
 #### Phase 9: Utilities ✓
+
 - ✅ Constants (routes, messages, API settings)
 - ✅ Validation schemas (login, register, search) using Zod
 - ✅ Format utilities (dates, text truncation, slugification)
 - ✅ Helper utilities (error handling, validation, utilities)
 
 #### Phase 10: Testing Setup ✓
+
 - ✅ Vitest configuration
 - ✅ Test setup file with jest-dom matchers
 - ✅ Mock utilities for testing
@@ -72,22 +82,27 @@ This Frontend has been fully initialized with a modern React + TypeScript stack 
 ## 🚀 Getting Started
 
 ### Install Dependencies
+
 ```bash
 npm install
 ```
 
 ### Start Development Server
+
 ```bash
 npm run dev
 ```
+
 The app will be available at `http://localhost:3000` with proxy to backend at `http://localhost:8000`.
 
 ### Build for Production
+
 ```bash
 npm run build
 ```
 
 ### Run Tests
+
 ```bash
 npm test           # Run tests
 npm run test:ui    # Run with UI
@@ -95,6 +110,7 @@ npm run test:coverage # With coverage
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint       # Check for errors
 npm run lint:fix   # Fix auto-fixable errors
@@ -106,7 +122,7 @@ npm run type-check # Check TypeScript types
 
 ## 📂 Directory Structure
 
-```
+```text
 src/
 ├── components/
 │   ├── ui/              # Reusable UI components (ready for creation)
@@ -159,7 +175,7 @@ src/
 ## 🔧 Configuration Files
 
 | File | Purpose |
-|------|---------|
+| ---- | ------- |
 | `tsconfig.json` | References to config files |
 | `tsconfig.app.json` | ✅ App TypeScript config with path aliases |
 | `vite.config.ts` | ✅ Vite config with dev proxy |
@@ -224,6 +240,7 @@ VITE_ENABLE_DEVTOOLS=true
 ## 🎯 Next Steps - Ready to Implement
 
 ### Phase 11: Page Components
+
 - [ ] Home page with featured standards
 - [ ] Search page with filters
 - [ ] Standard detail page
@@ -232,12 +249,14 @@ VITE_ENABLE_DEVTOOLS=true
 - [ ] Login/Register pages
 
 ### Phase 12: Feature Components
+
 - [ ] StandardCard, StandardsList, StandardDetail
 - [ ] SearchBar, SearchResults, SearchFilters
 - [ ] ChatInterface, ChatMessage, SourceCitation
 - [ ] LoginForm, RegisterForm, ProtectedRoute
 
 ### Phase 13: UI Components (MUI-based)
+
 - [ ] Button variants
 - [ ] Card styles
 - [ ] Input/Form fields
@@ -246,6 +265,7 @@ VITE_ENABLE_DEVTOOLS=true
 - [ ] Modals, Dialogs, Drawers
 
 ### Phase 14: Advanced Features
+
 - [ ] Dark mode support
 - [ ] Internationalization (i18n)
 - [ ] Custom TanStack Query hooks
@@ -253,6 +273,7 @@ VITE_ENABLE_DEVTOOLS=true
 - [ ] Loading skeletons
 
 ### Phase 15: Testing
+
 - [ ] Component unit tests
 - [ ] Hook tests
 - [ ] Integration tests
@@ -260,6 +281,7 @@ VITE_ENABLE_DEVTOOLS=true
 - [ ] MSW API mocking
 
 ### Phase 16: Deployment
+
 - [ ] Build optimization
 - [ ] Environment config
 - [ ] Docker setup
@@ -281,6 +303,7 @@ The frontend is configured to connect to the Django backend:
 ## 📚 Dependencies
 
 ### Core Dependencies (18 packages)
+
 - React 18 + React-DOM
 - Material-UI + Icons
 - React Router v7
@@ -291,6 +314,7 @@ The frontend is configured to connect to the Django backend:
 - date-fns (date utilities)
 
 ### Dev Dependencies (30+ packages)
+
 - TypeScript + @types
 - Vitest + jsdom
 - Testing Library (React, jest-dom)
@@ -304,6 +328,7 @@ The frontend is configured to connect to the Django backend:
 ## ✨ Features Ready to Use
 
 ### Pre-configured
+
 - ✅ Path aliases (`@/components`, `@/utils`, etc.)
 - ✅ API client with token management
 - ✅ Auth store with persistence
@@ -313,6 +338,7 @@ The frontend is configured to connect to the Django backend:
 - ✅ Test setup
 
 ### Backend Communication
+
 - ✅ Login/Register endpoints
 - ✅ Token refresh flow (structure)
 - ✅ Current user check
@@ -324,13 +350,16 @@ The frontend is configured to connect to the Django backend:
 ## 🐛 Debugging
 
 ### Enable React DevTools
+
 - React DevTools browser extension works automatically
 
 ### TanStack Query DevTools
+
 - Press **Ctrl+Shift+Y** to open (in development)
 - Visual query insights and debugging
 
 ### Redux DevTools
+
 - Configure Redux DevTools browser extension for Zustand (optional)
 
 ---

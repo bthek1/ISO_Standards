@@ -1,0 +1,17 @@
+{
+  "recommendations": [
+    // Python
+    "charliermarsh.ruff",
+    "ms-python.python",
+    "ms-python.mypy-type-checker",
+
+    // JavaScript/TypeScript
+    "vitest.explorer",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // General
+    "eamodio.gitlens",
+    "usernamehw.errorlens"
+  ]
+}

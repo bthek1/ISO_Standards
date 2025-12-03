@@ -3,7 +3,11 @@ import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
 import { Footer } from './Footer';
 
-export const MainLayout = () => {
+interface MainLayoutProps {
+  children?: React.ReactNode;
+}
+
+export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <Box
       sx={{
@@ -23,7 +27,7 @@ export const MainLayout = () => {
           flexDirection: 'column',
         }}
       >
-        <Outlet />
+        {children || <Outlet />}
       </Box>
       <Footer />
     </Box>

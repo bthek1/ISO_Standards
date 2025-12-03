@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { isValidEmail, isEmpty } from '../../utils/helpers';
+import { isValidEmail, isEmpty } from './helpers';
 
 describe('Helper Utilities', () => {
   describe('isValidEmail', () => {

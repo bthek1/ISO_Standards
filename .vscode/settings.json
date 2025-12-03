@@ -9,6 +9,22 @@
     }
   },
 
+  // TypeScript/React settings
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+
   // Ruff settings
   "ruff.enable": true,
   "ruff.fixAll": true,
@@ -17,11 +33,11 @@
   // Python path
   "python.defaultInterpreterPath": "${workspaceFolder}/Backend/.venv/bin/python",
 
-  // Testing
+  // Testing - Python (Backend)
   "python.testing.pytestEnabled": true,
-  "python.testing.pytestArgs": [
-    "Backend"
-  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["."],
+  "python.testing.cwd": "${workspaceFolder}/Backend",
 
   // Type checking
   "python.analysis.typeCheckingMode": "basic",

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
+import { useMediaQuery } from './useMediaQuery';
 
 describe('useMediaQuery Hook', () => {
   it('returns true for matching media query', () => {

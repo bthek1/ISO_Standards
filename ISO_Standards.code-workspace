@@ -1,0 +1,86 @@
+{
+  "folders": [
+    {
+      "name": "ISO_Standards (Root)",
+      "path": "."
+    },
+    {
+      "name": "Backend",
+      "path": "Backend"
+    },
+    {
+      "name": "Frontend",
+      "path": "Frontend"
+    }
+  ],
+  "settings": {
+    // Python settings
+    "[python]": {
+      "editor.defaultFormatter": "charliermarsh.ruff",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": "explicit",
+        "source.organizeImports.ruff": "explicit"
+      }
+    },
+
+    // Ruff settings
+    "ruff.enable": true,
+    "ruff.fixAll": true,
+    "ruff.organizeImports": true,
+
+    // Editor settings
+    "editor.rulers": [88],
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+
+    // Files
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+
+    // File associations
+    "files.associations": {
+      "*.html": "html",
+      "*.css": "css"
+    },
+
+    // Exclude from file watcher
+    "files.watcherExclude": {
+      "**/.venv/**": true,
+      "**/node_modules/**": true,
+      "**/__pycache__/**": true,
+      "**/.pytest_cache/**": true,
+      "**/.mypy_cache/**": true,
+      "**/.ruff_cache/**": true
+    },
+
+    // Search exclusions
+    "search.exclude": {
+      "**/.venv": true,
+      "**/node_modules": true,
+      "**/__pycache__": true,
+      "**/.pytest_cache": true,
+      "**/.mypy_cache": true,
+      "**/.ruff_cache": true,
+      "!**/migrations/__init__.py": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      // Python
+      "charliermarsh.ruff",
+      "ms-python.python",
+      "ms-python.mypy-type-checker",
+
+      // JavaScript/TypeScript
+      "vitest.explorer",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+
+      // General
+      "eamodio.gitlens",
+      "usernamehw.errorlens"
+    ]
+  }
+}

@@ -56,6 +56,51 @@ ISO_Standards/
 - All code must pass Ruff linting
 - Test coverage required for new features
 
+**Linting & Formatting Tools:**
+
+- **Ruff**: Primary linter and formatter (replaces flake8, isort, pyupgrade)
+  - Auto-fix imports and common issues
+  - Django-specific checks enabled
+  - Security checks via Bandit integration
+  - Complexity limit: max 10 (McCabe)
+- **Black**: Code formatter (88 char line length)
+- **mypy**: Static type checker with django-stubs
+- **Pre-commit hooks**: Auto-run checks before commits
+
+**Quick Commands:**
+
+```bash
+make format        # Auto-format code
+make lint          # Run linter with auto-fix
+make check-lint    # Check without auto-fix
+make check-types   # Run mypy type checking
+make check-all     # Run all checks
+```
+
+**Enabled Ruff Rules:**
+
+- `E/F` - PyCodeStyle errors and Pyflakes
+- `W` - PyCodeStyle warnings
+- `UP` - PyUpgrade (modern Python syntax)
+- `I` - Import sorting
+- `B` - Bugbear (common bugs)
+- `C4` - Comprehensions
+- `C90` - McCabe complexity
+- `DJ` - Django-specific checks
+- `N` - PEP8 naming conventions
+- `PLE/PLW` - Pylint errors/warnings
+- `S` - Security (Bandit)
+- `SIM` - Code simplification
+- `T10/T20` - No debugger/print statements
+- `RUF` - Ruff-specific rules
+
+**Ignoring Rules:**
+
+```python
+# ruff: noqa  # Ignore entire file
+import os  # noqa: F401  # Ignore specific rule
+```
+
 ### TypeScript/React
 
 - Strict TypeScript configuration
@@ -64,6 +109,42 @@ ISO_Standards/
 - Props interfaces must be explicitly typed
 - Prefer composition over inheritance
 - Keep components small and focused
+
+**Linting & Formatting Tools:**
+
+- **ESLint**: TypeScript and React linting
+  - `@eslint/js` recommended config
+  - `typescript-eslint` for TypeScript
+  - `eslint-plugin-react-hooks` for hooks rules
+  - `eslint-plugin-react-refresh` for Vite HMR
+- **Prettier**: Code formatter (integrated with ESLint)
+- **TypeScript Compiler**: Strict mode enabled
+
+**Quick Commands:**
+
+```bash
+npm run lint        # Run ESLint
+npm run lint:fix    # Auto-fix ESLint issues
+npm run format      # Format with Prettier
+npm run type-check  # TypeScript type checking
+```
+
+**ESLint Configuration:**
+
+- Files: `**/*.{ts,tsx}`
+- ECMAScript: 2020
+- Environment: Browser globals
+- Extends recommended configs for JS, TS, and React
+
+### Markdown
+
+**Markdownlint Configuration (`.markdownlint.json`):**
+
+- Default rules enabled
+- `MD013`: Disabled (line length)
+- `MD041`: Disabled (first line heading)
+- `MD033`: Disabled (inline HTML)
+- `MD036`: Disabled (emphasis as heading)
 
 ### Testing
 
@@ -246,12 +327,25 @@ const MyForm = () => {
 2. Write tests first (TDD)
 3. Implement feature
 4. Ensure all tests pass
-5. Run linters (Ruff for Python, ESLint for TS)
-6. Format code (Black for Python, Prettier for TS)
+5. **Run linters and formatters:**
+   - Backend: `make check-all` or `make format && make lint && make check-types`
+   - Frontend: `npm run lint:fix && npm run type-check`
+6. **Verify pre-commit hooks pass** (if installed)
 7. Create PR with descriptive title
 8. Pass CI/CD checks
 9. Code review
 10. Merge to main
+
+**Pre-commit Setup:**
+
+```bash
+# Backend (one-time setup)
+cd Backend
+make pre-commit-install
+
+# Hooks run automatically on git commit
+# To skip (not recommended): git commit --no-verify
+```
 
 ## Environment Variables
 
@@ -410,6 +504,10 @@ python manage.py migrate app_name 0001
 5. **Consider edge cases** and error handling
 6. **Optimize for readability** over cleverness
 7. **Ask for clarification** if requirements are ambiguous
+8. **Ensure code passes linting:**
+   - Python: Must pass Ruff checks (no debugger/print statements, proper imports, complexity ≤10)
+   - TypeScript: Must pass ESLint checks (proper hooks usage, React best practices)
+   - All: Proper formatting with Black/Prettier
 
 ## AI/Copilot Specific Tips
 
@@ -420,3 +518,8 @@ python manage.py migrate app_name 0001
 - Provide alternative approaches when multiple solutions exist
 - Include error handling in all code suggestions
 - Consider scalability in architectural decisions
+- **Always generate code that passes linting without manual fixes**
+- **Use proper type annotations for all Python functions**
+- **Avoid using `print()` or `debugger` statements in production code**
+- **Keep function complexity low (McCabe ≤10)**
+- **Follow import sorting conventions (stdlib → third-party → local)**

@@ -3,6 +3,7 @@
 ## AWS Infrastructure Setup ✅
 
 ### S3 Bucket
+
 - **Bucket Name**: `iso-standards-frontend`
 - **Region**: `ap-southeast-2` (Sydney)
 - **Versioning**: Enabled
@@ -10,6 +11,7 @@
 - **Public Access**: Enabled (via CloudFront)
 
 ### CloudFront Distribution
+
 - **Distribution ID**: `E2494N0PGM4KTG`
 - **Domain Name**: `d1pjttps83iyey.cloudfront.net`
 - **HTTPS**: Enabled (redirect from HTTP)
@@ -19,6 +21,7 @@
   - Other files: 1 day cache
 
 ### GitHub Actions OIDC Integration
+
 - **Role ARN**: `arn:aws:iam::762233760445:role/github-actions-role`
 - **Trust Policy**: Limited to main branch deployments
 - **Permissions**: S3 sync, CloudFront invalidation
@@ -26,11 +29,14 @@
 ## Deployment Workflow
 
 ### Automatic Deployments
+
 Triggered on:
+
 - Push to `main` branch in `Frontend/` directory
 - Manual workflow dispatch
 
 ### Steps
+
 1. Build React app with Vite
 2. Authenticate to AWS via OIDC (no static credentials)
 3. Sync build output to S3
@@ -41,7 +47,7 @@ Triggered on:
 
 You need to add a CNAME record to your DNS provider:
 
-```
+```txt
 Host: iso
 Type: CNAME
 Value: d1pjttps83iyey.cloudfront.net
@@ -50,7 +56,9 @@ Value: d1pjttps83iyey.cloudfront.net
 For `iso.benedictthekkel.com.au`, add this DNS record at your domain registrar.
 
 ### Note on HTTPS/SSL
+
 After adding the CNAME:
+
 1. CloudFront will automatically handle SSL/TLS
 2. Consider requesting AWS to create an ACM certificate for iso.benedictthekkel.com.au
 3. Update CloudFront distribution to use custom domain
@@ -68,23 +76,26 @@ aws cloudfront create-invalidation --distribution-id E2494N0PGM4KTG --paths "/*"
 
 ## Testing
 
-1. **CloudFront URL**: https://d1pjttps83iyey.cloudfront.net
-2. **Custom Domain** (once DNS configured): https://iso.benedictthekkel.com.au
+1. **CloudFront URL**: [https://d1pjttps83iyey.cloudfront.net]
+2. **Custom Domain** (once DNS configured): [https://iso.benedictthekkel.com.au]
 
 ## Monitoring
 
 View S3 bucket:
+
 ```bash
 aws s3 ls iso-standards-frontend --profile ben-sso
 aws s3 ls s3://iso-standards-frontend --recursive --profile ben-sso
 ```
 
 View CloudFront distribution:
+
 ```bash
 aws cloudfront get-distribution --id E2494N0PGM4KTG --profile ben-sso
 ```
 
 View invalidations:
+
 ```bash
 aws cloudfront list-invalidations --distribution-id E2494N0PGM4KTG --profile ben-sso
 ```

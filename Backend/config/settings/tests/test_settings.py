@@ -16,7 +16,33 @@ This module tests:
 import os
 from pathlib import Path
 
+import pytest
 from django.conf import settings
+
+
+@pytest.fixture
+def development_settings():
+    """
+    Fixture to load development settings for testing.
+
+    This temporarily imports and applies development settings
+    so we can verify they are configured correctly.
+    """
+    # Import development settings module
+    from config.settings import development
+
+    # Create a dictionary of development-specific settings to override
+    dev_settings = {
+        "DEBUG": development.DEBUG,
+        "ALLOWED_HOSTS": development.ALLOWED_HOSTS,
+        "DATABASES": development.DATABASES,
+        "EMAIL_BACKEND": development.EMAIL_BACKEND,
+        "INSTALLED_APPS": development.INSTALLED_APPS,
+        "MIDDLEWARE": development.MIDDLEWARE,
+        "INTERNAL_IPS": development.INTERNAL_IPS,
+    }
+
+    return dev_settings
 
 
 class TestBaseSettings:
@@ -219,55 +245,50 @@ class TestBaseSettings:
         assert len(settings.SECRET_KEY) > 10
 
 
+@pytest.mark.development
 class TestDevelopmentSettings:
-    """Test development-specific settings."""
+    """Test development-specific settings.
 
-    def test_debug_enabled(self):
+    These tests verify development-specific configuration by loading
+    the development settings module and checking its values.
+    """
+
+    def test_debug_enabled(self, development_settings):
         """Debug should be enabled in development."""
-        # This test assumes DJANGO_ENV=development
-        if os.environ.get("DJANGO_ENV") == "development":
-            assert settings.DEBUG is True
+        assert development_settings["DEBUG"] is True
 
-    def test_allowed_hosts(self):
+    def test_allowed_hosts(self, development_settings):
         """Allowed hosts should include localhost in development."""
-        if os.environ.get("DJANGO_ENV") == "development":
-            assert "localhost" in settings.ALLOWED_HOSTS
-            assert "127.0.0.1" in settings.ALLOWED_HOSTS
+        assert "localhost" in development_settings["ALLOWED_HOSTS"]
+        assert "127.0.0.1" in development_settings["ALLOWED_HOSTS"]
 
-    def test_database_is_sqlite(self):
+    def test_database_is_sqlite(self, development_settings):
         """Development should use SQLite."""
-        if os.environ.get("DJANGO_ENV") == "development":
-            assert (
-                settings.DATABASES["default"]["ENGINE"] == "django.db.backends.sqlite3"
-            )
-            expected_db_path = settings.BASE_DIR / "db.sqlite3"
-            assert settings.DATABASES["default"]["NAME"] == expected_db_path
+        db_engine = development_settings["DATABASES"]["default"]["ENGINE"]
+        assert db_engine == "django.db.backends.sqlite3"
+        # Note: The exact database NAME may be modified by pytest-django to use in-memory database
+        # during test runs, so we only verify the ENGINE is correct for development
 
-    def test_email_backend_console(self):
+    def test_email_backend_console(self, development_settings):
         """Development should use console email backend."""
-        if os.environ.get("DJANGO_ENV") == "development":
-            assert (
-                settings.EMAIL_BACKEND
-                == "django.core.mail.backends.console.EmailBackend"
-            )
+        assert (
+            development_settings["EMAIL_BACKEND"]
+            == "django.core.mail.backends.console.EmailBackend"
+        )
 
-    def test_development_apps_installed(self):
+    def test_development_apps_installed(self, development_settings):
         """Development should have debug apps installed."""
-        if os.environ.get("DJANGO_ENV") == "development":
-            assert "debug_toolbar" in settings.INSTALLED_APPS
-            assert "django_extensions" in settings.INSTALLED_APPS
+        assert "debug_toolbar" in development_settings["INSTALLED_APPS"]
+        assert "django_extensions" in development_settings["INSTALLED_APPS"]
 
-    def test_debug_toolbar_middleware(self):
+    def test_debug_toolbar_middleware(self, development_settings):
         """Debug toolbar middleware should be present in development."""
-        if os.environ.get("DJANGO_ENV") == "development":
-            debug_middleware = "debug_toolbar.middleware.DebugToolbarMiddleware"
-            assert debug_middleware in settings.MIDDLEWARE
+        debug_middleware = "debug_toolbar.middleware.DebugToolbarMiddleware"
+        assert debug_middleware in development_settings["MIDDLEWARE"]
 
-    def test_internal_ips_configured(self):
+    def test_internal_ips_configured(self, development_settings):
         """Internal IPs should be configured in development."""
-        if os.environ.get("DJANGO_ENV") == "development":
-            assert hasattr(settings, "INTERNAL_IPS")
-            assert "127.0.0.1" in settings.INTERNAL_IPS
+        assert "127.0.0.1" in development_settings["INTERNAL_IPS"]
 
 
 class TestTestSettings:

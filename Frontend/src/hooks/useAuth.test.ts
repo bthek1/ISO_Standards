@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { useAuth } from '../../hooks/useAuth';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuth } from './useAuth';
+import { useAuthStore } from '../stores/authStore';
 
 // Mock the auth store
-vi.mock('../../stores/authStore', () => ({
+vi.mock('../stores/authStore', () => ({
   useAuthStore: vi.fn(),
 }));
 
@@ -15,7 +15,7 @@ describe('useAuth Hook', () => {
 
   it('returns user from store', () => {
     const mockUser = { id: '1', email: 'test@example.com', name: 'Test User' };
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: mockUser,
       isAuthenticated: true,
       login: vi.fn(),
@@ -27,7 +27,7 @@ describe('useAuth Hook', () => {
   });
 
   it('returns isAuthenticated status', () => {
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       isAuthenticated: false,
       login: vi.fn(),
@@ -40,7 +40,7 @@ describe('useAuth Hook', () => {
 
   it('provides login function', () => {
     const mockLogin = vi.fn();
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       isAuthenticated: false,
       login: mockLogin,
@@ -53,7 +53,7 @@ describe('useAuth Hook', () => {
 
   it('provides logout function', () => {
     const mockLogout = vi.fn();
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       isAuthenticated: false,
       login: vi.fn(),
@@ -66,7 +66,7 @@ describe('useAuth Hook', () => {
 
   it('calls logout function when invoked', () => {
     const mockLogout = vi.fn();
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as unknown as ReturnType<typeof vi.fn>).mockReturnValue({
       user: null,
       isAuthenticated: false,
       login: vi.fn(),
