@@ -8,9 +8,7 @@ import { queryClient } from '../tests/mocks/queryClient';
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        {component}
-      </BrowserRouter>
+      <BrowserRouter>{component}</BrowserRouter>
     </QueryClientProvider>
   );
 };
@@ -73,9 +71,9 @@ describe('Home Page', () => {
   });
 
   it('no console errors during render', () => {
-    const errors: any[] = [];
+    const errors: unknown[] = [];
     const originalError = console.error;
-    console.error = (...args) => {
+    console.error = (...args: unknown[]) => {
       errors.push(args);
     };
 

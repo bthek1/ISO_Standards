@@ -1,34 +1,43 @@
-export const handleApiError = (error: any): string => {
-  if (error.response) {
+export const handleApiError = (error: unknown): string => {
+  if (error && typeof error === 'object' && 'response' in error) {
+    const axiosError = error as { response: { data: unknown } };
     // Server responded with error status
-    const data = error.response.data;
+    const data = axiosError.response.data;
     if (typeof data === 'string') return data;
-    if (data.detail) return data.detail;
-    if (data.message) return data.message;
-    if (data.errors && Array.isArray(data.errors)) return data.errors[0];
+    if (data && typeof data === 'object') {
+      if ('detail' in data && typeof data.detail === 'string')
+        return data.detail;
+      if ('message' in data && typeof data.message === 'string')
+        return data.message;
+      if ('errors' in data && Array.isArray(data.errors) && data.errors[0])
+        return String(data.errors[0]);
+    }
     return 'An error occurred';
-  } else if (error.request) {
+  } else if (error && typeof error === 'object' && 'request' in error) {
     // Request made but no response
     return 'No response from server. Please check your connection.';
   }
   // Other errors
-  return error.message || 'An unexpected error occurred';
+  if (error instanceof Error) return error.message;
+  return 'An unexpected error occurred';
 };
 
 export const sleep = (ms: number): Promise<void> => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-export const classNames = (...classes: (string | undefined | false)[]): string => {
+export const classNames = (
+  ...classes: (string | undefined | false)[]
+): string => {
   return classes.filter(Boolean).join(' ');
-};;
+};
 
 export const isValidEmail = (email: string): boolean => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-export const isEmpty = (value: any): boolean => {
+export const isEmpty = (value: unknown): boolean => {
   return (
     value === undefined ||
     value === null ||
