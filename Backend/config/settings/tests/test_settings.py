@@ -32,7 +32,7 @@ def development_settings():
     from config.settings import development
 
     # Create a dictionary of development-specific settings to override
-    dev_settings = {
+    return {
         "DEBUG": development.DEBUG,
         "ALLOWED_HOSTS": development.ALLOWED_HOSTS,
         "DATABASES": development.DATABASES,
@@ -41,8 +41,6 @@ def development_settings():
         "MIDDLEWARE": development.MIDDLEWARE,
         "INTERNAL_IPS": development.INTERNAL_IPS,
     }
-
-    return dev_settings
 
 
 class TestBaseSettings:
@@ -266,8 +264,9 @@ class TestDevelopmentSettings:
         """Development should use SQLite."""
         db_engine = development_settings["DATABASES"]["default"]["ENGINE"]
         assert db_engine == "django.db.backends.sqlite3"
-        # Note: The exact database NAME may be modified by pytest-django to use in-memory database
-        # during test runs, so we only verify the ENGINE is correct for development
+        # Note: The exact database NAME may be modified by pytest-django
+        # to use in-memory database during test runs, so we only verify
+        # the ENGINE is correct for development
 
     def test_email_backend_console(self, development_settings):
         """Development should use console email backend."""

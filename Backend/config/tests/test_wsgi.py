@@ -73,7 +73,7 @@ class TestWSGIIntegration:
         try:
             result = application(environ, start_response)
             assert result is not None
-        except Exception as e:
+        except Exception:
             # Some errors are expected in test environment without full setup
             # but the application should at least be callable
-            assert callable(application), f"Application failed: {e}"
+            assert callable(application)

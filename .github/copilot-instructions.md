@@ -482,9 +482,64 @@ python manage.py migrate app_name 0001
 ### Frontend (React)
 
 - Build: `npm run build`
-- Deploy static files to CDN
+- Deploy to AWS S3 + CloudFront
+- Automatic deployment on successful tests
 - Configure CORS properly
 - Use environment variables for API URLs
+
+## CI/CD Workflows
+
+### GitHub Actions
+
+**CI Pipeline (`ci.yml`):**
+- Runs on every push to `main`/`develop` and all PRs
+- Backend: Python 3.13, PostgreSQL 16, pytest with coverage
+- Frontend: Node.js 20, Vitest, TypeScript type-checking, ESLint
+- Both jobs must pass for PR approval
+- Coverage reports uploaded to Codecov
+
+**Backend Tests (`test-backend.yml`):**
+- Triggers on Backend file changes
+- Runs Ruff linting, Black formatting, mypy type checking
+- Executes all Django tests with PostgreSQL
+- Matrix testing across Python versions
+
+**Frontend Tests (`test-frontend.yml`):**
+- Triggers on Frontend file changes
+- Runs TypeScript type-check, ESLint, Vitest tests
+- Matrix testing on Node.js 20 and 22
+- Production build verification
+
+**Frontend Deployment (`deploy-frontend.yml`):**
+- Only runs after `test-frontend.yml` succeeds
+- Builds production bundle
+- Deploys to AWS S3 (`iso-standards-frontend`)
+- Invalidates CloudFront cache (Distribution: `E2494N0PGM4KTG`)
+- URL: https://d1pjttps83iyey.cloudfront.net
+
+**Workflow Dependencies:**
+1. Push to `main` → `test-frontend.yml` runs
+2. Tests pass → `deploy-frontend.yml` auto-triggers
+3. Tests fail → deployment blocked
+
+### Pre-commit Checks
+
+**Before committing:**
+```bash
+# Backend
+cd Backend
+make format      # Black + Ruff auto-fix
+make lint        # Check linting
+make check-types # mypy
+pytest           # Run tests
+
+# Frontend
+cd Frontend
+npm run format   # Prettier
+npm run lint     # ESLint
+npm run type-check
+npm test
+```
 
 ## Resources
 

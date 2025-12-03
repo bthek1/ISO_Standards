@@ -71,7 +71,7 @@ def user_factory():
 
     def make_user(
         email=None,
-        password="defaultpass123",
+        password="defaultpass123",  # noqa: S107
         first_name="",
         last_name="",
         is_staff=False,
