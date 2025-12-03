@@ -100,14 +100,14 @@ jobs:
                   source .venv/bin/activate
                   python manage.py migrate --noinput
 
-            - name: Run tests with coverage
+            - name: Run tests
               working-directory: Backend
               env:
                   DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
                   DJANGO_SETTINGS_MODULE: config.settings.test
               run: |
                   source .venv/bin/activate
-                  pytest --cov=. --cov-report=xml --cov-report=term
+                  pytest
 
             - name: Test summary
               run: |
