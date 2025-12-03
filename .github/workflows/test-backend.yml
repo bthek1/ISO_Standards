@@ -1,0 +1,126 @@
+name: Backend Tests
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+        paths:
+            - "Backend/**"
+            - ".github/workflows/test-backend.yml"
+    pull_request:
+        branches:
+            - main
+            - develop
+        paths:
+            - "Backend/**"
+    workflow_dispatch:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ["3.13"]
+
+        services:
+            postgres:
+                image: postgres:16
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: test_db
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Python ${{ matrix.python-version }}
+              uses: actions/setup-python@v5
+              with:
+                  python-version: ${{ matrix.python-version }}
+                  cache: "pip"
+                  cache-dependency-path: "Backend/pyproject.toml"
+
+            - name: Install uv
+              run: |
+                  curl -LsSf https://astral.sh/uv/install.sh | sh
+                  echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+            - name: Install dependencies
+              working-directory: Backend
+              run: |
+                  uv venv
+                  source .venv/bin/activate
+                  uv pip install -e .
+
+            - name: Set up environment variables
+              working-directory: Backend
+              run: |
+                  cat > .env << EOF
+                  DJANGO_ENV=test
+                  DJANGO_SETTINGS_MODULE=config.settings.test
+                  SECRET_KEY=test-secret-key-for-ci-testing-only
+                  DEBUG=False
+                  ALLOWED_HOSTS=localhost,127.0.0.1
+                  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_db
+                  EOF
+
+            - name: Run linting (Ruff)
+              working-directory: Backend
+              run: |
+                  source .venv/bin/activate
+                  ruff check .
+
+            - name: Run type checking (mypy)
+              working-directory: Backend
+              run: |
+                  source .venv/bin/activate
+                  mypy . || true
+
+            - name: Run formatting check (Black)
+              working-directory: Backend
+              run: |
+                  source .venv/bin/activate
+                  black --check .
+
+            - name: Run migrations
+              working-directory: Backend
+              env:
+                  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+                  DJANGO_SETTINGS_MODULE: config.settings.test
+              run: |
+                  source .venv/bin/activate
+                  python manage.py migrate --noinput
+
+            - name: Run tests with coverage
+              working-directory: Backend
+              env:
+                  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
+                  DJANGO_SETTINGS_MODULE: config.settings.test
+              run: |
+                  source .venv/bin/activate
+                  pytest --cov=. --cov-report=xml --cov-report=term
+
+            - name: Upload coverage reports
+              uses: codecov/codecov-action@v4
+              with:
+                  files: ./Backend/coverage.xml
+                  flags: backend
+                  name: backend-coverage
+                  fail_ci_if_error: false
+              env:
+                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+            - name: Test summary
+              run: |
+                  echo "✅ All backend tests passed!"
+                  echo "🐍 Python version: ${{ matrix.python-version }}"
+                  echo "🗄️ Database: PostgreSQL 16"

@@ -1,16 +1,17 @@
 name: Deploy Frontend to AWS S3 + CloudFront
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Frontend Tests"]
+    types:
+      - completed
     branches:
       - main
-    paths:
-      - 'Frontend/**'
-      - '.github/workflows/deploy-frontend.yml'
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -23,9 +24,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: 'Frontend/package-lock.json'
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "Frontend/package-lock.json"
 
       - name: Install dependencies
         working-directory: Frontend

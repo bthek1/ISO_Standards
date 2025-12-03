@@ -1,0 +1,71 @@
+name: Frontend Tests
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+        paths:
+            - "Frontend/**"
+            - ".github/workflows/test-frontend.yml"
+    pull_request:
+        branches:
+            - main
+            - develop
+        paths:
+            - "Frontend/**"
+    workflow_dispatch:
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [20, 22]
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: "npm"
+                  cache-dependency-path: "Frontend/package-lock.json"
+
+            - name: Install dependencies
+              working-directory: Frontend
+              run: npm ci
+
+            - name: Type check
+              working-directory: Frontend
+              run: npm run type-check
+
+            - name: Lint
+              working-directory: Frontend
+              run: npm run lint
+
+            - name: Run tests
+              working-directory: Frontend
+              run: npm run test:coverage
+
+            - name: Upload coverage reports
+              if: matrix.node-version == 20
+              uses: codecov/codecov-action@v4
+              with:
+                  files: ./Frontend/coverage/coverage-final.json
+                  flags: frontend
+                  name: frontend-coverage
+                  fail_ci_if_error: false
+              env:
+                  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+            - name: Build
+              working-directory: Frontend
+              run: npm run build
+
+            - name: Test summary
+              run: |
+                  echo "✅ All frontend tests passed!"
+                  echo "📊 Node version: ${{ matrix.node-version }}"
