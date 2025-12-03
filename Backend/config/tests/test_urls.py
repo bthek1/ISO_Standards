@@ -75,6 +75,6 @@ class TestURLSecurity:
         for pattern in urlpatterns:
             pattern_str = str(pattern.pattern).lower()
             for sensitive in sensitive_patterns:
-                assert sensitive not in pattern_str, (
-                    f"URL pattern contains sensitive word: {sensitive}"
-                )
+                assert (
+                    sensitive not in pattern_str
+                ), f"URL pattern contains sensitive word: {sensitive}"

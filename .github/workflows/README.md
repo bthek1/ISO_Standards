@@ -7,11 +7,13 @@ This directory contains CI/CD workflows for the ISO Standards project.
 ### 🔄 CI - All Tests (`ci.yml`)
 
 **Triggers:**
+
 - Push to `main` or `develop` branches
 - Pull requests to `main` or `develop`
 - Manual workflow dispatch
 
 **What it does:**
+
 - Runs backend tests (Python 3.13, PostgreSQL 16)
 - Runs frontend tests (Node.js 20)
 - Linting and type checking for both
@@ -24,15 +26,18 @@ This directory contains CI/CD workflows for the ISO Standards project.
 ### 🧪 Backend Tests (`test-backend.yml`)
 
 **Triggers:**
+
 - Push to `main` or `develop` (Backend changes only)
 - Pull requests (Backend changes only)
 - Manual workflow dispatch
 
 **Test Matrix:**
+
 - Python: 3.13
 - Database: PostgreSQL 16
 
 **Steps:**
+
 1. Install dependencies with `uv`
 2. Run Ruff linting
 3. Run Black formatting check
@@ -42,6 +47,7 @@ This directory contains CI/CD workflows for the ISO Standards project.
 7. Upload coverage to Codecov
 
 **Environment:**
+
 - Uses in-memory PostgreSQL service
 - Test settings (`config.settings.test`)
 
@@ -50,14 +56,17 @@ This directory contains CI/CD workflows for the ISO Standards project.
 ### 🎨 Frontend Tests (`test-frontend.yml`)
 
 **Triggers:**
+
 - Push to `main` or `develop` (Frontend changes only)
 - Pull requests (Frontend changes only)
 - Manual workflow dispatch
 
 **Test Matrix:**
+
 - Node.js: 20, 22
 
 **Steps:**
+
 1. Install dependencies with `npm ci`
 2. TypeScript type checking
 3. ESLint linting
@@ -70,14 +79,17 @@ This directory contains CI/CD workflows for the ISO Standards project.
 ### 🚀 Deploy Frontend (`deploy-frontend.yml`)
 
 **Triggers:**
+
 - Push to `main` (Frontend changes only)
 - Manual workflow dispatch
 
 **Jobs:**
+
 1. **Test:** Runs all frontend tests
 2. **Build & Deploy:** Deploys to AWS S3 + CloudFront
 
 **Deployment Steps:**
+
 1. Run tests (type-check, lint, unit tests)
 2. Build production bundle
 3. Configure AWS credentials (OIDC)
@@ -85,12 +97,13 @@ This directory contains CI/CD workflows for the ISO Standards project.
 5. Invalidate CloudFront cache
 
 **AWS Resources:**
+
 - S3 Bucket: `iso-standards-frontend`
 - CloudFront Distribution: `E2494N0PGM4KTG`
 - Region: `ap-southeast-2`
 - IAM Role: `github-actions-role`
 
-**URL:** https://d1pjttps83iyey.cloudfront.net
+**URL:** [https://d1pjttps83iyey.cloudfront.net]
 
 ---
 
@@ -107,6 +120,7 @@ This directory contains CI/CD workflows for the ISO Standards project.
 The deployment uses **OIDC** (OpenID Connect) for authentication - no AWS access keys needed!
 
 **Required AWS Resources:**
+
 - IAM Role: `arn:aws:iam::762233760445:role/github-actions-role`
 - Trust relationship configured for GitHub Actions
 - S3 bucket with public read access
@@ -183,32 +197,38 @@ Add these to your README:
 ### Backend Tests Failing
 
 **Issue:** PostgreSQL connection errors
+
 - Check that the service is healthy in workflow logs
 - Verify DATABASE_URL format
 - Ensure migrations run successfully
 
 **Issue:** Import errors
+
 - Verify all dependencies are in `pyproject.toml`
 - Check Python version compatibility
 
 ### Frontend Tests Failing
 
 **Issue:** Type errors
+
 - Run `npm run type-check` locally
 - Check TypeScript version compatibility
 
 **Issue:** Build failures
+
 - Verify all environment variables are set
 - Check Vite configuration
 
 ### Deployment Failing
 
 **Issue:** AWS authentication errors
+
 - Verify IAM role ARN is correct
 - Check OIDC trust relationship
 - Ensure role has S3 and CloudFront permissions
 
 **Issue:** S3 sync errors
+
 - Verify bucket name and region
 - Check IAM permissions for S3 operations
 
@@ -217,6 +237,7 @@ Add these to your README:
 ## Best Practices
 
 1. **Always run tests before pushing:**
+
    ```bash
    # Backend
    cd Backend && pytest
