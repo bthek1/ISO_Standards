@@ -1,53 +1,81 @@
-# 📑 ISO Standards Frontend - Complete Documentation Index
+# 📑 ISO Standards - Complete Documentation Index
 
 ## 🎯 START HERE
 
-**New to this deployment?** Start with this file: [`FRONTEND_READY.md`](FRONTEND_READY.md)
+**New to this project?** Start with: [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md)
 
-**Just want quick answers?** Use: [`QUICK_START.md`](QUICK_START.md)
+**Deploying?** See deployment guides below
 
 ---
 
 ## 📚 Documentation Library
 
-### 🚀 Getting Started (READ FIRST)
+### 🚀 Getting Started
 | Document | Purpose | Time |
 |----------|---------|------|
-| [`FRONTEND_READY.md`](FRONTEND_READY.md) | Overview & status | 5 min |
+| [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md) | Architecture & tech stack | 10 min |
 | [`QUICK_START.md`](QUICK_START.md) | Quick reference | 3 min |
-| [`FRONTEND_CHECKLIST.md`](FRONTEND_CHECKLIST.md) | Step-by-step checklist | 10 min |
 
-### 📖 Detailed Guides (READ NEXT)
+### 🌐 Frontend Deployment
 | Document | Purpose | Time |
 |----------|---------|------|
+| [`FRONTEND_READY.md`](FRONTEND_READY.md) | Frontend deployment status | 5 min |
+| [`FRONTEND_CHECKLIST.md`](FRONTEND_CHECKLIST.md) | Step-by-step checklist | 10 min |
 | [`FRONTEND_DEPLOYMENT_COMPLETE.md`](FRONTEND_DEPLOYMENT_COMPLETE.md) | Comprehensive guide | 20 min |
-| [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md) | Detailed procedures | 30 min |
-| [`FRONTEND_DEPLOYMENT_STATUS.md`](FRONTEND_DEPLOYMENT_STATUS.md) | Status report | 15 min |
 
-### 🔧 Configuration (REFERENCE)
+### 🔧 Backend Deployment
+| Document | Purpose | Time |
+|----------|---------|------|
+| [`Deployment_Doc/ARCHITECTURE_SUMMARY.md`](Deployment_Doc/ARCHITECTURE_SUMMARY.md) | **Architecture overview & status** | 10 min |
+| [`Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md`](Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md) | **Complete AWS backend deployment** | 45 min |
+| [`Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md`](Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md) | Quick commands reference | 5 min |
+| [`Deployment_Doc/JWT_AUTHENTICATION.md`](Deployment_Doc/JWT_AUTHENTICATION.md) | JWT auth setup & usage | 15 min |
+
+### 🔐 Configuration & Security
 | Document | Purpose |
 |----------|---------|
-| [`DEPLOYMENT_SETUP.md`](DEPLOYMENT_SETUP.md) | AWS setup details |
+| [`DEPLOYMENT_SETUP.md`](DEPLOYMENT_SETUP.md) | AWS infrastructure setup |
+| [`Deployment_Doc/JWT_AUTHENTICATION.md`](Deployment_Doc/JWT_AUTHENTICATION.md) | Authentication flow |
 
 ---
 
 ## 🎯 Quick Navigation by Task
 
-### "I want to deploy updates"
+### "I want to deploy the frontend"
 ```bash
-git push origin main  # That's it! GitHub Actions handles everything
-```
-→ See: [`QUICK_START.md`](QUICK_START.md)
-
-### "I want to access my site"
-```
-CloudFront (Ready Now):  https://d1pjttps83iyey.cloudfront.net
-Custom Domain (Soon):    https://iso.benedictthekkel.com.au
+git push origin main  # GitHub Actions deploys automatically to S3/CloudFront
 ```
 → See: [`FRONTEND_READY.md`](FRONTEND_READY.md)
 
-### "I need to set up DNS"
-1. Add CNAME record: `iso` → `d1pjttps83iyey.cloudfront.net`
+### "I want to deploy the backend"
+```bash
+# Option 1: Elastic Beanstalk (Recommended)
+cd Backend
+eb init -p python-3.13 iso-standards-backend
+eb create iso-standards-prod
+eb deploy
+
+# Option 2: Docker on EC2
+docker-compose -f docker-compose.prod.yml up -d
+
+# Option 3: ECS/Fargate
+# See full guide in AWS_DEPLOYMENT_GUIDE.md
+```
+→ See: [`Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md`](Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md)
+
+### "I want to access my site"
+```
+Frontend (CloudFront):  https://d1pjttps83iyey.cloudfront.net
+Backend API:            https://your-backend-url.elasticbeanstalk.com
+Admin Panel:            https://your-backend-url.elasticbeanstalk.com/admin
+```
+→ See: [`FRONTEND_READY.md`](FRONTEND_READY.md) and [`Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md`](Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md)
+
+### "How does authentication work?"
+```
+React Frontend (Vite) ←→ JWT Tokens ←→ Django REST API ←→ AWS RDS PostgreSQL
+```
+→ See: [`Deployment_Doc/JWT_AUTHENTICATION.md`](Deployment_Doc/JWT_AUTHENTICATION.md)
 2. Wait 5-30 minutes
 3. Done!
 

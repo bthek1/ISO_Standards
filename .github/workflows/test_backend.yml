@@ -7,7 +7,7 @@ on:
             - develop
         paths:
             - "Backend/**"
-            - ".github/workflows/test-backend.yml"
+            - ".github/workflows/test_backend.yml"
     pull_request:
         branches:
             - main
@@ -15,6 +15,7 @@ on:
         paths:
             - "Backend/**"
     workflow_dispatch:
+    workflow_call:
 
 jobs:
     test:

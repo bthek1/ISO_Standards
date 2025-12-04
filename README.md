@@ -25,18 +25,56 @@ The ISO Standards Platform is a comprehensive solution for accessing, searching,
 
 ## 🏗️ Architecture
 
+### Production Deployment (AWS)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Users / Browsers                            │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              AWS CloudFront (CDN + SSL/HTTPS)                   │
+│              ✅ DEPLOYED & ACTIVE                              │
+│              URL: https://d1pjttps83iyey.cloudfront.net        │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   AWS S3 (Frontend)                             │
+│                   React + Vite + TypeScript                     │
+│                   ✅ DEPLOYED & ACTIVE                         │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ JWT Authentication
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              Django REST API Backend                            │
+│              ⏳ Ready for Deployment                           │
+│              (Elastic Beanstalk / ECS / EC2)                    │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              AWS RDS PostgreSQL 16 + pgvector                   │
+│              ⏳ To Be Created                                   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Development Architecture
+
 ```
 ┌─────────────┐         ┌──────────────┐         ┌─────────────┐
-│   React     │◄────────┤     NGINX    ├────────►│   Django    │
-│  Frontend   │  HTTPS  │   (Reverse   │   HTTP  │   Backend   │
-│             │         │    Proxy)    │         │             │
+│   React     │◄────────┤   Vite Dev   ├────────►│   Django    │
+│  Frontend   │  HTTPS  │    Server    │   HTTP  │   Backend   │
+│  (Port 5173)│         │              │         │  (Port 8000)│
 └─────────────┘         └──────────────┘         └──────┬──────┘
                                                          │
                                                          │
                                 ┌────────────────────────┴──────────┐
                                 │                                   │
                          ┌──────▼─────┐                    ┌───────▼────────┐
-                         │ PostgreSQL │                    │   AWS S3       │
+                         │ PostgreSQL │                    │   Local Files  │
                          │  + pgvector│                    │  (Documents)   │
                          └────────────┘                    └────────────────┘
 ```
@@ -60,13 +98,16 @@ The ISO Standards Platform is a comprehensive solution for accessing, searching,
 - **Zustand** - Client state management
 - **React Router** - Navigation
 - **Vitest** - Fast testing framework
+- **Axios** - HTTP client with JWT interceptors
+- **✅ Deployed to AWS S3 + CloudFront**
 
 ### Infrastructure
-- **AWS RDS** - Managed PostgreSQL
-- **AWS S3** - Document storage
-- **AWS EC2/ECS** - Application hosting
-- **CloudFront** - CDN for static assets
-- **ElastiCache** - Redis caching
+- **AWS RDS** - Managed PostgreSQL with pgvector
+- **AWS S3** - Static file hosting (frontend deployed ✅)
+- **AWS CloudFront** - CDN for frontend (active ✅)
+- **AWS Elastic Beanstalk** - Backend API (ready to deploy ⏳)
+- **GitHub Actions** - CI/CD pipeline (frontend active ✅, backend ready ⏳)
+- **JWT** - Stateless authentication between frontend & backend
 
 ## 🚀 Quick Start
 
@@ -101,10 +142,7 @@ python manage.py createsuperuser
 # Start development server
 python manage.py runserver
 ```
-
-Backend will be available at `http://localhost:8000`
-
-### Frontend Setup (Coming Soon)
+### Frontend Setup
 
 ```bash
 cd Frontend/
@@ -114,10 +152,41 @@ npm install
 
 # Setup environment
 cp .env.example .env
-# Edit .env with your configuration
+# Edit .env with your backend API URL
 
 # Start development server
 npm run dev
+```
+
+Frontend will be available at `http://localhost:5173`
+
+**Production:** Frontend is deployed at https://d1pjttps83iyey.cloudfront.net
+
+### Full-Stack Development
+## 📚 Documentation
+
+Comprehensive documentation is available in the `/Docs` directory:
+
+### Getting Started
+- **[Documentation Index](./Docs/DOCUMENTATION_INDEX.md)** - Complete documentation overview
+- **[Project Overview](./Docs/PROJECT_OVERVIEW.md)** - Architecture and technical details
+- **[Quick Start](./Docs/QUICK_START.md)** - Quick reference guide
+
+### Deployment
+- **[Architecture Summary](./Docs/Deployment_Doc/ARCHITECTURE_SUMMARY.md)** - Full-stack architecture overview
+- **[AWS Deployment Guide](./Docs/Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md)** - Complete backend deployment guide
+- **[Backend Quick Reference](./Docs/Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md)** - Common deployment commands
+- **[JWT Authentication](./Docs/Deployment_Doc/JWT_AUTHENTICATION.md)** - Authentication setup and usage
+- **[Frontend Deployment](./Docs/FRONTEND_READY.md)** - Frontend deployment status
+
+### Development
+- **[Backend README](./Backend/README.md)** - Backend setup and usage
+- **[Copilot Instructions](./.github/copilot-instructions.md)** - AI coding assistant guide
+- **[Linting Guide](./Docs/LINTING.md)** - Code quality tools
+npm run dev
+```
+
+Backend: `http://localhost:8000` | Frontend: `http://localhost:5173`
 ```
 
 Frontend will be available at `http://localhost:3000`
@@ -141,19 +210,19 @@ cd Backend/
 
 # Run all tests
 pytest
+### Frontend Tests
+
+```bash
+cd Frontend/
+
+# Run all tests
+npm test
 
 # Run with coverage
-pytest --cov=config --cov=accounts
+npm run test:coverage
 
-# Run specific tests
-pytest accounts/tests/test_models.py
-
-# Run with verbose output
-pytest -v
-```
-
-### Frontend Tests (Coming Soon)
-
+# Open test UI
+npm run test:ui
 ```bash
 cd Frontend/
 
@@ -184,42 +253,92 @@ pre-commit run --all-files
 
 ### Frontend
 
-```bash
-# Lint code
-npm run lint
-
-# Format code
-npm run format
-
-# Type check
-npm run type-check
-```
-
 ## 📊 Project Status
 
-- ✅ **Backend** - Core Django setup with custom user model
-- ✅ **Testing** - Comprehensive test suite with 197 tests
-- ✅ **Documentation** - Complete technical documentation
-- ✅ **Code Quality** - Linting and formatting configured
-- 🚧 **Frontend** - React setup in progress
-- 🚧 **RAG Implementation** - Vector search with pgvector
-- 🚧 **API Endpoints** - Standards and search APIs
-- 📋 **Deployment** - AWS infrastructure planning
+### Deployed ✅
+- **Frontend** - React app deployed to AWS S3 + CloudFront
+- **CI/CD** - GitHub Actions deploying frontend automatically
+- **Authentication** - JWT implementation ready
+- **Testing** - Comprehensive test suite (Backend: 197 tests, Frontend: configured)
+- **Documentation** - Complete deployment guides
 
-## 🗺️ Roadmap
+### Ready for Deployment ⏳
+- **Backend API** - Django REST API with JWT auth
+- **Docker** - Production Dockerfile and docker-compose
+- **CI/CD** - Backend GitHub Actions workflow ready
 
+### In Progress 🚧
+- **RDS Database** - PostgreSQL with pgvector (to be created)
+- **Backend Deployment** - Elastic Beanstalk / ECS / EC2 setup
+- **RAG Implementation** - Vector search and embeddings
+- **API Endpoints** - Standards CRUD operations
+
+### Planned 📋
+- **Advanced Search** - Semantic search with RAG
+- **User Dashboard** - Personal standards library
+- **Analytics** - Usage tracking and insights
+### Phase 1: Foundation
+- [x] Django backend setup
+- [x] Custom user authentication (email-based)
+- [x] Testing infrastructure
+- [x] Documentation
+- [x] React frontend setup
+- [x] Frontend deployment (S3 + CloudFront)
+- [x] JWT authentication implementation
+- [x] CI/CD for frontend
+
+### Phase 2: Backend Deployment (Current)
+- [ ] AWS RDS PostgreSQL setup with pgvector
+- [ ] Backend deployment (Elastic Beanstalk)
+- [ ] Environment variables & secrets management
+- [ ] SSL/HTTPS configuration
+- [ ] Backend CI/CD activation
+- [ ] Full-stack integration testing
+
+### Phase 3: Core Features
+- [ ] Standards model and API
+- [ ] Document upload and processing
+- [ ] Vector embeddings with pgvector
+- [ ] Basic search functionality
+- [ ] User dashboard
 ### Phase 1: Foundation (Current)
 - [x] Django backend setup
 - [x] Custom user authentication
 - [x] Testing infrastructure
 - [x] Documentation
-- [ ] React frontend setup
-- [ ] Basic UI components
+### Phase 5: Production & Optimization
+- [ ] Performance optimization
+- [ ] Security hardening
+- [ ] Monitoring and logging (CloudWatch)
+- [ ] Custom domain setup
+- [ ] CDN optimization
+- [ ] Backup and disaster recoveryocessing
+## 🚀 Quick Deploy
 
-### Phase 2: Core Features
-- [ ] Standards model and API
-- [ ] Document upload and processing
-- [ ] Vector embeddings with pgvector
+### Frontend (Deployed)
+```bash
+# Automatic deployment on push to main
+git push origin main  # GitHub Actions handles deployment
+```
+
+### Backend (Ready to Deploy)
+```bash
+# 1. Set up RDS database
+aws rds create-db-instance --db-instance-identifier iso-standards-db ...
+
+# 2. Deploy to Elastic Beanstalk
+cd Backend/
+eb init -p python-3.13 iso-standards-backend
+eb create iso-standards-prod
+eb setenv SECRET_KEY=xxx DB_HOST=xxx ...
+eb deploy
+
+# See full guide: Docs/Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md
+```
+
+---
+
+## 🤝 Contributingdings with pgvector
 - [ ] Basic search functionality
 - [ ] User dashboard
 
@@ -240,11 +359,12 @@ npm run type-check
 ### Phase 5: Production
 - [ ] AWS infrastructure setup
 - [ ] CI/CD pipeline
-- [ ] Performance optimization
-- [ ] Security hardening
-- [ ] Monitoring and logging
+## 📧 Contact & Resources
 
-## 🤝 Contributing
+- **Live Demo (Frontend):** https://d1pjttps83iyey.cloudfront.net
+- **GitHub Issues:** [Report bugs or request features](https://github.com/bthek1/ISO_Standards/issues)
+- **Documentation:** [Complete documentation](./Docs/DOCUMENTATION_INDEX.md)
+- **Deployment Guide:** [AWS Deployment](./Docs/Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md)
 
 We welcome contributions! Please see our contributing guidelines:
 
@@ -262,11 +382,13 @@ We welcome contributions! Please see our contributing guidelines:
 - **Backend:** Follow PEP 8, use Black formatter (88 char line limit)
 - **Frontend:** Follow ESLint + Prettier configuration
 - **Types:** Use type hints (Python) and TypeScript
-- **Tests:** Write tests for all new features
-- **Commits:** Use conventional commit messages
+---
 
-## 📝 License
+**Built with ❤️ for the standards community**
 
+**Status:** Frontend Deployed ✅ | Backend Ready for Deployment ⏳
+
+*Last Updated: December 3, 2025*
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 👥 Team

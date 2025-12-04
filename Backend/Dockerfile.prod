@@ -1,0 +1,63 @@
+# Production Dockerfile for Django Backend
+FROM python:3.13-slim-bookworm
+
+# Prevents Python from writing pyc files and buffering stdout/stderr
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    POETRY_VERSION=1.7.1 \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_HOME="/opt/poetry"
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    postgresql-client \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 - && \
+    ln -s /opt/poetry/bin/poetry /usr/local/bin/poetry
+
+# Set working directory
+WORKDIR /code
+
+# Copy dependency files
+COPY pyproject.toml poetry.lock /code/
+
+# Install Python dependencies (production only, no dev dependencies)
+RUN poetry install --only main --no-root --no-interaction --no-ansi
+
+# Copy application code
+COPY . /code/
+
+# Collect static files
+RUN python manage.py collectstatic --noinput --settings=config.settings.production || true
+
+# Create non-root user for security
+RUN useradd -m -u 1000 django && \
+    chown -R django:django /code
+
+USER django
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD curl -f http://localhost:8000/health/ || exit 1
+
+# Run Gunicorn
+CMD ["gunicorn", "config.wsgi:application", \
+     "--bind", "0.0.0.0:8000", \
+     "--workers", "3", \
+     "--worker-class", "sync", \
+     "--worker-tmp-dir", "/dev/shm", \
+     "--max-requests", "1000", \
+     "--max-requests-jitter", "50", \
+     "--timeout", "60", \
+     "--access-logfile", "-", \
+     "--error-logfile", "-", \
+     "--log-level", "info"]
