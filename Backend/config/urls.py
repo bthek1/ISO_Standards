@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import (
 )
 
 
-def health_check(request):
+def health_check(request):  # noqa: ARG001
     """Health check endpoint for load balancer and monitoring."""
     try:
         # Check database connection

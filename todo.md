@@ -6,7 +6,6 @@
 - [x] remove the pages app from project
 - [x] add react frontend
 - [ ] create separate testing and CD github workflow
-- [ ] fix 
 
 - [ ] make use of aws RDS
 - [ ] make ASGI
