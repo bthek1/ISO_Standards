@@ -347,6 +347,56 @@ make pre-commit-install
 # To skip (not recommended): git commit --no-verify
 ```
 
+## AWS CLI Access
+
+### Authentication
+
+This project uses **AWS SSO** for authentication. To access AWS services via CLI:
+
+```bash
+# Login with SSO profile
+aws sso login --profile ben-sso
+
+# Verify access
+aws sts get-caller-identity --profile ben-sso
+```
+
+### Using AWS CLI Commands
+
+Option 1 - Add profile to each command:
+```bash
+aws s3 ls --profile ben-sso
+aws rds describe-db-instances --profile ben-sso
+```
+
+Option 2 - Set as default profile for session:
+```bash
+export AWS_PROFILE=ben-sso
+aws s3 ls  # Now uses ben-sso by default
+```
+
+### SSO Session Management
+
+- SSO sessions expire after a period of inactivity
+- Re-authenticate when needed: `aws sso login --profile ben-sso`
+- Check current session: `aws sts get-caller-identity --profile ben-sso`
+
+### Common AWS Operations
+
+```bash
+# List S3 buckets
+aws s3 ls --profile ben-sso
+
+# List RDS instances
+aws rds describe-db-instances --profile ben-sso
+
+# Access CloudFront distributions
+aws cloudfront list-distributions --profile ben-sso
+
+# View Secrets Manager secrets
+aws secretsmanager list-secrets --profile ben-sso
+```
+
 ## Environment Variables
 
 ### Backend (.env)
