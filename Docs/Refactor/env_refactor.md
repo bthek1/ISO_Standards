@@ -51,9 +51,6 @@ Extract the following secrets from `settings.py`:
   - `DJANGO_SUPERUSER_USERNAME`
   - `DJANGO_SUPERUSER_EMAIL`
   - `DJANGO_SUPERUSER_PASSWORD`
-- API credentials:
-  - `API_ADMIN_EMAIL`
-  - `API_ADMIN_PASSWORD`
 
 ### 1.2 Environment-Specific Settings
 Categorize by environment:
@@ -142,9 +139,6 @@ DJANGO_SUPERUSER_USERNAME=nottheadmin
 DJANGO_SUPERUSER_EMAIL=nottheadmin@example.com
 DJANGO_SUPERUSER_PASSWORD=changeme123
 
-# API Admin Configuration
-API_ADMIN_EMAIL=api@example.com
-API_ADMIN_PASSWORD=changeme123
 
 # Security Settings (Production)
 SECURE_SSL_REDIRECT=False
@@ -190,9 +184,6 @@ DJANGO_SUPERUSER_USERNAME=admin
 DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=changeme
 
-# API Admin
-API_ADMIN_EMAIL=api@example.com
-API_ADMIN_PASSWORD=changeme
 
 # Security (Production only)
 SECURE_SSL_REDIRECT=False
@@ -589,12 +580,12 @@ from django.core.exceptions import ImproperlyConfigured
 
 class TestBaseSettings:
     """Test base settings that should be present in all environments."""
-    
+
     def test_base_dir_exists(self):
         """Verify BASE_DIR is set correctly."""
         assert settings.BASE_DIR.exists()
         assert settings.BASE_DIR.name == 'Backend'
-    
+
     def test_installed_apps_core(self):
         """Verify core Django apps are installed."""
         core_apps = [
@@ -607,28 +598,28 @@ class TestBaseSettings:
         ]
         for app in core_apps:
             assert app in settings.INSTALLED_APPS
-    
+
     def test_custom_apps_installed(self):
         """Verify custom apps are installed."""
         assert 'accounts' in settings.INSTALLED_APPS
         assert 'pages' in settings.INSTALLED_APPS
-    
+
     def test_middleware_configured(self):
         """Verify essential middleware is present."""
         assert 'django.middleware.security.SecurityMiddleware' in settings.MIDDLEWARE
         assert 'django.contrib.sessions.middleware.SessionMiddleware' in settings.MIDDLEWARE
         assert 'django.middleware.csrf.CsrfViewMiddleware' in settings.MIDDLEWARE
-    
+
     def test_templates_configured(self):
         """Verify templates are configured."""
         assert len(settings.TEMPLATES) > 0
         assert settings.TEMPLATES[0]['BACKEND'] == 'django.template.backends.django.DjangoTemplates'
-    
+
     def test_static_files_configured(self):
         """Verify static files settings."""
         assert settings.STATIC_URL == '/static/'
         assert settings.STATIC_ROOT == settings.BASE_DIR / 'staticfiles'
-    
+
     def test_custom_user_model(self):
         """Verify custom user model is set."""
         assert settings.AUTH_USER_MODEL == 'accounts.CustomUser'
@@ -636,34 +627,34 @@ class TestBaseSettings:
 
 class TestDevelopmentSettings:
     """Test development-specific settings."""
-    
+
     @pytest.fixture(autouse=True)
     def setup_env(self, monkeypatch):
         """Set up development environment."""
         monkeypatch.setenv('DJANGO_ENV', 'development')
         monkeypatch.setenv('SECRET_KEY', 'test-secret-key')
-    
+
     def test_debug_enabled(self):
         """Debug should be enabled in development."""
         assert settings.DEBUG is True
-    
+
     def test_allowed_hosts(self):
         """Allowed hosts should include localhost."""
         assert 'localhost' in settings.ALLOWED_HOSTS
         assert '127.0.0.1' in settings.ALLOWED_HOSTS
-    
+
     def test_debug_toolbar_installed(self):
         """Debug toolbar should be in INSTALLED_APPS."""
         assert 'debug_toolbar' in settings.INSTALLED_APPS
-    
+
     def test_database_is_sqlite(self):
         """Development should use SQLite."""
         assert settings.DATABASES['default']['ENGINE'] == 'django.db.backends.sqlite3'
-    
+
     def test_email_backend_console(self):
         """Development should use console email backend."""
         assert settings.EMAIL_BACKEND == 'django.core.mail.backends.console.EmailBackend'
-    
+
     def test_internal_ips_set(self):
         """Internal IPs should be set for debug toolbar."""
         assert '127.0.0.1' in settings.INTERNAL_IPS
@@ -671,29 +662,29 @@ class TestDevelopmentSettings:
 
 class TestTestSettings:
     """Test test-environment-specific settings."""
-    
+
     @pytest.fixture(autouse=True)
     def setup_env(self, monkeypatch):
         """Set up test environment."""
         monkeypatch.setenv('DJANGO_ENV', 'test')
         monkeypatch.setenv('SECRET_KEY', 'test-secret-key')
-    
+
     def test_debug_disabled(self):
         """Debug should be disabled in test environment."""
         assert settings.DEBUG is False
-    
+
     def test_database_in_memory(self):
         """Test environment should use in-memory database."""
         assert settings.DATABASES['default']['NAME'] == ':memory:'
-    
+
     def test_password_hashers_simplified(self):
         """Test environment should use fast password hasher."""
         assert 'django.contrib.auth.hashers.MD5PasswordHasher' in settings.PASSWORD_HASHERS
-    
+
     def test_email_backend_memory(self):
         """Test environment should use memory email backend."""
         assert settings.EMAIL_BACKEND == 'django.core.mail.backends.locmem.EmailBackend'
-    
+
     def test_no_debug_toolbar(self):
         """Debug toolbar should not be in test environment."""
         assert 'debug_toolbar' not in settings.INSTALLED_APPS
@@ -701,7 +692,7 @@ class TestTestSettings:
 
 class TestProductionSettings:
     """Test production-specific settings."""
-    
+
     @pytest.fixture(autouse=True)
     def setup_env(self, monkeypatch):
         """Set up production environment."""
@@ -709,21 +700,21 @@ class TestProductionSettings:
         monkeypatch.setenv('SECRET_KEY', 'test-secret-key-production')
         monkeypatch.setenv('ALLOWED_HOSTS', 'example.com,www.example.com')
         monkeypatch.setenv('DB_PASSWORD', 'test-db-password')
-    
+
     def test_debug_disabled(self):
         """Debug must be disabled in production."""
         assert settings.DEBUG is False
-    
+
     def test_secret_key_required(self):
         """Secret key must be set in production."""
         assert settings.SECRET_KEY == 'test-secret-key-production'
         assert len(settings.SECRET_KEY) > 20
-    
+
     def test_allowed_hosts_from_env(self):
         """Allowed hosts should be read from environment."""
         assert 'example.com' in settings.ALLOWED_HOSTS
         assert 'www.example.com' in settings.ALLOWED_HOSTS
-    
+
     def test_security_settings_enabled(self):
         """Security settings should be enabled."""
         assert settings.SESSION_COOKIE_SECURE is True
@@ -731,20 +722,20 @@ class TestProductionSettings:
         assert settings.SECURE_BROWSER_XSS_FILTER is True
         assert settings.SECURE_CONTENT_TYPE_NOSNIFF is True
         assert settings.X_FRAME_OPTIONS == 'DENY'
-    
+
     def test_hsts_configured(self):
         """HSTS should be configured for production."""
         assert settings.SECURE_HSTS_SECONDS > 0
         assert settings.SECURE_HSTS_INCLUDE_SUBDOMAINS is True
-    
+
     def test_database_postgresql(self):
         """Production should use PostgreSQL."""
         assert 'postgresql' in settings.DATABASES['default']['ENGINE']
-    
+
     def test_email_backend_smtp(self):
         """Production should use SMTP email backend."""
         assert settings.EMAIL_BACKEND == 'django.core.mail.backends.smtp.EmailBackend'
-    
+
     def test_no_debug_toolbar(self):
         """Debug toolbar should not be in production."""
         assert 'debug_toolbar' not in settings.INSTALLED_APPS
@@ -752,7 +743,7 @@ class TestProductionSettings:
 
 class TestEnvironmentVariables:
     """Test environment variable loading."""
-    
+
     def test_missing_secret_key_development(self, monkeypatch):
         """Development should work without SECRET_KEY but use fallback."""
         monkeypatch.setenv('DJANGO_ENV', 'development')
@@ -760,18 +751,18 @@ class TestEnvironmentVariables:
         # Should not raise an error
         from django.conf import settings
         assert settings.SECRET_KEY is not None
-    
+
     def test_missing_secret_key_production(self, monkeypatch):
         """Production should fail without SECRET_KEY."""
         monkeypatch.setenv('DJANGO_ENV', 'production')
         monkeypatch.delenv('SECRET_KEY', raising=False)
-        
+
         with pytest.raises((KeyError, ImproperlyConfigured)):
             # Re-import to trigger settings reload
             from importlib import reload
             import config.settings
             reload(config.settings)
-    
+
     def test_boolean_env_vars_parsing(self, monkeypatch):
         """Test boolean environment variables are parsed correctly."""
         test_cases = [
@@ -783,7 +774,7 @@ class TestEnvironmentVariables:
             ('0', False),
             ('1', False),  # Only 'True' should return True
         ]
-        
+
         for value, expected in test_cases:
             monkeypatch.setenv('DEBUG', value)
             result = os.environ.get('DEBUG', 'False') == 'True'
@@ -802,7 +793,7 @@ from django.test import TestCase, override_settings
 
 class TestSettingsIntegration(TestCase):
     """Integration tests for settings configuration."""
-    
+
     def test_database_connection(self):
         """Test database connection works."""
         from django.db import connection
@@ -810,18 +801,18 @@ class TestSettingsIntegration(TestCase):
             cursor.execute("SELECT 1")
             result = cursor.fetchone()
             assert result[0] == 1
-    
+
     def test_static_files_collection(self):
         """Test static files can be collected."""
         # This would run collectstatic in a test environment
         call_command('collectstatic', '--noinput', '--clear', verbosity=0)
-    
+
     def test_migrations_check(self):
         """Test that migrations are up to date."""
         from io import StringIO
         out = StringIO()
         call_command('makemigrations', '--check', '--dry-run', stdout=out)
-    
+
     def test_admin_site_accessible(self):
         """Test admin site is configured."""
         from django.contrib import admin
@@ -830,12 +821,12 @@ class TestSettingsIntegration(TestCase):
 
 class TestEmailConfiguration(TestCase):
     """Test email configuration in different environments."""
-    
+
     @override_settings(DJANGO_ENV='development')
     def test_email_sending_development(self):
         """Test email sending in development."""
         from django.core.mail import send_mail
-        
+
         send_mail(
             'Test Subject',
             'Test message',
@@ -844,12 +835,12 @@ class TestEmailConfiguration(TestCase):
             fail_silently=False,
         )
         # Should not raise an error
-    
+
     @override_settings(DJANGO_ENV='test')
     def test_email_sending_test(self):
         """Test email sending in test environment."""
         from django.core.mail import send_mail, outbox
-        
+
         send_mail(
             'Test Subject',
             'Test message',
@@ -857,7 +848,7 @@ class TestEmailConfiguration(TestCase):
             ['to@example.com'],
             fail_silently=False,
         )
-        
+
         # Check email is in outbox
         from django.core import mail
         assert len(mail.outbox) == 1
@@ -873,7 +864,7 @@ DJANGO_SETTINGS_MODULE = config.settings
 python_files = test_*.py
 python_classes = Test*
 python_functions = test_*
-addopts = 
+addopts =
     -v
     --tb=short
     --strict-markers
@@ -964,30 +955,30 @@ on:
 jobs:
   test-settings:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         python-version: ['3.10', '3.11', '3.12']
         django-env: ['development', 'test', 'production']
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    
+
     - name: Install dependencies
       working-directory: ./Backend
       run: |
         pip install poetry
         poetry install
-    
+
     - name: Copy .env.example to .env
       working-directory: ./Backend
       run: cp .env.example .env
-    
+
     - name: Test ${{ matrix.django-env }} settings
       working-directory: ./Backend
       env:
@@ -998,7 +989,7 @@ jobs:
       run: |
         poetry run python manage.py check
         poetry run pytest config/settings/tests/ -v
-    
+
     - name: Run deployment checks (production only)
       if: matrix.django-env == 'production'
       working-directory: ./Backend
@@ -1012,21 +1003,21 @@ jobs:
 
   test-coverage:
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    
+
     - name: Install dependencies
       working-directory: ./Backend
       run: |
         pip install poetry
         poetry install
-    
+
     - name: Run tests with coverage
       working-directory: ./Backend
       env:
@@ -1034,7 +1025,7 @@ jobs:
         SECRET_KEY: test-secret-key
       run: |
         poetry run pytest --cov=config --cov-report=xml
-    
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
@@ -1137,7 +1128,7 @@ from django.conf import settings
 
 class TestSettingsPerformance(TestCase):
     """Test settings loading performance."""
-    
+
     def test_settings_import_speed(self):
         """Settings should import quickly."""
         start_time = time.time()
@@ -1145,21 +1136,21 @@ class TestSettingsPerformance(TestCase):
         import config.settings
         reload(config.settings)
         end_time = time.time()
-        
+
         import_time = end_time - start_time
         assert import_time < 1.0, f"Settings import too slow: {import_time}s"
-    
+
     def test_database_connection_pool(self):
         """Test database connection pooling if configured."""
         from django.db import connection
-        
+
         # Test multiple rapid connections
         start_time = time.time()
         for _ in range(10):
             with connection.cursor() as cursor:
                 cursor.execute("SELECT 1")
         end_time = time.time()
-        
+
         total_time = end_time - start_time
         assert total_time < 1.0, f"Database connections too slow: {total_time}s"
 ```
@@ -1185,10 +1176,10 @@ Add setup instructions:
    ```bash
    # Ubuntu/Debian
    sudo apt-get install direnv
-   
+
    # macOS
    brew install direnv
-   
+
    # Add to ~/.bashrc or ~/.zshrc
    eval "$(direnv hook bash)"
    ```
@@ -1362,7 +1353,7 @@ If issues arise:
 - ✅ Created `scripts/test_all_environments.sh`
 - ✅ All environments verified:
   - Development: 0 issues
-  - Test: 0 issues  
+  - Test: 0 issues
   - Production: 2 expected SSL warnings (safe defaults)
 
 **Phase 7: Environment Configuration** ✅
@@ -1379,7 +1370,7 @@ System check identified no issues (0 silenced).
 # Test Environment
 System check identified no issues (0 silenced).
 
-# Production Environment  
+# Production Environment
 System check identified 2 issues (0 silenced).
 ?: (security.W004) SECURE_HSTS_SECONDS not set
 ?: (security.W008) SECURE_SSL_REDIRECT not enabled
@@ -1456,7 +1447,7 @@ direnv reload
 
 # Or manually test each environment
 DJANGO_ENV=development python manage.py check
-DJANGO_ENV=test python manage.py check  
+DJANGO_ENV=test python manage.py check
 DJANGO_ENV=production python manage.py check
 ```
 
@@ -1481,4 +1472,3 @@ DJANGO_ENV=production python manage.py check
 - `Backend/pyproject.toml` - Added uv compatibility
 - `Backend/accounts/admin.py` - Removed hijack dependency
 - `Backend/.gitignore` - Added .env, .envrc, *.sqlite3
-
