@@ -1,0 +1,24 @@
+# Docker Compose for Local PostgreSQL Development Database
+# Usage: docker compose -f docker-compose.dev.yml up -d
+
+services:
+  db:
+    image: postgres:16
+    container_name: iso-standards-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ben
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: iso_standards
+    ports:
+      - "5432:5432"
+    volumes:
+      # Named volume for persistent data
+      - postgres_data:/var/lib/postgresql/data
+      # Optional: init scripts
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d
+      # Optional: custom config file
+      # - ./docker/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+
+volumes:
+  postgres_data:
