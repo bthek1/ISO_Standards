@@ -15,7 +15,7 @@ Refactor the Django settings to improve security, maintainability, and environme
 
 ## Project Structure After Refactoring
 
-```
+```bash
 Backend/
 ├── .env                          # Git-ignored secrets file
 ├── .env.example                  # Template for .env file
@@ -224,7 +224,7 @@ export PYTHONPATH="${PWD}:${PYTHONPATH}"
 
 Add to `.gitignore`:
 
-```
+```bash
 .env
 .envrc
 *.sqlite3
@@ -1265,7 +1265,7 @@ export DJANGO_ENV=test
 pytest
 ```
 
-```
+```bash
 
 ### 8.2 Create DEPLOYMENT.md
 Document production deployment steps
@@ -1325,8 +1325,6 @@ pytest --cov=config --cov-report=html
 # Open htmlcov/index.html in browser
 ```
 
-```
-
 ---
 
 ## Phase 9: Security Checklist
@@ -1347,6 +1345,7 @@ pytest --cov=config --cov-report=html
 ## Phase 10: CI/CD Updates
 
 ### 10.1 Update GitHub Actions / CI Pipeline
+
 ```yaml
 env:
   DJANGO_ENV: test

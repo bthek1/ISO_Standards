@@ -622,20 +622,6 @@ aws rds describe-db-snapshots \
 
 ## Phase 10: Documentation Updates
 
-### 10.1 Update README.md
-
-Add database setup instructions for new developers.
-
-### 10.2 Update .env.example
-
-Provide template with all database options.
-
-### 10.3 Create Runbook
-
-Document common operations:
-
-## Phase 10: Documentation Updates
-
 ### 10.1 Update Backend README.md
 
 Add a "Database Setup" section with RDS connection instructions.
@@ -679,27 +665,29 @@ aws rds start-db-instance --db-instance-identifier iso-standards-dev --region ap
 psql -h YOUR_ENDPOINT -U postgres -d iso_standards
 ```
 
-```
-
 ## Troubleshooting
 
 ### Common Issues
 
 **1. Cannot connect to RDS**
+
 - Verify AWS SSO is logged in: `aws sts get-caller-identity --profile ben-sso`
 - Check security group allows your IP
 - Verify RDS instance is running: `aws rds describe-db-instances --db-instance-identifier iso-standards-dev --region ap-southeast-2`
 
 **2. "Password authentication failed"**
+
 - Verify password in `.env` file matches RDS password
 - Check `DB_HOST` is correct endpoint
 
 **3. "Connection timeout"**
+
 - Check RDS instance is publicly accessible
 - Verify security group inbound rules allow port 5432 from your IP
 - Your IP may have changed (update security group)
 
 **Update security group with new IP:**
+
 ```bash
 # Get current security group
 SG_ID=$(aws rds describe-db-instances \
