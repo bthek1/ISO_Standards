@@ -7,6 +7,7 @@
 ## ✅ COMPLETED TASKS (All Phases)
 
 ### Phase 1: Frontend Setup ✅
+
 - [x] React 18 + TypeScript + Vite project initialized
 - [x] All 48 npm dependencies installed and configured
 - [x] TypeScript path aliases configured (@/components, @/utils, etc.)
@@ -14,6 +15,7 @@
 - [x] Production build verified (npm run build)
 
 ### Phase 2: UI/UX Design ✅
+
 - [x] Material-UI 7.3.5 theme system configured
 - [x] Custom color scheme (primary: #1e88e5, secondary: #8e24aa)
 - [x] Responsive typography system
@@ -22,6 +24,7 @@
 - [x] Professional government-style design applied
 
 ### Phase 3: Pages & Components ✅
+
 - [x] Home page with hero section
 - [x] Statistics section (10,000+ standards)
 - [x] Feature cards (Global, Security, Comprehensive)
@@ -31,6 +34,7 @@
 - [x] Hover effects and transitions
 
 ### Phase 4: Core Functionality ✅
+
 - [x] Authentication service (login, register, logout)
 - [x] API client with Axios + interceptors
 - [x] Zustand auth store with localStorage persistence
@@ -40,6 +44,7 @@
 - [x] Helper utilities for formatting and validation
 
 ### Phase 5: AWS Infrastructure ✅
+
 - [x] S3 bucket created (iso-standards-frontend, ap-southeast-2)
 - [x] S3 versioning enabled (rollback capability)
 - [x] S3 public access configured for CloudFront
@@ -50,6 +55,7 @@
 - [x] Cache behaviors configured (1-year for assets, no-cache for HTML)
 
 ### Phase 6: GitHub Actions CI/CD ✅
+
 - [x] GitHub Actions workflow created (.github/workflows/deploy-frontend.yml)
 - [x] OIDC authentication configured (no static credentials)
 - [x] IAM role created (github-actions-role)
@@ -59,6 +65,7 @@
 - [x] CloudFront cache invalidation automated
 
 ### Phase 7: Build & Optimization ✅
+
 - [x] TypeScript compilation passes (no errors)
 - [x] Production build successful
 - [x] Build size optimized: 519 KB → 167 KB gzipped (68% reduction)
@@ -74,9 +81,11 @@
 ### Next Steps (In Order)
 
 #### 1. DNS Configuration (5 minutes)
+
 **Status:** ⏳ User Action Required
 
 Go to your domain registrar and add this CNAME record:
+
 ```
 Host: iso
 Type: CNAME
@@ -85,9 +94,11 @@ TTL: 3600
 ```
 
 **Popular Registrars:**
+
 - GoDaddy, Namecheap, Route53, etc.
 
 #### 2. Verify DNS (2 minutes)
+
 **Status:** ⏳ After Step 1
 
 ```bash
@@ -96,6 +107,7 @@ nslookup iso.benedictthekkel.com.au
 ```
 
 #### 3. Test Deployment (1 minute)
+
 **Status:** ⏳ After DNS (or test now)
 
 ```bash
@@ -126,16 +138,19 @@ curl -I https://iso.benedictthekkel.com.au
 ## 📊 Performance Metrics
 
 ### Build Performance
+
 - **Type Check:** <1 second
 - **Vite Build:** ~2.5 seconds
 - **Total Build:** ~3 seconds
 
 ### Bundle Size
+
 - **Raw:** 519 KB
 - **Gzipped:** 167 KB (68% reduction)
 - **Optimal:** Yes, <500 KB uncompressed
 
 ### Runtime Performance (Estimated)
+
 - **First Paint:** ~400-600ms
 - **LCP:** ~1-2s
 - **TTI:** ~2-3s
@@ -146,12 +161,14 @@ curl -I https://iso.benedictthekkel.com.au
 ## 🚀 How to Deploy
 
 ### Option 1: Immediate Access (No Waiting)
+
 ```bash
 # Access CloudFront URL now
 https://d1pjttps83iyey.cloudfront.net
 ```
 
 ### Option 2: Custom Domain (After DNS)
+
 ```bash
 # 1. Add DNS CNAME record (5 min)
 # 2. Wait for DNS propagation (5-30 min)
@@ -160,6 +177,7 @@ https://iso.benedictthekkel.com.au
 ```
 
 ### Option 3: Automated Deployments
+
 ```bash
 # Push to GitHub main branch
 git add Frontend/
@@ -178,6 +196,7 @@ git push origin main
 ## 📁 Key Files & Locations
 
 ### Frontend Code
+
 ```
 /home/bthek1/ISO_Standards/Frontend/
 ├── src/
@@ -202,6 +221,7 @@ git push origin main
 ```
 
 ### Build Output
+
 ```
 /home/bthek1/ISO_Standards/Frontend/dist/
 ├── index.html                  (SPA entry point)
@@ -212,6 +232,7 @@ git push origin main
 ```
 
 ### Deployment Configuration
+
 ```
 /home/bthek1/ISO_Standards/
 ├── .github/workflows/
@@ -228,6 +249,7 @@ git push origin main
 ## 🔗 Important URLs & IDs
 
 ### AWS Resources
+
 - **S3 Bucket:** `iso-standards-frontend`
 - **S3 Region:** `ap-southeast-2` (Sydney, Australia)
 - **S3 URL:** `s3://iso-standards-frontend`
@@ -237,11 +259,13 @@ git push origin main
 - **AWS Account:** `762233760445`
 
 ### Access URLs
-- **CloudFront (Ready Now):** https://d1pjttps83iyey.cloudfront.net
-- **Custom Domain (After DNS):** https://iso.benedictthekkel.com.au
-- **AWS Console:** https://console.aws.amazon.com
+
+- **CloudFront (Ready Now):** <https://d1pjttps83iyey.cloudfront.net>
+- **Custom Domain (After DNS):** <https://iso.benedictthekkel.com.au>
+- **AWS Console:** <https://console.aws.amazon.com>
 
 ### GitHub
+
 - **Workflow File:** `.github/workflows/deploy-frontend.yml`
 - **Repository:** (Your repository on GitHub)
 - **Actions Tab:** (View deployment logs)
@@ -251,6 +275,7 @@ git push origin main
 ## 💡 Quick Command Reference
 
 ### Build & Deploy Locally
+
 ```bash
 cd /home/bthek1/ISO_Standards/Frontend
 
@@ -268,6 +293,7 @@ aws cloudfront create-invalidation \
 ```
 
 ### Check Deployment Status
+
 ```bash
 # List S3 contents
 aws s3 ls s3://iso-standards-frontend --recursive --profile ben-sso
@@ -280,6 +306,7 @@ nslookup iso.benedictthekkel.com.au
 ```
 
 ### Monitor Caching
+
 ```bash
 # Check HTML cache headers
 curl -I https://d1pjttps83iyey.cloudfront.net/index.html
@@ -372,12 +399,14 @@ Your ISO Standards frontend is **100% complete and production-ready**!
 ✅ Global CDN with <100ms latency
 
 **What's Next:**
+
 1. Add DNS CNAME record to domain registrar (5 min)
 2. Wait for DNS propagation (5-30 min)
-3. Access custom domain (https://iso.benedictthekkel.com.au)
+3. Access custom domain (<https://iso.benedictthekkel.com.au>)
 4. Push future updates to auto-deploy
 
 **Estimated Time to Live:**
+
 - **CloudFront URL:** Immediate (now)
 - **Custom Domain:** 30-60 minutes from DNS setup
 

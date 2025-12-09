@@ -13,6 +13,7 @@
 ## 🔧 What Was Done
 
 ### 1. Created OIDC Provider
+
 ```bash
 ✅ aws iam create-open-id-connect-provider \
   --url https://token.actions.githubusercontent.com \
@@ -23,13 +24,16 @@
 **Result:** `arn:aws:iam::762233760445:oidc-provider/token.actions.githubusercontent.com`
 
 ### 2. Updated IAM Role Trust Policy
+
 Changed the `github-actions-role` to trust GitHub Actions OIDC provider with conditions:
+
 - **Principal:** GitHub Actions OIDC endpoint
 - **Action:** sts:AssumeRoleWithWebIdentity
 - **Audience:** sts.amazonaws.com
 - **Subject:** repo:bthek1/ISO_Standards:ref:refs/heads/main
 
 ### 3. Verified Permissions
+
 ```bash
 ✅ Policy attached: s3-cloudfront-policy
   - S3: ListBucket, GetObject, PutObject, DeleteObject
@@ -98,21 +102,25 @@ Changed the `github-actions-role` to trust GitHub Actions OIDC provider with con
 ## 🔐 Security Benefits
 
 ✅ **No Static Credentials**
+
 - No AWS access keys stored in GitHub
 - No secrets to rotate
 - No credentials in GitHub Actions logs
 
 ✅ **Temporary Credentials**
+
 - Each workflow gets unique token
 - Credentials auto-expire
 - Time-limited (typically 1 hour)
 
 ✅ **Audit Trail**
+
 - AWS CloudTrail logs each assumption
 - GitHub Actions logs workflow execution
 - Full visibility into who deployed what
 
 ✅ **Least Privilege**
+
 - Role limited to specific permissions (S3 + CloudFront)
 - Limited to specific repository and branch
 - Cannot access other AWS resources
@@ -122,11 +130,13 @@ Changed the `github-actions-role` to trust GitHub Actions OIDC provider with con
 ## 📋 GitHub Actions Workflow Details
 
 ### File Location
+
 ```
 .github/workflows/deploy-frontend.yml
 ```
 
 ### Key Configuration
+
 ```yaml
 permissions:
   id-token: write      # Generate OIDC token
@@ -145,6 +155,7 @@ jobs:
 ```
 
 ### Deployment Steps
+
 1. **Checkout** - Get code from repository
 2. **Setup Node** - Install Node.js 20
 3. **Install** - npm ci (clean install)
@@ -172,7 +183,7 @@ All items verified:
 
 ---
 
-## 🎬 Ready to Deploy!
+## 🎬 Ready to Deploy
 
 Everything is configured and ready. To test:
 
@@ -198,20 +209,26 @@ git push origin main
 ## 📞 If There Are Issues
 
 ### Symptom: GitHub Actions still fails on OIDC
+
 **Check:**
+
 1. Repository name is `bthek1/ISO_Standards`
 2. Branch is `main`
 3. Workflow has `permissions: id-token: write`
 4. Role ARN is correct
 
 ### Symptom: "Not authorized to perform: sts:AssumeRoleWithWebIdentity"
+
 **Check:**
+
 1. Trust policy has OIDC provider ARN
 2. Trust policy allows `AssumeRoleWithWebIdentity`
 3. Conditions match (repo, branch, audience)
 
 ### Symptom: S3 or CloudFront deployment fails
+
 **Check:**
+
 1. S3 bucket still exists
 2. CloudFront distribution still exists
 3. Role has S3 and CloudFront permissions

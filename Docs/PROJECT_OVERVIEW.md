@@ -7,6 +7,7 @@ A comprehensive platform for exploring, understanding, and accessing global stan
 ## Purpose
 
 This application serves as:
+
 1. **Standards Repository** - Centralized access to global standards documentation
 2. **Intelligent Search** - AI-powered semantic search across standards
 3. **Context-Aware Assistance** - RAG-based Q&A about specific standards
@@ -37,6 +38,7 @@ This application serves as:
 ### Backend Stack (Django)
 
 **Framework:** Django 5.2+ with Python 3.13
+
 - **API:** Django REST Framework
 - **Authentication:** django-allauth (email-based)
 - **Database ORM:** Django ORM with type hints
@@ -45,6 +47,7 @@ This application serves as:
 - **Caching:** Redis
 
 **Key Features:**
+
 - Custom User model with email authentication
 - RESTful API with proper serialization
 - PostgreSQL with pgvector for embeddings
@@ -55,23 +58,28 @@ This application serves as:
 ### Frontend Stack (React + TypeScript)
 
 **Core:**
+
 - React 18+ with TypeScript
 - Vite for build tooling
 - TailwindCSS for styling
 
 **State Management:**
+
 - TanStack Query for server state
 - Zustand for global client state
 - React Context for theme/auth
 
 **Routing & Navigation:**
+
 - React Router DOM v6
 
 **Forms & Validation:**
+
 - react-hook-form
 - Zod schema validation
 
 **Testing:**
+
 - Vitest as test runner
 - React Testing Library
 - Mock Service Worker (MSW)
@@ -81,6 +89,7 @@ This application serves as:
 #### Core Tables
 
 **Users**
+
 ```sql
 users
 - id (PK)
@@ -95,6 +104,7 @@ users
 ```
 
 **Standards**
+
 ```sql
 standards
 - id (PK)
@@ -113,6 +123,7 @@ standards
 ```
 
 **Categories**
+
 ```sql
 categories
 - id (PK)
@@ -123,6 +134,7 @@ categories
 ```
 
 **Documents**
+
 ```sql
 documents
 - id (PK)
@@ -135,6 +147,7 @@ documents
 ```
 
 **Embeddings** (for RAG)
+
 ```sql
 embeddings
 - id (PK)
@@ -147,6 +160,7 @@ embeddings
 ```
 
 **Search History**
+
 ```sql
 search_history
 - id (PK)
@@ -197,6 +211,7 @@ Return Enhanced Response
 ### API Structure
 
 #### Base URL
+
 ```
 https://api.isostandards.example.com/api/v1/
 ```
@@ -204,6 +219,7 @@ https://api.isostandards.example.com/api/v1/
 #### Endpoints
 
 **Authentication**
+
 - `POST /auth/register/` - User registration
 - `POST /auth/login/` - User login (returns JWT)
 - `POST /auth/logout/` - User logout
@@ -211,6 +227,7 @@ https://api.isostandards.example.com/api/v1/
 - `GET /auth/me/` - Current user info
 
 **Standards**
+
 - `GET /standards/` - List standards (with pagination, filters)
 - `GET /standards/{id}/` - Standard details
 - `GET /standards/{id}/download/` - Download document
@@ -219,22 +236,26 @@ https://api.isostandards.example.com/api/v1/
 - `DELETE /standards/{id}/` - Delete standard (admin only)
 
 **Search**
+
 - `POST /search/` - Standard search (text or semantic)
 - `POST /search/rag/` - RAG-powered Q&A
 - `GET /search/history/` - User's search history
 - `GET /search/suggestions/` - Search suggestions
 
 **Categories**
+
 - `GET /categories/` - List all categories
 - `GET /categories/{slug}/standards/` - Standards in category
 
 **Organizations**
+
 - `GET /organizations/` - List standard organizations
 - `GET /organizations/{slug}/` - Organization details
 
 ### Frontend Architecture
 
 #### Project Structure
+
 ```
 frontend/
 ├── src/
@@ -263,24 +284,28 @@ frontend/
 #### Key Features
 
 **1. Standards Browser**
+
 - Grid/List view toggle
 - Advanced filtering (organization, category, date)
 - Sorting options
 - Infinite scroll or pagination
 
 **2. Semantic Search**
+
 - Real-time search with debouncing
 - Search suggestions/autocomplete
 - Recent searches
 - Filter by relevance/date/organization
 
 **3. RAG Chat Interface**
+
 - Chat-style Q&A about standards
 - Context highlighting (show source chunks)
 - Follow-up questions
 - Export conversation
 
 **4. Standard Detail View**
+
 - Full metadata display
 - Related standards
 - Version history
@@ -288,6 +313,7 @@ frontend/
 - Share functionality
 
 **5. User Dashboard**
+
 - Saved/bookmarked standards
 - Search history
 - Recent activity
@@ -296,6 +322,7 @@ frontend/
 ## Development Setup
 
 ### Prerequisites
+
 - Python 3.13+
 - Node.js 20+
 - PostgreSQL 16+ with pgvector
@@ -362,20 +389,25 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 ### AWS Infrastructure
 
 **Compute:**
+
 - EC2 instances (or ECS/Fargate)
 - Application Load Balancer
 
 **Database:**
+
 - AWS RDS PostgreSQL with pgvector
 
 **Storage:**
+
 - S3 for document storage
 - CloudFront CDN for static assets
 
 **Caching:**
+
 - ElastiCache Redis
 
 **Other:**
+
 - Route 53 for DNS
 - ACM for SSL certificates
 - CloudWatch for monitoring
@@ -400,6 +432,7 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 ## Future Enhancements
 
 ### Phase 1 (MVP)
+
 - [x] Basic Django backend with custom user
 - [x] PostgreSQL database
 - [ ] React frontend with TypeScript
@@ -408,6 +441,7 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 - [ ] User authentication
 
 ### Phase 2
+
 - [ ] RAG implementation
 - [ ] Vector embeddings
 - [ ] Semantic search
@@ -415,6 +449,7 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 - [ ] Document upload pipeline
 
 ### Phase 3
+
 - [ ] Advanced filtering
 - [ ] Comparison tool
 - [ ] Version tracking
@@ -422,6 +457,7 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 - [ ] Bookmarks/favorites
 
 ### Phase 4
+
 - [ ] Mobile app (React Native)
 - [ ] API for third-party integrations
 - [ ] Analytics dashboard
@@ -440,12 +476,14 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 ## Monitoring & Analytics
 
 **Application Metrics:**
+
 - Request/response times
 - Error rates
 - Cache hit rates
 - Database query performance
 
 **Business Metrics:**
+
 - Daily active users
 - Search queries per user
 - Most viewed standards
@@ -453,6 +491,7 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 - User engagement time
 
 **Tools:**
+
 - AWS CloudWatch
 - Sentry for error tracking
 - Google Analytics
@@ -461,18 +500,21 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 ## Team & Responsibilities
 
 **Backend Developer:**
+
 - Django API development
 - Database schema design
 - RAG implementation
 - DevOps & deployment
 
 **Frontend Developer:**
+
 - React UI/UX implementation
 - State management
 - API integration
 - Performance optimization
 
 **AI/ML Engineer:**
+
 - Embedding generation
 - RAG optimization
 - LLM prompt engineering
@@ -489,6 +531,7 @@ CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops);
 ## Support
 
 For issues and questions:
+
 - GitHub Issues: [repository URL]
-- Email: support@example.com
+- Email: <support@example.com>
 - Documentation: [docs URL]

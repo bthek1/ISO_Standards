@@ -27,21 +27,24 @@ docker-compose -f docker-compose.prod.yml exec web python manage.py migrate
 ## 🔗 Important URLs
 
 ### Development
-- **Local Backend:** http://localhost:8000
-- **Local Admin:** http://localhost:8000/admin
-- **Local API:** http://localhost:8000/api/v1/
+
+- **Local Backend:** <http://localhost:8000>
+- **Local Admin:** <http://localhost:8000/admin>
+- **Local API:** <http://localhost:8000/api/v1/>
 
 ### Production (Update after deployment)
-- **Backend API:** https://your-ec2-ip-or-domain.com
-- **Admin Panel:** https://your-ec2-ip-or-domain.com/admin
-- **API Docs:** https://your-ec2-ip-or-domain.com/api/v1/docs/
-- **Health Check:** https://your-ec2-ip-or-domain.com/health/
+
+- **Backend API:** <https://your-ec2-ip-or-domain.com>
+- **Admin Panel:** <https://your-ec2-ip-or-domain.com/admin>
+- **API Docs:** <https://your-ec2-ip-or-domain.com/api/v1/docs/>
+- **Health Check:** <https://your-ec2-ip-or-domain.com/health/>
 
 ### AWS Console Links
-- **EC2:** https://console.aws.amazon.com/ec2
-- **RDS:** https://console.aws.amazon.com/rds
-- **CloudWatch Logs:** https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups
-- **Secrets Manager:** https://console.aws.amazon.com/secretsmanager
+
+- **EC2:** <https://console.aws.amazon.com/ec2>
+- **RDS:** <https://console.aws.amazon.com/rds>
+- **CloudWatch Logs:** <https://console.aws.amazon.com/cloudwatch/home#logsV2:log-groups>
+- **Secrets Manager:** <https://console.aws.amazon.com/secretsmanager>
 
 ---
 
@@ -83,6 +86,7 @@ aws logs tail /aws/ec2/iso-standards-backend --follow
 ## 🔐 Environment Variables
 
 ### Required Variables
+
 ```bash
 SECRET_KEY                    # Django secret key
 DEBUG                         # False in production
@@ -96,6 +100,7 @@ SIMPLE_JWT_SIGNING_KEY        # JWT signing key
 ```
 
 ### Optional Variables
+
 ```bash
 EMAIL_HOST                    # SMTP server
 EMAIL_HOST_USER               # Email username
@@ -112,6 +117,7 @@ DJANGO_LOG_LEVEL              # Logging level
 ## 📊 Monitoring
 
 ### Health Checks
+
 ```bash
 # API Health
 curl https://your-ec2-ip-or-domain/health/
@@ -121,6 +127,7 @@ curl https://your-ec2-ip-or-domain/api/v1/health/db/
 ```
 
 ### Performance
+
 ```bash
 # CloudWatch metrics (if EC2 monitoring enabled)
 aws cloudwatch get-metric-statistics \
@@ -138,6 +145,7 @@ aws cloudwatch get-metric-statistics \
 ## 🐛 Troubleshooting
 
 ### Check Application Status
+
 ```bash
 # Docker
 docker-compose -f docker-compose.prod.yml ps
@@ -150,6 +158,7 @@ aws ec2 describe-instance-status --instance-ids i-xxxxx
 ```
 
 ### View Error Logs
+
 ```bash
 # View Docker logs
 docker-compose -f docker-compose.prod.yml logs web | grep ERROR
@@ -159,6 +168,7 @@ docker-compose -f docker-compose.prod.yml logs -f web
 ```
 
 ### Database Connection Test
+
 ```bash
 # From EC2 instance
 docker-compose -f docker-compose.prod.yml exec web python manage.py dbshell
@@ -171,6 +181,7 @@ psql -h iso-standards-db.xxxxx.us-east-1.rds.amazonaws.com \
 ```
 
 ### Test JWT Authentication
+
 ```bash
 # Login
 curl -X POST https://your-ec2-ip-or-domain/api/v1/auth/login/ \
@@ -191,24 +202,28 @@ curl https://your-ec2-ip-or-domain/api/v1/standards/ \
 **Note:** Automated CI/CD will be configured later.
 
 1. **SSH to EC2 instance**
+
 ```bash
 ssh -i your-key.pem ec2-user@<ec2-ip>
 ```
 
-2. **Pull latest changes**
+1. **Pull latest changes**
+
 ```bash
 cd ISO_Standards/Backend
 git pull origin main
 ```
 
-3. **Rebuild and restart**
+1. **Rebuild and restart**
+
 ```bash
 docker-compose -f docker-compose.prod.yml down
 docker-compose -f docker-compose.prod.yml up -d --build
 ```
 
-4. **Check status**
+1. **Check status**
 gh workflow run deploy-backend.yml
+
 ```
 
 ---
@@ -240,6 +255,7 @@ curl https://your-ec2-ip-or-domain/health/
 ## 🆘 Emergency Rollback
 
 ### Docker on EC2
+
 ```bash
 # Use previous image tag or commit
 cd ISO_Standards/Backend
@@ -256,11 +272,11 @@ docker-compose -f docker-compose.prod.yml up -d --force-recreate
 
 ## 📞 Support Resources
 
-- **AWS Support:** https://console.aws.amazon.com/support
-- **Django Docs:** https://docs.djangoproject.com/
-- **Docker Docs:** https://docs.docker.com/
+- **AWS Support:** <https://console.aws.amazon.com/support>
+- **Django Docs:** <https://docs.djangoproject.com/>
+- **Docker Docs:** <https://docs.docker.com/>
 - **Project Docs:** `/home/bthek1/ISO_Standards/Docs/`
-- **GitHub Issues:** https://github.com/bthek1/ISO_Standards/issues
+- **GitHub Issues:** <https://github.com/bthek1/ISO_Standards/issues>
 
 ---
 

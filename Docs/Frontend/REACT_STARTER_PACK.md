@@ -23,6 +23,7 @@ A comprehensive guide for modern React development with TypeScript, designed for
 Components are the building blocks of React applications. Use functional components with TypeScript.
 
 **Basic Component:**
+
 ```typescript
 // Button.tsx
 interface ButtonProps {
@@ -51,6 +52,7 @@ export const Button: React.FC<ButtonProps> = ({
 ```
 
 **Component with Children:**
+
 ```typescript
 // Card.tsx
 interface CardProps {
@@ -418,6 +420,7 @@ npm install -D eslint-plugin-react eslint-plugin-react-hooks
 ### 5. TypeScript Configuration
 
 **tsconfig.json:**
+
 ```json
 {
   "compilerOptions": {
@@ -460,6 +463,7 @@ npm install -D eslint-plugin-react eslint-plugin-react-hooks
 ### 6. ESLint Configuration
 
 **.eslintrc.cjs:**
+
 ```javascript
 module.exports = {
   root: true,
@@ -494,6 +498,7 @@ module.exports = {
 ### 7. Prettier Configuration
 
 **.prettierrc:**
+
 ```json
 {
   "semi": true,
@@ -510,6 +515,7 @@ module.exports = {
 ### 8. Vite Configuration
 
 **vite.config.ts:**
+
 ```typescript
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -551,6 +557,7 @@ export default defineConfig({
 ### 1. Tailwind Setup
 
 **tailwind.config.js:**
+
 ```javascript
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -586,6 +593,7 @@ export default {
 ```
 
 **src/styles/global.css:**
+
 ```css
 @tailwind base;
 @tailwind components;
@@ -627,6 +635,7 @@ export default {
 ### 2. Utility Function for Class Names
 
 **src/utils/cn.ts:**
+
 ```typescript
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -639,6 +648,7 @@ export function cn(...inputs: ClassValue[]) {
 ### 3. Example Components
 
 **Button Component:**
+
 ```typescript
 import { ButtonHTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/utils/cn';
@@ -689,6 +699,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 ### 1. Setup Routes
 
 **src/App.tsx:**
+
 ```typescript
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from '@/components/layout/MainLayout';
@@ -727,6 +738,7 @@ export default function App() {
 ### 2. Layout Component
 
 **src/components/layout/MainLayout.tsx:**
+
 ```typescript
 import { Outlet } from 'react-router-dom';
 import { Header } from './Header';
@@ -748,6 +760,7 @@ export const MainLayout: React.FC = () => {
 ### 3. Protected Route
 
 **src/components/ProtectedRoute.tsx:**
+
 ```typescript
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -766,6 +779,7 @@ export const ProtectedRoute: React.FC = () => {
 ### 4. Navigation
 
 **src/components/layout/Header.tsx:**
+
 ```typescript
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
@@ -850,6 +864,7 @@ export const SearchPage: React.FC = () => {
 ### 1. Setup Query Client
 
 **src/main.tsx:**
+
 ```typescript
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -881,6 +896,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ### 2. API Service Layer
 
 **src/services/api.ts:**
+
 ```typescript
 import axios from 'axios';
 
@@ -920,6 +936,7 @@ export default api;
 ```
 
 **src/services/standards.ts:**
+
 ```typescript
 import api from './api';
 import { Standard, StandardsResponse } from '@/types/standard';
@@ -963,6 +980,7 @@ export const standardsService = {
 ### 3. Custom Query Hooks
 
 **src/hooks/useStandards.ts:**
+
 ```typescript
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { standardsService } from '@/services/standards';
@@ -1182,6 +1200,7 @@ export const useTheme = () => {
 ### 3. Zustand (Recommended for Complex State)
 
 **src/stores/authStore.ts:**
+
 ```typescript
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -1240,6 +1259,7 @@ export const useAuthStore = create<AuthState>()(
 ```
 
 **src/stores/uiStore.ts:**
+
 ```typescript
 import { create } from 'zustand';
 
@@ -1260,6 +1280,7 @@ export const useUIStore = create<UIState>((set) => ({
 ```
 
 **Usage:**
+
 ```typescript
 import { useAuthStore } from '@/stores/authStore';
 
@@ -1300,6 +1321,7 @@ const { data: standards } = useQuery({
 ### 1. Setup react-hook-form + zod
 
 **src/schemas/standardSchema.ts:**
+
 ```typescript
 import { z } from 'zod';
 
@@ -1437,6 +1459,7 @@ export const StandardForm: React.FC = () => {
 ### 3. Reusable Form Components
 
 **FormField Component:**
+
 ```typescript
 import { UseFormRegister, FieldError } from 'react-hook-form';
 
@@ -1486,6 +1509,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 ### 1. Vitest Setup
 
 **vitest.config.ts:**
+
 ```typescript
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
@@ -1508,6 +1532,7 @@ export default defineConfig({
 ```
 
 **src/tests/setup.ts:**
+
 ```typescript
 import '@testing-library/jest-dom';
 import { expect, afterEach } from 'vitest';
@@ -1524,6 +1549,7 @@ afterEach(() => {
 ### 2. Component Testing
 
 **src/components/ui/Button.test.tsx:**
+
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -1564,6 +1590,7 @@ describe('Button', () => {
 ### 3. Hook Testing
 
 **src/hooks/useDebounce.test.ts:**
+
 ```typescript
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
@@ -1607,6 +1634,7 @@ describe('useDebounce', () => {
 ### 4. Testing with React Query
 
 **src/hooks/useStandards.test.tsx:**
+
 ```typescript
 import { describe, it, expect, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
@@ -1706,6 +1734,7 @@ describe('StandardsList Integration', () => {
 ### 6. Test Commands
 
 **package.json:**
+
 ```json
 {
   "scripts": {

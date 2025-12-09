@@ -68,6 +68,7 @@ docker compose -f docker-compose.dev.yml up -d
 ```
 
 This will:
+
 - Download the PostgreSQL 16 image (if not already downloaded)
 - Create the `iso-standards-postgres` container
 - Create the `iso_standards` database
@@ -131,6 +132,7 @@ docker exec -it iso-standards-postgres psql -U ben -d iso_standards
 ```
 
 Common psql commands:
+
 - `\dt` - List all tables
 - `\d table_name` - Describe table structure
 - `\l` - List all databases
@@ -219,6 +221,7 @@ You can connect to the database with tools like pgAdmin, DBeaver, or TablePlus:
 ### Container Won't Start
 
 Check logs:
+
 ```bash
 docker compose -f docker-compose.dev.yml logs db
 ```
@@ -226,11 +229,13 @@ docker compose -f docker-compose.dev.yml logs db
 ### Connection Refused
 
 Ensure the container is running:
+
 ```bash
 docker compose -f docker-compose.dev.yml ps
 ```
 
 Check if port 5432 is already in use:
+
 ```bash
 sudo lsof -i :5432
 ```
@@ -240,6 +245,7 @@ sudo lsof -i :5432
 If you see "runc permission denied" errors, this is a Docker runtime issue. Try:
 
 1. Restart Docker service:
+
    ```bash
    sudo systemctl restart docker
    ```
@@ -247,6 +253,7 @@ If you see "runc permission denied" errors, this is a Docker runtime issue. Try:
 2. Update Docker to latest version
 
 3. Check Docker socket permissions:
+
    ```bash
    sudo chmod 666 /var/run/docker.sock
    ```
@@ -307,6 +314,7 @@ GitHub Actions already uses PostgreSQL service containers. No changes needed.
 ## Production Differences
 
 In production (AWS RDS):
+
 - Managed PostgreSQL service (no Docker)
 - Different credentials (from AWS Secrets Manager)
 - Automated backups

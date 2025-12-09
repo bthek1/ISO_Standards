@@ -11,12 +11,14 @@
 ## 📚 Documentation Library
 
 ### 🚀 Getting Started
+
 | Document | Purpose | Time |
 |----------|---------|------|
 | [`PROJECT_OVERVIEW.md`](PROJECT_OVERVIEW.md) | Architecture & tech stack | 10 min |
 | [`QUICK_START.md`](QUICK_START.md) | Quick reference | 3 min |
 
 ### 🌐 Frontend Deployment
+
 | Document | Purpose | Time |
 |----------|---------|------|
 | [`FRONTEND_READY.md`](FRONTEND_READY.md) | Frontend deployment status | 5 min |
@@ -24,6 +26,7 @@
 | [`FRONTEND_DEPLOYMENT_COMPLETE.md`](FRONTEND_DEPLOYMENT_COMPLETE.md) | Comprehensive guide | 20 min |
 
 ### 🔧 Backend Deployment
+
 | Document | Purpose | Time |
 |----------|---------|------|
 | [`Deployment_Doc/ARCHITECTURE_SUMMARY.md`](Deployment_Doc/ARCHITECTURE_SUMMARY.md) | **Architecture overview & status** | 10 min |
@@ -32,6 +35,7 @@
 | [`Deployment_Doc/JWT_AUTHENTICATION.md`](Deployment_Doc/JWT_AUTHENTICATION.md) | JWT auth setup & usage | 15 min |
 
 ### 🔐 Configuration & Security
+
 | Document | Purpose |
 |----------|---------|
 | [`DEPLOYMENT_SETUP.md`](DEPLOYMENT_SETUP.md) | AWS infrastructure setup |
@@ -42,12 +46,15 @@
 ## 🎯 Quick Navigation by Task
 
 ### "I want to deploy the frontend"
+
 ```bash
 git push origin main  # GitHub Actions deploys automatically to S3/CloudFront
 ```
+
 → See: [`FRONTEND_READY.md`](FRONTEND_READY.md)
 
 ### "I want to deploy the backend"
+
 ```bash
 # Option 1: Elastic Beanstalk (Recommended)
 cd Backend
@@ -61,20 +68,25 @@ docker-compose -f docker-compose.prod.yml up -d
 # Option 3: ECS/Fargate
 # See full guide in AWS_DEPLOYMENT_GUIDE.md
 ```
+
 → See: [`Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md`](Deployment_Doc/AWS_DEPLOYMENT_GUIDE.md)
 
 ### "I want to access my site"
+
 ```
 Frontend (CloudFront):  https://d1pjttps83iyey.cloudfront.net
 Backend API:            https://your-backend-url.elasticbeanstalk.com
 Admin Panel:            https://your-backend-url.elasticbeanstalk.com/admin
 ```
+
 → See: [`FRONTEND_READY.md`](FRONTEND_READY.md) and [`Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md`](Deployment_Doc/BACKEND_DEPLOYMENT_QUICK_REF.md)
 
 ### "How does authentication work?"
+
 ```
 React Frontend (Vite) ←→ JWT Tokens ←→ Django REST API ←→ AWS RDS PostgreSQL
 ```
+
 → See: [`Deployment_Doc/JWT_AUTHENTICATION.md`](Deployment_Doc/JWT_AUTHENTICATION.md)
 2. Wait 5-30 minutes
 3. Done!
@@ -82,15 +94,19 @@ React Frontend (Vite) ←→ JWT Tokens ←→ Django REST API ←→ AWS RDS Po
 → See: [`QUICK_START.md`](QUICK_START.md) or [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md)
 
 ### "I want detailed deployment info"
+
 → See: [`FRONTEND_DEPLOYMENT_COMPLETE.md`](FRONTEND_DEPLOYMENT_COMPLETE.md)
 
 ### "I want to understand the architecture"
+
 → See: [`DEPLOYMENT_GUIDE.md`](DEPLOYMENT_GUIDE.md)
 
 ### "I have a deployment issue"
+
 → See: [`QUICK_START.md`](QUICK_START.md) (Troubleshooting) or [`FRONTEND_DEPLOYMENT_COMPLETE.md`](FRONTEND_DEPLOYMENT_COMPLETE.md)
 
 ### "I want cost estimates"
+
 → See: [`DEPLOYMENT_SETUP.md`](DEPLOYMENT_SETUP.md) or [`FRONTEND_DEPLOYMENT_COMPLETE.md`](FRONTEND_DEPLOYMENT_COMPLETE.md)
 
 ---
@@ -114,16 +130,19 @@ React Frontend (Vite) ←→ JWT Tokens ←→ Django REST API ←→ AWS RDS Po
 ## 🔗 Key URLs
 
 ### Access Your Frontend
-- **CloudFront Domain** (Ready Now): https://d1pjttps83iyey.cloudfront.net
-- **Custom Domain** (After DNS): https://iso.benedictthekkel.com.au
+
+- **CloudFront Domain** (Ready Now): <https://d1pjttps83iyey.cloudfront.net>
+- **Custom Domain** (After DNS): <https://iso.benedictthekkel.com.au>
 
 ### AWS Resources
+
 - **S3 Bucket**: `iso-standards-frontend`
 - **CloudFront Distribution**: `E2494N0PGM4KTG`
 - **CloudFront Domain**: `d1pjttps83iyey.cloudfront.net`
 - **AWS Account**: `762233760445`
 
 ### GitHub
+
 - **Repository**: Your GitHub repo
 - **Workflow**: `.github/workflows/deploy-frontend.yml`
 - **Actions Tab**: View deployment logs
@@ -133,12 +152,14 @@ React Frontend (Vite) ←→ JWT Tokens ←→ Django REST API ←→ AWS RDS Po
 ## ⚡ Essential Commands
 
 ### Deploy Updates (Automatic)
+
 ```bash
 git push origin main
 # GitHub Actions automatically builds, deploys, and goes live!
 ```
 
 ### Manual Deployment
+
 ```bash
 cd Frontend
 npm run build
@@ -147,6 +168,7 @@ aws cloudfront create-invalidation --distribution-id E2494N0PGM4KTG --paths "/*"
 ```
 
 ### Check Status
+
 ```bash
 # S3 contents
 aws s3 ls s3://iso-standards-frontend --recursive --profile ben-sso
@@ -163,17 +185,20 @@ nslookup iso.benedictthekkel.com.au
 ## 📋 Next Steps
 
 ### Immediate (Do Now)
+
 1. ✅ Review [`FRONTEND_READY.md`](FRONTEND_READY.md)
 2. ✅ Access CloudFront URL to verify site works
 3. ⏳ Add DNS CNAME record (see [`QUICK_START.md`](QUICK_START.md))
 
 ### Short-term (This Week)
+
 1. Verify DNS propagation
 2. Test custom domain
 3. Verify cache headers
 4. Monitor CloudFront metrics
 
 ### Ongoing
+
 1. Push updates to GitHub (auto-deploys)
 2. Monitor GitHub Actions logs
 3. Check CloudFront metrics periodically
@@ -184,21 +209,25 @@ nslookup iso.benedictthekkel.com.au
 ## 🎓 Learning Resources
 
 ### React & TypeScript
+
 - [React Documentation](https://react.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [React Patterns](https://react.dev/learn)
 
 ### Build Tools & Performance
+
 - [Vite Documentation](https://vitejs.dev/)
 - [Web Performance](https://web.dev/performance/)
 - [Bundle Analysis](https://bundlephobia.com/)
 
 ### AWS & Deployment
+
 - [AWS CloudFront](https://docs.aws.amazon.com/cloudfront/)
 - [AWS S3 Static Websites](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html)
 - [GitHub Actions](https://docs.github.com/en/actions)
 
 ### UI & Design
+
 - [Material-UI Docs](https://mui.com/)
 - [Web Design Best Practices](https://www.nngroup.com/articles/)
 - [Responsive Design](https://web.dev/responsive-web-design-basics/)
@@ -213,7 +242,7 @@ nslookup iso.benedictthekkel.com.au
 → `git push origin main` → GitHub Actions handles it
 
 **Access my site?**
-→ https://d1pjttps83iyey.cloudfront.net (now) or https://iso.benedictthekkel.com.au (after DNS)
+→ <https://d1pjttps83iyey.cloudfront.net> (now) or <https://iso.benedictthekkel.com.au> (after DNS)
 
 **Add a DNS record?**
 → See [`QUICK_START.md`](QUICK_START.md) - "Add DNS CNAME"
@@ -329,8 +358,8 @@ START HERE
 
 Your ISO Standards frontend is **fully deployed and production-ready**!
 
-**Available Now:** https://d1pjttps83iyey.cloudfront.net
-**After DNS Setup:** https://iso.benedictthekkel.com.au
+**Available Now:** <https://d1pjttps83iyey.cloudfront.net>
+**After DNS Setup:** <https://iso.benedictthekkel.com.au>
 
 **Deploy Updates:** `git push origin main` (automatic)
 

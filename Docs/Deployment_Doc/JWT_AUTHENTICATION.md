@@ -19,6 +19,7 @@ This application uses **JWT (JSON Web Tokens)** for stateless authentication bet
 ## 📦 Dependencies
 
 ### Backend (Django)
+
 ```toml
 # Already included in pyproject.toml
 djangorestframework = ">=3.16.0"
@@ -27,6 +28,7 @@ django-cors-headers = ">=4.7.0"
 ```
 
 ### Frontend (React)
+
 ```json
 {
   "dependencies": {
@@ -337,6 +339,7 @@ const handleLogin = async (email: string, password: string) => {
 ```
 
 **Backend receives:**
+
 ```json
 POST /api/v1/auth/login/
 {
@@ -346,6 +349,7 @@ POST /api/v1/auth/login/
 ```
 
 **Backend responds:**
+
 ```json
 {
   "access": "eyJ0eXAiOiJKV1QiLCJhbGc...",
@@ -371,6 +375,7 @@ const fetchStandards = async () => {
 ```
 
 **Request sent:**
+
 ```
 GET /api/v1/standards/
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGc...
@@ -429,6 +434,7 @@ const handleLogout = async () => {
 ## 🧪 Testing Authentication
 
 ### Test Login
+
 ```bash
 curl -X POST https://api.yourdomain.com/api/v1/auth/login/ \
   -H "Content-Type: application/json" \
@@ -439,6 +445,7 @@ curl -X POST https://api.yourdomain.com/api/v1/auth/login/ \
 ```
 
 Expected response:
+
 ```json
 {
   "access": "eyJ0eXAiOiJKV1...",
@@ -447,12 +454,14 @@ Expected response:
 ```
 
 ### Test Protected Endpoint
+
 ```bash
 curl https://api.yourdomain.com/api/v1/standards/ \
   -H "Authorization: Bearer eyJ0eXAiOiJKV1..."
 ```
 
 ### Test Token Refresh
+
 ```bash
 curl -X POST https://api.yourdomain.com/api/v1/auth/refresh/ \
   -H "Content-Type: application/json" \
@@ -462,6 +471,7 @@ curl -X POST https://api.yourdomain.com/api/v1/auth/refresh/ \
 ```
 
 ### Test Token Verification
+
 ```bash
 curl -X POST https://api.yourdomain.com/api/v1/auth/verify/ \
   -H "Content-Type: application/json" \
@@ -477,11 +487,13 @@ curl -X POST https://api.yourdomain.com/api/v1/auth/verify/ \
 ### Issue: CORS errors on login
 
 **Symptoms:**
+
 ```
 Access to XMLHttpRequest blocked by CORS policy
 ```
 
 **Solution:**
+
 1. Check `CORS_ALLOWED_ORIGINS` includes frontend URL
 2. Ensure `CORS_ALLOW_CREDENTIALS=True`
 3. Verify frontend sends credentials in requests
@@ -489,11 +501,13 @@ Access to XMLHttpRequest blocked by CORS policy
 ### Issue: Token not being sent
 
 **Symptoms:**
+
 ```
 401 Unauthorized on API requests
 ```
 
 **Solution:**
+
 1. Check token is in localStorage: `localStorage.getItem('accessToken')`
 2. Verify Axios interceptor is configured
 3. Check Authorization header format: `Bearer <token>`
@@ -501,11 +515,13 @@ Access to XMLHttpRequest blocked by CORS policy
 ### Issue: Token refresh fails
 
 **Symptoms:**
+
 ```
 User logged out unexpectedly
 ```
 
 **Solution:**
+
 1. Check refresh token exists in localStorage
 2. Verify refresh token hasn't expired (7 days)
 3. Check backend `/auth/refresh/` endpoint works
@@ -514,11 +530,13 @@ User logged out unexpectedly
 ### Issue: Token decode error
 
 **Symptoms:**
+
 ```
 Token backend failed to decode
 ```
 
 **Solution:**
+
 1. Verify `SIGNING_KEY` matches between token creation and validation
 2. Check token hasn't been tampered with
 3. Ensure `ALGORITHM` is consistent (HS256)
@@ -530,6 +548,7 @@ Token backend failed to decode
 ### Access Token (JWT)
 
 **Header:**
+
 ```json
 {
   "typ": "JWT",
@@ -538,6 +557,7 @@ Token backend failed to decode
 ```
 
 **Payload:**
+
 ```json
 {
   "token_type": "access",
@@ -549,6 +569,7 @@ Token backend failed to decode
 ```
 
 **Signature:**
+
 ```
 HMACSHA256(
   base64UrlEncode(header) + "." +
@@ -560,6 +581,7 @@ HMACSHA256(
 ### Refresh Token
 
 Similar structure but:
+
 - `token_type`: "refresh"
 - Longer expiration (7 days)
 - Used only for getting new access tokens
@@ -569,6 +591,7 @@ Similar structure but:
 ## 🔗 Environment Variables
 
 ### Backend (.env.production)
+
 ```bash
 SIMPLE_JWT_SIGNING_KEY=your-unique-signing-key-here
 SIMPLE_JWT_ACCESS_TOKEN_LIFETIME_MINUTES=60
@@ -577,6 +600,7 @@ CORS_ALLOWED_ORIGINS=https://d1pjttps83iyey.cloudfront.net,https://yourdomain.co
 ```
 
 ### Frontend (.env.production)
+
 ```bash
 VITE_API_URL=https://api.yourdomain.com/api/v1
 ```

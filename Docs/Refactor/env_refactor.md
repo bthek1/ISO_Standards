@@ -5,7 +5,9 @@
 All phases of the refactoring have been successfully implemented and tested.
 
 ## Overview
+
 Refactor the Django settings to improve security, maintainability, and environment-specific configurations by:
+
 1. ✅ Moving secrets to `.env` file
 2. ✅ Loading environment variables through `.envrc` (direnv)
 3. ✅ Splitting settings into modular files for different environments
@@ -36,7 +38,9 @@ Backend/
 ## Phase 1: Identify and Categorize Settings
 
 ### 1.1 Secrets (Move to .env)
+
 Extract the following secrets from `settings.py`:
+
 - `SECRET_KEY`
 - Database credentials (if using PostgreSQL):
   - `DB_NAME`
@@ -53,9 +57,11 @@ Extract the following secrets from `settings.py`:
   - `DJANGO_SUPERUSER_PASSWORD`
 
 ### 1.2 Environment-Specific Settings
+
 Categorize by environment:
 
 **Development:**
+
 - `DEBUG = True`
 - `ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]`
 - `DATABASES` (SQLite or local PostgreSQL)
@@ -65,6 +71,7 @@ Categorize by environment:
 - `EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"`
 
 **Test:**
+
 - `DEBUG = False`
 - `DATABASES` (In-memory SQLite for faster tests)
 - Simplified email backend
@@ -72,6 +79,7 @@ Categorize by environment:
 - Test-specific middleware/apps
 
 **Production:**
+
 - `DEBUG = False`
 - `ALLOWED_HOSTS` from environment variable
 - `DATABASES` (PostgreSQL)
@@ -81,7 +89,9 @@ Categorize by environment:
 - No debug toolbar
 
 ### 1.3 Base Settings (Common to All)
+
 Keep in `base.py`:
+
 - `BASE_DIR`
 - `INSTALLED_APPS` (core apps)
 - `MIDDLEWARE` (core middleware)
@@ -101,6 +111,7 @@ Keep in `base.py`:
 ## Phase 2: Create .env and .envrc Files
 
 ### 2.1 Create .env File
+
 Create `Backend/.env` with all secrets:
 
 ```env
@@ -148,6 +159,7 @@ SECURE_HSTS_SECONDS=0
 ```
 
 ### 2.2 Create .env.example File
+
 Create `Backend/.env.example` as a template (without real secrets):
 
 ```env
@@ -193,6 +205,7 @@ SECURE_HSTS_SECONDS=0
 ```
 
 ### 2.3 Create .envrc File
+
 Create `Backend/.envrc` for direnv:
 
 ```bash
@@ -208,7 +221,9 @@ export PYTHONPATH="${PWD}:${PYTHONPATH}"
 ```
 
 ### 2.4 Update .gitignore
+
 Add to `.gitignore`:
+
 ```
 .env
 .envrc
@@ -234,9 +249,11 @@ touch Backend/config/settings/production.py
 ```
 
 ### 3.2 Create base.py
+
 **File:** `Backend/config/settings/base.py`
 
 Move all common settings here:
+
 - Import required modules
 - Define `BASE_DIR`
 - Core `INSTALLED_APPS` (without environment-specific apps)
@@ -269,6 +286,7 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')
 ```
 
 ### 3.3 Create development.py
+
 **File:** `Backend/config/settings/development.py`
 
 ```python
@@ -303,6 +321,7 @@ INTERNAL_IPS = ['127.0.0.1']
 ```
 
 ### 3.4 Create test.py
+
 **File:** `Backend/config/settings/test.py`
 
 ```python
@@ -339,6 +358,7 @@ class DisableMigrations:
 ```
 
 ### 3.5 Create production.py
+
 **File:** `Backend/config/settings/production.py`
 
 ```python
@@ -397,7 +417,8 @@ LOGGING = {
 }
 ```
 
-### 3.6 Create __init__.py
+### 3.6 Create **init**.py
+
 **File:** `Backend/config/settings/__init__.py`
 
 Auto-import the correct settings based on `DJANGO_ENV`:
@@ -421,6 +442,7 @@ else:
 ## Phase 4: Update Configuration Files
 
 ### 4.1 Update manage.py
+
 Ensure `DJANGO_SETTINGS_MODULE` points to `config.settings`:
 
 ```python
@@ -436,6 +458,7 @@ def main():
 ```
 
 ### 4.2 Update wsgi.py and asgi.py
+
 Update both files to use `config.settings`:
 
 ```python
@@ -447,6 +470,7 @@ application = get_wsgi_application()
 ```
 
 ### 4.3 Update docker-compose.yml
+
 Add environment variables:
 
 ```yaml
@@ -462,6 +486,7 @@ services:
 ```
 
 ### 4.4 Update Dockerfile
+
 Ensure environment variables are available:
 
 ```dockerfile
@@ -471,6 +496,7 @@ COPY .env.example .env
 ```
 
 ### 4.5 Update pyproject.toml (pytest configuration)
+
 ```toml
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"
@@ -486,6 +512,7 @@ env = [
 ## Phase 5: Install Dependencies
 
 ### 5.1 Add python-decouple (Alternative to manual os.environ)
+
 Add to `pyproject.toml`:
 
 ```toml
@@ -494,12 +521,14 @@ python-decouple = "^3.8"
 ```
 
 Or use `django-environ`:
+
 ```toml
 [tool.poetry.dependencies]
 django-environ = "^0.11.0"
 ```
 
 ### 5.2 Install direnv
+
 System-level installation:
 
 ```bash
@@ -518,17 +547,21 @@ eval "$(direnv hook bash)"  # or zsh
 ## Phase 6: Migration Steps
 
 ### 6.1 Backup Current Settings
+
 ```bash
 cp Backend/config/settings.py Backend/config/settings.py.bak
 ```
 
 ### 6.2 Create New Structure
+
 Execute commands from Phase 3.1
 
 ### 6.3 Populate New Settings Files
+
 Copy and refactor settings as outlined in Phase 3.2-3.6
 
 ### 6.4 Delete Old settings.py
+
 ```bash
 rm Backend/config/settings.py
 ```
@@ -536,6 +569,7 @@ rm Backend/config/settings.py
 ### 6.5 Test Each Environment
 
 **Development:**
+
 ```bash
 cd Backend
 export DJANGO_ENV=development
@@ -544,6 +578,7 @@ python manage.py runserver
 ```
 
 **Test:**
+
 ```bash
 export DJANGO_ENV=test
 python manage.py check
@@ -551,6 +586,7 @@ pytest
 ```
 
 **Production (Dry-run):**
+
 ```bash
 export DJANGO_ENV=production
 export SECRET_KEY=test-key
@@ -566,11 +602,13 @@ python manage.py check --deploy
 Create test files to verify settings configuration:
 
 **File:** `Backend/config/settings/tests/__init__.py`
+
 ```python
 # Empty file to make tests a package
 ```
 
 **File:** `Backend/config/settings/tests/test_settings.py`
+
 ```python
 import os
 import pytest
@@ -784,6 +822,7 @@ class TestEnvironmentVariables:
 ### 7.2 Integration Tests
 
 **File:** `Backend/config/settings/tests/test_integration.py`
+
 ```python
 import os
 import pytest
@@ -858,6 +897,7 @@ class TestEmailConfiguration(TestCase):
 ### 7.3 Environment-Specific Test Runners
 
 **File:** `Backend/pytest.ini`
+
 ```ini
 [pytest]
 DJANGO_SETTINGS_MODULE = config.settings
@@ -886,6 +926,7 @@ env =
 Create a test script for running all environment tests:
 
 **File:** `Backend/scripts/test_all_environments.sh`
+
 ```bash
 #!/bin/bash
 set -e
@@ -930,6 +971,7 @@ echo "✅ All environment tests passed!"
 ```
 
 Make it executable:
+
 ```bash
 chmod +x Backend/scripts/test_all_environments.sh
 ```
@@ -937,6 +979,7 @@ chmod +x Backend/scripts/test_all_environments.sh
 ### 7.5 Continuous Integration Tests
 
 **File:** `.github/workflows/test-settings.yml`
+
 ```yaml
 name: Test Settings Configuration
 
@@ -1039,6 +1082,7 @@ jobs:
 Create a manual testing checklist:
 
 **File:** `Backend/config/settings/TESTING_CHECKLIST.md`
+
 ```markdown
 # Settings Configuration Testing Checklist
 
@@ -1119,6 +1163,7 @@ Create a manual testing checklist:
 ### 7.7 Load Testing
 
 **File:** `Backend/config/settings/tests/test_performance.py`
+
 ```python
 import pytest
 import time
@@ -1160,6 +1205,7 @@ class TestSettingsPerformance(TestCase):
 ## Phase 8: Documentation Updates
 
 ### 8.1 Update README.md
+
 Add setup instructions:
 
 ```markdown
@@ -1170,9 +1216,10 @@ Add setup instructions:
    cp .env.example .env
    ```
 
-2. Edit `.env` and fill in your secrets
+1. Edit `.env` and fill in your secrets
 
-3. Install direnv (optional but recommended):
+2. Install direnv (optional but recommended):
+
    ```bash
    # Ubuntu/Debian
    sudo apt-get install direnv
@@ -1184,17 +1231,20 @@ Add setup instructions:
    eval "$(direnv hook bash)"
    ```
 
-4. Allow direnv in the project:
+3. Allow direnv in the project:
+
    ```bash
    direnv allow
    ```
 
-5. Run migrations:
+4. Run migrations:
+
    ```bash
    python manage.py migrate
    ```
 
-6. Create superuser:
+5. Create superuser:
+
    ```bash
    python manage.py createsuperuser
    ```
@@ -1202,16 +1252,19 @@ Add setup instructions:
 ## Running Different Environments
 
 **Development:**
+
 ```bash
 export DJANGO_ENV=development
 python manage.py runserver
 ```
 
 **Tests:**
+
 ```bash
 export DJANGO_ENV=test
 pytest
 ```
+
 ```
 
 ### 8.2 Create DEPLOYMENT.md
@@ -1232,6 +1285,7 @@ Document testing procedures:
 ### Individual Environment Tests
 
 **Development:**
+
 ```bash
 export DJANGO_ENV=development
 export SECRET_KEY=dev-test-key
@@ -1241,6 +1295,7 @@ pytest config/settings/tests/test_settings.py::TestDevelopmentSettings -v
 ```
 
 **Test:**
+
 ```bash
 export DJANGO_ENV=test
 export SECRET_KEY=test-test-key
@@ -1250,6 +1305,7 @@ pytest config/settings/tests/test_settings.py::TestTestSettings -v
 ```
 
 **Production:**
+
 ```bash
 export DJANGO_ENV=production
 export SECRET_KEY=prod-test-key-min-50-chars
@@ -1261,12 +1317,14 @@ pytest config/settings/tests/test_settings.py::TestProductionSettings -v
 ```
 
 ### Coverage Report
+
 ```bash
 cd Backend
 export DJANGO_ENV=test
 pytest --cov=config --cov-report=html
 # Open htmlcov/index.html in browser
 ```
+
 ```
 
 ---
@@ -1297,10 +1355,13 @@ env:
 ```
 
 ### 10.2 Add Settings-Specific Tests to CI
+
 Include the settings test workflow from Phase 7.5
 
 ### 10.3 Production Deployment
+
 Use environment variables or secret management:
+
 - AWS Secrets Manager
 - HashiCorp Vault
 - Kubernetes Secrets
@@ -1313,6 +1374,7 @@ Use environment variables or secret management:
 If issues arise:
 
 1. Restore backup:
+
    ```bash
    cp Backend/config/settings.py.bak Backend/config/settings.py
    rm -rf Backend/config/settings/
@@ -1329,12 +1391,14 @@ If issues arise:
 ### Completed Tasks
 
 **Phase 1-2: Analysis & Environment Setup** ✅
+
 - ✅ Created `.env` with all secrets (quoted values)
 - ✅ Created `.env.example` template
 - ✅ Created `.envrc` for direnv with proper venv activation
 - ✅ Updated `.gitignore`
 
 **Phase 3: Settings Refactoring** ✅
+
 - ✅ Backed up `settings.py` → `settings.py.bak`
 - ✅ Created modular settings structure:
   - `config/settings/base.py` (common settings)
@@ -1344,11 +1408,13 @@ If issues arise:
   - `config/settings/__init__.py` (auto-loads based on DJANGO_ENV)
 
 **Phase 4-5: Dependencies & Configuration** ✅
+
 - ✅ Updated `pyproject.toml` for `uv` package manager
 - ✅ Removed `hijack` dependency
 - ✅ Fixed django-allauth to v65+ settings (ACCOUNT_LOGIN_METHODS, ACCOUNT_SIGNUP_FIELDS)
 
 **Phase 6: Testing** ✅
+
 - ✅ Created `config/settings/tests/test_settings.py`
 - ✅ Created `scripts/test_all_environments.sh`
 - ✅ All environments verified:
@@ -1357,6 +1423,7 @@ If issues arise:
   - Production: 2 expected SSL warnings (safe defaults)
 
 **Phase 7: Environment Configuration** ✅
+
 - ✅ Fixed `.envrc` PATH contamination issue
 - ✅ Virtual environment activation working correctly
 - ✅ `which python` resolves to Backend/.venv
@@ -1433,6 +1500,7 @@ DJANGO_ENV="production"
 ```
 
 Then reload the environment:
+
 ```bash
 cd Backend  # direnv will auto-reload
 # or
@@ -1456,6 +1524,7 @@ DJANGO_ENV=production python manage.py check
 ## Files Created/Modified
 
 **Created:**
+
 - `Backend/.env` - Environment variables with secrets
 - `Backend/.env.example` - Template
 - `Backend/.envrc` - direnv configuration
@@ -1469,6 +1538,7 @@ DJANGO_ENV=production python manage.py check
 - `Backend/settings.py.bak` - Original settings backup
 
 **Modified:**
+
 - `Backend/pyproject.toml` - Added uv compatibility
 - `Backend/accounts/admin.py` - Removed hijack dependency
 - `Backend/.gitignore` - Added .env, .envrc, *.sqlite3

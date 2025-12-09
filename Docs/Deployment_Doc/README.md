@@ -37,44 +37,44 @@
 
 ### ✅ Updated Files
 
-5. **Backend/config/settings/production.py**
+1. **Backend/config/settings/production.py**
    - Added CORS configuration for React frontend
    - Added JWT settings (SimpleJWT)
    - Updated REST_FRAMEWORK settings for JWT authentication
    - Added environment variable support for JWT configuration
 
-6. **Backend/config/urls.py**
+2. **Backend/config/urls.py**
    - Added JWT authentication endpoints (`/api/v1/auth/login/`, `/refresh/`, `/verify/`)
    - Added health check endpoint (`/health/`)
    - Ready for production deployment
 
-7. **Backend/Dockerfile.prod**
+3. **Backend/Dockerfile.prod**
    - Production-optimized Docker image
    - Poetry-based dependency management
    - Non-root user for security
    - Gunicorn with optimal workers
    - Health check included
 
-8. **Backend/docker-compose.prod.yml**
+4. **Backend/docker-compose.prod.yml**
    - Production Docker Compose configuration
    - Nginx reverse proxy included
    - Redis for caching
    - Volume management
    - Network configuration
 
-9. **Backend/.env.production.example**
+5. **Backend/.env.production.example**
    - Complete environment variable template
    - All required variables documented
    - JWT configuration
    - AWS RDS settings
    - Security settings
 
-10. **Docs/DOCUMENTATION_INDEX.md**
+6. **Docs/DOCUMENTATION_INDEX.md**
     - Updated with new deployment documentation
     - Added quick navigation for deployment
     - Links to all new guides
 
-11. **README.md**
+7. **README.md**
     - Updated architecture diagram with AWS deployment
     - Added deployment status
     - Updated frontend/backend setup instructions
@@ -110,6 +110,7 @@
 ## 🎯 What's Implemented
 
 ### JWT Authentication ✅
+
 - **Frontend:**
   - Axios instance with JWT interceptors (`src/services/api.ts`)
   - Auth service with login/logout (`src/services/auth.ts`)
@@ -124,12 +125,14 @@
   - Token rotation and blacklisting
 
 ### CORS Configuration ✅
+
 - Backend allows frontend CloudFront URL
 - Credentials allowed for JWT cookies
 - All necessary headers configured
 - Environment variable driven
 
 ### Production Setup ✅
+
 - Production Dockerfile with security best practices
 - Docker Compose for production deployment
 - Environment variable templates
@@ -138,6 +141,7 @@
 - Nginx reverse proxy setup
 
 ### CI/CD ✅
+
 - Frontend: Active GitHub Actions workflow
 - Backend: Ready GitHub Actions workflow
 - Automated testing before deployment
@@ -148,6 +152,7 @@
 ## 📋 Next Steps to Deploy Backend
 
 ### 1. Create RDS Database (15 minutes)
+
 ```bash
 aws rds create-db-instance \
   --db-instance-identifier iso-standards-db \
@@ -159,12 +164,14 @@ aws rds create-db-instance \
 ```
 
 ### 2. Enable pgvector Extension (5 minutes)
+
 ```bash
 psql -h <rds-endpoint> -U postgres -d postgres
 CREATE EXTENSION vector;
 ```
 
 ### 3. Deploy Backend to EC2 (30 minutes)
+
 ```bash
 # SSH to EC2
 ssh -i your-key.pem ec2-user@<ec2-ip>
@@ -178,6 +185,7 @@ docker-compose -f docker-compose.prod.yml up -d
 ```
 
 ### 4. Update Frontend Environment (5 minutes)
+
 ```bash
 # Update Frontend/.env.production
 VITE_API_URL=https://your-ec2-ip-or-domain/api/v1
@@ -188,6 +196,7 @@ git push origin main
 ```
 
 ### 5. Test Everything (10 minutes)
+
 ```bash
 # Health check
 curl https://your-ec2-ip-or-domain/health/
@@ -208,6 +217,7 @@ curl -X POST https://your-ec2-ip-or-domain/api/v1/auth/login/ \
 **Chosen Approach:** EC2 + Docker Compose (Manual deployment, CI/CD automation later)
 
 **Rationale:**
+
 - ⭐⭐ Medium difficulty with Docker knowledge
 - Full control over deployment and configuration
 - Cost-effective (~$40-75/month total infrastructure)
@@ -235,9 +245,11 @@ curl -X POST https://your-ec2-ip-or-domain/api/v1/auth/login/ \
 ## 💰 Estimated Costs
 
 ### Current (Frontend Only)
+
 - S3 + CloudFront: ~$2-7/month
 
 ### After Backend Deployment (EC2 + Docker)
+
 | Service | Monthly Cost |
 |---------|--------------|
 | S3 + CloudFront | $2-7 |
@@ -248,6 +260,7 @@ curl -X POST https://your-ec2-ip-or-domain/api/v1/auth/login/ \
 | **Total** | **$40-75/month** |
 
 **Cost Optimization:**
+
 - Use Reserved Instances (-30-40% cost)
 - Downgrade to db.t4g.micro for RDS if needed
 - Use AWS Free Tier for first 12 months (eligible services)
@@ -276,6 +289,7 @@ Docs/
 ## 🎓 Key Concepts
 
 ### JWT Flow
+
 1. User enters credentials in React app
 2. Frontend sends POST to `/api/v1/auth/login/`
 3. Backend validates credentials against RDS
@@ -286,6 +300,7 @@ Docs/
 8. On token expiry, frontend automatically refreshes
 
 ### Deployment Flow
+
 1. Push code to GitHub
 2. GitHub Actions runs tests
 3. If tests pass, deploy frontend to S3/CloudFront (automatic)
@@ -297,10 +312,12 @@ Docs/
 ## 🆘 Troubleshooting Guide
 
 See complete troubleshooting in:
+
 - [AWS_DEPLOYMENT_GUIDE.md](AWS_DEPLOYMENT_GUIDE.md#-troubleshooting)
 - [JWT_AUTHENTICATION.md](JWT_AUTHENTICATION.md#-troubleshooting)
 
 Common issues:
+
 - CORS errors → Check `CORS_ALLOWED_ORIGINS`
 - 401 errors → Verify JWT token in localStorage
 - Database connection → Check RDS security group

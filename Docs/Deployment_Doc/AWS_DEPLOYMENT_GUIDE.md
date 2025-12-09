@@ -107,6 +107,7 @@ Frontend (React)              Backend (Django)              Database (RDS)
 #### 1.1 Create RDS PostgreSQL Instance
 
 **Option A: AWS Console**
+
 1. Navigate to RDS → Create database
 2. Configuration:
    - Engine: PostgreSQL 16.x
@@ -121,6 +122,7 @@ Frontend (React)              Backend (Django)              Database (RDS)
    - Security group: Create new (allow PostgreSQL port 5432)
 
 **Option B: AWS CLI**
+
 ```bash
 aws rds create-db-instance \
   --db-instance-identifier iso-standards-db \
@@ -193,6 +195,7 @@ python manage.py migrate --settings=config.settings.production
 **Deployment Method:** AWS EC2 with Docker Compose
 
 **Pros:**
+
 - Full control over deployment
 - Cost-effective for small to medium deployments
 - Familiar Docker workflow
@@ -380,6 +383,7 @@ aws secretsmanager create-secret \
 ```
 
 **IAM Policy for Secrets Access:**
+
 ```json
 {
   "Version": "2012-10-17",
@@ -415,6 +419,7 @@ aws acm request-certificate \
 #### 5.2 Create Application Load Balancer
 
 **Via AWS Console:**
+
 1. EC2 → Load Balancers → Create Load Balancer
 2. Choose Application Load Balancer
 3. Configure:
@@ -505,6 +510,7 @@ aws cloudwatch put-metric-alarm \
 ## 🔧 Production Checklist
 
 ### Django Backend
+
 - [ ] `DEBUG=False` in production
 - [ ] `SECRET_KEY` from environment/secrets manager
 - [ ] `ALLOWED_HOSTS` configured correctly
@@ -522,6 +528,7 @@ aws cloudwatch put-metric-alarm \
 - [ ] Gunicorn configured for production
 
 ### Frontend (Already Deployed)
+
 - [ ] S3 bucket created and configured
 - [ ] CloudFront distribution set up
 - [ ] `VITE_API_URL` points to backend API
@@ -531,6 +538,7 @@ aws cloudwatch put-metric-alarm \
 - [ ] Token refresh logic implemented
 
 ### Database (RDS)
+
 - [ ] PostgreSQL 16 instance created
 - [ ] Security group allows backend access
 - [ ] pgvector extension installed
@@ -540,6 +548,7 @@ aws cloudwatch put-metric-alarm \
 - [ ] Connection pooling configured
 
 ### Security
+
 - [ ] SSL/TLS certificates installed
 - [ ] Security groups restrict access appropriately
 - [ ] Secrets stored in AWS Secrets Manager
@@ -550,6 +559,7 @@ aws cloudwatch put-metric-alarm \
 - [ ] XSS protection (React auto-escaping)
 
 ### Monitoring & Logging
+
 - [ ] CloudWatch Logs configured
 - [ ] CloudWatch Alarms set up
 - [ ] Application metrics tracked
@@ -561,12 +571,14 @@ aws cloudwatch put-metric-alarm \
 ## 🚦 Testing the Deployment
 
 ### 1. Test Health Check
+
 ```bash
 curl https://api.yourdomain.com/health/
 # Expected: {"status": "healthy", "database": "connected"}
 ```
 
 ### 2. Test JWT Authentication
+
 ```bash
 # Login
 curl -X POST https://api.yourdomain.com/api/v1/auth/login/ \
@@ -577,12 +589,14 @@ curl -X POST https://api.yourdomain.com/api/v1/auth/login/ \
 ```
 
 ### 3. Test Protected Endpoint
+
 ```bash
 curl https://api.yourdomain.com/api/v1/standards/ \
   -H "Authorization: Bearer <access-token>"
 ```
 
 ### 4. Test CORS
+
 ```javascript
 // In browser console on CloudFront URL
 fetch('https://api.yourdomain.com/api/v1/standards/', {
@@ -613,6 +627,7 @@ fetch('https://api.yourdomain.com/api/v1/standards/', {
 **Total: $40-75/month** (cost-optimized setup)
 
 ### Cost Optimization Tips
+
 - Use Reserved Instances for long-term savings (up to 40% off)
 - Use Spot Instances for non-critical workloads
 - Downgrade RDS to db.t4g.micro for additional savings
@@ -673,34 +688,45 @@ jobs:
 ## 🆘 Troubleshooting
 
 ### Issue: CORS errors in browser console
+
 **Solution:** Ensure `CORS_ALLOWED_ORIGINS` in Django includes CloudFront URL
 
 ### Issue: 401 Unauthorized on API calls
+
 **Solution:**
+
 - Check JWT token is being sent in Authorization header
 - Verify token hasn't expired
 - Check `SIMPLE_JWT` settings in Django
 
 ### Issue: Database connection refused
+
 **Solution:**
+
 - Verify RDS security group allows backend IP/security group
 - Check `DB_HOST` environment variable
 - Ensure RDS instance is publicly accessible (or use VPC peering)
 
 ### Issue: Static files not loading
+
 **Solution:**
+
 - Run `docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic`
 - Check WhiteNoise configuration
 - Verify STATIC_ROOT and STATIC_URL settings
 
 ### Issue: Health check failing
+
 **Solution:**
+
 - Check database connectivity
 - Verify health check endpoint returns 200
 - Review Docker logs: `docker-compose -f docker-compose.prod.yml logs -f`
 
 ### Issue: Docker container not starting
+
 **Solution:**
+
 - Check logs: `docker-compose -f docker-compose.prod.yml logs web`
 - Verify .env.production has all required variables
 - Check port 8000 is not already in use

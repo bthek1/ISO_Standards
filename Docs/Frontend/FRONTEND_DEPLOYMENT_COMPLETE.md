@@ -4,20 +4,22 @@
 
 Your ISO Standards frontend is **fully deployed and ready** for production access at:
 
-**CloudFront URL (Ready Now):** https://d1pjttps83iyey.cloudfront.net
-**Custom Domain (After DNS):** https://iso.benedictthekkel.com.au
+**CloudFront URL (Ready Now):** <https://d1pjttps83iyey.cloudfront.net>
+**Custom Domain (After DNS):** <https://iso.benedictthekkel.com.au>
 
 ---
 
 ## 📦 What's Been Deployed
 
 ### Frontend Build
+
 - **Framework**: React 18 + TypeScript + Vite
 - **Build Size**: 519 KB raw, **167 KB gzipped** ✅
 - **Build Time**: 2.56 seconds
 - **Status**: ✅ Production-Ready
 
 ### Components
+
 - Professional government-style Header (white + blue accents)
 - Hero section with search functionality
 - Statistics display (10,000+ standards tracked)
@@ -28,6 +30,7 @@ Your ISO Standards frontend is **fully deployed and ready** for production acces
 - Full TypeScript type safety
 
 ### Performance
+
 - **HTTPS/TLS**: Enabled by default (CloudFront)
 - **Compression**: Gzip enabled on all assets
 - **Caching Strategy**:
@@ -42,6 +45,7 @@ Your ISO Standards frontend is **fully deployed and ready** for production acces
 ## 🏗️ AWS Infrastructure
 
 ### S3 Bucket
+
 ```
 Bucket Name: iso-standards-frontend
 Region: ap-southeast-2 (Sydney, Australia)
@@ -51,6 +55,7 @@ Access: Public via CloudFront only
 ```
 
 ### CloudFront Distribution
+
 ```
 Distribution ID: E2494N0PGM4KTG
 Domain Name: d1pjttps83iyey.cloudfront.net
@@ -61,6 +66,7 @@ Compression: ✅ Gzip enabled
 ```
 
 ### GitHub Actions Automation
+
 ```
 Workflow File: .github/workflows/deploy-frontend.yml
 Trigger: Push to main on Frontend/** changes
@@ -74,6 +80,7 @@ Status: ✅ Ready for use
 ## 🎯 Next Steps
 
 ### Step 1: Configure DNS (5 minutes) ⏳
+
 Add this CNAME record to your domain registrar:
 
 ```dns
@@ -84,6 +91,7 @@ TTL: 3600 (1 hour recommended)
 ```
 
 **Common Registrars:**
+
 - **GoDaddy**: Manage DNS → Add Record → CNAME
 - **Namecheap**: Domain → DNS → Add New Record
 - **AWS Route53**: Create CNAME record in hosted zone
@@ -102,11 +110,13 @@ nslookup iso.benedictthekkel.com.au
 ### Step 3: Access Your Site ✅
 
 **Immediate Access (CloudFront URL):**
+
 ```
 https://d1pjttps83iyey.cloudfront.net
 ```
 
 **After DNS Setup (Custom Domain):**
+
 ```
 https://iso.benedictthekkel.com.au
 ```
@@ -194,6 +204,7 @@ git push origin main
 ## 📈 Performance Metrics
 
 ### Build Performance
+
 ```
 TypeScript Compilation: <1s
 Vite Build: ~2.5s
@@ -201,6 +212,7 @@ Total Build Time: ~3 seconds
 ```
 
 ### Deployment Performance
+
 ```
 S3 Upload: ~30-60 seconds (depending on file size)
 CloudFront Invalidation: ~10-60 seconds
@@ -208,6 +220,7 @@ Total Deploy Time: ~2-10 minutes from push
 ```
 
 ### Runtime Performance
+
 ```
 First Paint (FP): ~400-600ms
 Largest Contentful Paint (LCP): ~1-2s
@@ -220,21 +233,25 @@ Gzip Compression: 519 KB → 167 KB (68% reduction)
 ## 🔐 Security Checklist
 
 ✅ **HTTPS/TLS**
+
 - All traffic encrypted end-to-end
 - Auto-renewal with ACM
 - Modern TLS 1.2+
 
 ✅ **Authentication**
+
 - GitHub Actions: OIDC (no static keys stored)
 - AWS IAM: Least-privilege role
 - S3: Public reads via CloudFront only
 
 ✅ **Data**
+
 - Frontend only (no backend secrets)
 - No sensitive keys in code
 - Environment variables for config
 
 ✅ **Infrastructure**
+
 - S3 versioning (rollback capability)
 - CloudFront failover handling
 - GitHub Actions audit logs
@@ -251,6 +268,7 @@ Gzip Compression: 519 KB → 167 KB (68% reduction)
 | **Total Estimated** | **$10-60/month** | Scales with traffic |
 
 **Cost Optimization Tips:**
+
 - S3 Lifecycle: Move old versions to Glacier after 30 days
 - CloudFront Compression: Already enabled (save 60-70%)
 - Cache Headers: Already optimized (reduce requests)
@@ -312,6 +330,7 @@ nslookup iso.benedictthekkel.com.au
 ### Issue: Can't access CloudFront URL
 
 **Diagnosis:**
+
 ```bash
 # Check S3 bucket policy
 aws s3api get-bucket-policy --bucket iso-standards-frontend --profile ben-sso
@@ -321,18 +340,21 @@ aws cloudfront get-distribution --id E2494N0PGM4KTG --profile ben-sso
 ```
 
 **Solution:**
+
 - Verify S3 bucket policy allows public reads
 - Check CloudFront distribution status (should be "Deployed")
 
 ### Issue: DNS not resolving
 
 **Diagnosis:**
+
 ```bash
 nslookup iso.benedictthekkel.com.au
 # Should resolve to d1pjttps83iyey.cloudfront.net
 ```
 
 **Solution:**
+
 - Verify CNAME record added to DNS provider
 - Wait 5-30 minutes for propagation
 - Try clearing DNS cache: `ipconfig /flushdns` (Windows) or `sudo dscacheutil -flushcache` (Mac)
@@ -340,6 +362,7 @@ nslookup iso.benedictthekkel.com.au
 ### Issue: Old files still showing
 
 **Solution:**
+
 ```bash
 # Manual CloudFront invalidation
 aws cloudfront create-invalidation \
@@ -351,12 +374,14 @@ aws cloudfront create-invalidation \
 ### Issue: GitHub Actions deployment failed
 
 **Diagnosis:**
+
 1. Go to GitHub Actions tab
 2. Click on failed run
 3. Expand "Deploy to S3" step
 4. Look for error message
 
 **Common Issues:**
+
 - IAM credentials expired: Re-run workflow dispatch
 - S3 bucket policy issue: Check bucket permissions
 - CloudFront Distribution not found: Verify distribution ID
@@ -366,11 +391,13 @@ aws cloudfront create-invalidation \
 ## 📞 Support & Resources
 
 ### AWS Documentation
+
 - [CloudFront Distribution](https://docs.aws.amazon.com/cloudfront/latest/developerguide/)
 - [S3 Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html)
 - [GitHub Actions OIDC](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect)
 
 ### React & Build Tools
+
 - [React Documentation](https://react.dev/)
 - [Vite Documentation](https://vitejs.dev/)
 - [Material-UI Documentation](https://mui.com/)
@@ -400,24 +427,28 @@ aws cloudfront create-invalidation --distribution-id E2494N0PGM4KTG --paths "/*"
 ## ✨ Key Features
 
 ✅ **Professional Design**
+
 - Government-style white header with blue accents
 - Dark navy footer with organized links
 - Responsive design (works on mobile, tablet, desktop)
 - Smooth transitions and hover effects
 
 ✅ **Fast Performance**
+
 - Gzip compression (67% size reduction)
 - CloudFront CDN with 500+ edge locations
 - Smart caching (HTML always fresh, assets cached 1 year)
 - <200ms latency from Australia
 
 ✅ **High Reliability**
+
 - S3 versioning for instant rollback
 - CloudFront failover handling
 - GitHub Actions automated testing
 - Zero-downtime deployments
 
 ✅ **Easy Maintenance**
+
 - One-command deployment: `git push origin main`
 - Automatic cache invalidation
 - Full CI/CD pipeline
@@ -425,16 +456,18 @@ aws cloudfront create-invalidation --distribution-id E2494N0PGM4KTG --paths "/*"
 
 ---
 
-## 🎉 Congratulations!
+## 🎉 Congratulations
 
 Your frontend is now:
+
 - ✅ Built with React 18 + TypeScript
 - ✅ Styled professionally with Material-UI
 - ✅ Deployed to AWS (S3 + CloudFront)
 - ✅ Automated with GitHub Actions
 - ✅ Ready for production traffic
 
-### You Can Now:
+### You Can Now
+
 1. **Add DNS CNAME** for custom domain
 2. **Test** the deployment at CloudFront URL
 3. **Push updates** to GitHub (auto-deploys)

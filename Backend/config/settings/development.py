@@ -29,8 +29,9 @@ DATABASES = {
 }
 
 # Add connection timeout for PostgreSQL
-if DATABASES["default"]["ENGINE"] == "django.db.backends.postgresql":
-    DATABASES["default"].setdefault("OPTIONS", {})
+if DATABASES["default"].get("ENGINE") == "django.db.backends.postgresql":
+    if "OPTIONS" not in DATABASES["default"]:
+        DATABASES["default"]["OPTIONS"] = {}
     DATABASES["default"]["OPTIONS"]["connect_timeout"] = 10
 
 # Email (Console backend for development)

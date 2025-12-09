@@ -5,6 +5,7 @@ A Django REST API for the ISO Standards platform - enabling intelligent search a
 ## 🎯 Project Purpose
 
 This backend serves as the foundation for a comprehensive standards exploration platform that:
+
 - Stores and manages ISO, IEEE, ASTM, and other global standards
 - Implements RAG with PostgreSQL + pgvector for semantic search
 - Provides REST API endpoints for the React frontend
@@ -24,10 +25,13 @@ This backend serves as the foundation for a comprehensive standards exploration 
 - **AWS RDS** ready for production
 
 ## 📖 Installation
+
 (.venv) $ python manage.py migrate
 (.venv) $ python manage.py createsuperuser
 (.venv) $ python manage.py runserver
-# Load the site at http://127.0.0.1:8000
+
+# Load the site at <http://127.0.0.1:8000>
+
 ```
 
 ### Docker

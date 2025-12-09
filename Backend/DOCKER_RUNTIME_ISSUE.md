@@ -4,10 +4,10 @@
 
 When attempting to start **any** Docker container (including PostgreSQL, even `hello-world`), you encounter:
 
-```
-Error response from daemon: failed to create task for container: failed to create shim task: 
-OCI runtime create failed: runc create failed: unable to start container process: 
-error during container init: open sysctl net.ipv4.ip_unprivileged_port_start file: 
+```text
+Error response from daemon: failed to create task for container: failed to create shim task:
+OCI runtime create failed: runc create failed: unable to start container process:
+error during container init: open sysctl net.ipv4.ip_unprivileged_port_start file:
 reopen fd 8: permission denied
 ```
 
@@ -20,6 +20,7 @@ This is **NOT a problem with your Postgres config**. This is a known bug affecti
 - **AppArmor** conflict when Docker runs inside a container with AppArmor profiles
 
 **Your environment:**
+
 - Virtualization: **LXC** (confirmed via `systemd-detect-virt`)
 - containerd.io: **2.1.5** (downgraded from 2.2.0, pinned)
 - runc: **1.3.3** (still has the security fix that conflicts with AppArmor)
@@ -33,13 +34,13 @@ Since you're running in **LXC**, you need to modify the AppArmor profile on the 
 
 ### Steps to Fix (On Proxmox Host)
 
-**1. SSH into your Proxmox host**
+#### 1. SSH into your Proxmox host
 
 ```bash
 ssh root@proxmox-host
 ```
 
-**2. Find your LXC container ID**
+#### 2. Find your LXC container ID
 
 ```bash
 pct list
@@ -47,7 +48,7 @@ pct list
 
 Find the container running this workload (likely named something like `work-budget` or similar).
 
-**3. Edit the LXC config**
+#### 3. Edit the LXC config
 
 ```bash
 nano /etc/pve/lxc/<CTID>.conf
@@ -55,7 +56,7 @@ nano /etc/pve/lxc/<CTID>.conf
 
 Replace `<CTID>` with your container ID (e.g., `105`, `200`, etc.).
 
-**4. Add AppArmor unconfined profile**
+#### 4. Add AppArmor unconfined profile
 
 Add this line to the config file:
 
@@ -63,13 +64,13 @@ Add this line to the config file:
 lxc.apparmor.profile: unconfined
 ```
 
-**5. Restart the LXC container**
+#### 5. Restart the LXC container
 
 ```bash
 pct restart <CTID>
 ```
 
-**6. Back in this container, test Docker**
+#### 6. Back in this container, test Docker
 
 ```bash
 docker run --rm hello-world
@@ -77,7 +78,7 @@ docker run --rm hello-world
 
 Should now work! 🎉
 
-**7. Start PostgreSQL**
+#### 7. Start PostgreSQL
 
 ```bash
 cd Backend
@@ -87,6 +88,7 @@ docker compose -f docker-compose.dev.yml up -d
 ### ⚠️ Security Note
 
 Setting `lxc.apparmor.profile: unconfined` reduces AppArmor isolation for this LXC container. This is:
+
 - ✅ **Fine for development/personal environments**
 - ✅ **Temporary until Proxmox/LXC ships updated AppArmor profiles**
 - ❌ **Not recommended for production/multi-tenant environments**
@@ -130,7 +132,7 @@ cd Backend
 sudo docker compose -f docker-compose.dev.yml up -d
 ```
 
-**Why this works**: sudo bypasses some AppArmor restrictions.  
+**Why this works**: sudo bypasses some AppArmor restrictions.
 **Downside**: Have to use sudo for all Docker commands.
 
 ### Option D: Temporary Fallback to SQLite
@@ -138,6 +140,7 @@ sudo docker compose -f docker-compose.dev.yml up -d
 While the Docker issue is being resolved, you can use SQLite:
 
 Update `.env`:
+
 ```env
 DB_ENGINE="django.db.backends.sqlite3"
 ```
@@ -218,6 +221,7 @@ python manage.py migrate
 ## 🎯 Recommended Next Steps
 
 **If you have Proxmox host access** (Recommended):
+
 ```bash
 # On Proxmox host:
 nano /etc/pve/lxc/<CTID>.conf
@@ -226,6 +230,7 @@ pct restart <CTID>
 ```
 
 **If you don't have host access**:
+
 - Option 1: Use Podman (`sudo apt install podman podman-compose`)
 - Option 2: Use `sudo docker compose` for now
 - Option 3: Temporarily use SQLite (`DB_ENGINE="django.db.backends.sqlite3"` in .env)

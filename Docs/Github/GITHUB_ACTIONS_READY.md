@@ -9,11 +9,13 @@ The GitHub Actions workflow can now authenticate to AWS using OIDC!
 ## 🔧 What Was Fixed
 
 ### Before (❌ Failed)
+
 ```
 Error: Could not assume role with OIDC: No OpenIDConnect provider found
 ```
 
 ### After (✅ Working)
+
 ```
 GitHub Actions → OIDC → IAM Role → S3 + CloudFront
 ```
@@ -23,11 +25,13 @@ GitHub Actions → OIDC → IAM Role → S3 + CloudFront
 ## 🚀 AWS Configuration Complete
 
 ### OIDC Provider Created
+
 ```
 ✅ arn:aws:iam::762233760445:oidc-provider/token.actions.githubusercontent.com
 ```
 
 ### IAM Role Configured
+
 ```
 ✅ Role: github-actions-role
 ✅ Trust Policy: GitHub Actions OIDC Federation
@@ -35,6 +39,7 @@ GitHub Actions → OIDC → IAM Role → S3 + CloudFront
 ```
 
 ### GitHub Actions Workflow Ready
+
 ```
 ✅ Permissions: id-token:write (for OIDC)
 ✅ Role ARN: arn:aws:iam::762233760445:role/github-actions-role
@@ -43,7 +48,7 @@ GitHub Actions → OIDC → IAM Role → S3 + CloudFront
 
 ---
 
-## 🎯 Deploy Now!
+## 🎯 Deploy Now
 
 Push to GitHub to trigger automatic deployment:
 
@@ -52,6 +57,7 @@ git push origin main
 ```
 
 ### What Happens Next
+
 1. GitHub Actions workflow triggers
 2. Authenticates using OIDC (no credentials needed)
 3. Builds React frontend
@@ -64,21 +70,25 @@ git push origin main
 ## 📊 Workflow Steps
 
 ### Step 1: Build
+
 - Node.js 20 environment
 - Install dependencies
 - Build with Vite (2-3 seconds)
 
 ### Step 2: Authenticate
+
 - GitHub Actions OIDC token
 - AWS IAM federation
 - Temporary credentials (secure!)
 
 ### Step 3: Deploy
+
 - Sync to S3: `dist/` → `s3://iso-standards-frontend`
 - Cache headers: HTML (no-cache), Assets (1-year)
 - File deletion: `--delete` flag
 
 ### Step 4: Invalidate
+
 - CloudFront invalidation: `/*`
 - Cache cleared globally
 - New version live immediately
@@ -88,16 +98,19 @@ git push origin main
 ## ✨ Security Features
 
 ✅ **No Static Credentials**
+
 - OIDC-based authentication
 - Temporary tokens only
 - Credentials auto-expire
 
 ✅ **Least Privilege**
+
 - S3: List, Get, Put, Delete only
 - CloudFront: Create invalidation only
 - Scoped to main branch only
 
 ✅ **Full Audit Trail**
+
 - GitHub Actions logs
 - AWS CloudTrail logs
 - Complete visibility
@@ -119,6 +132,7 @@ These are the minimum required permissions.
 ## 🔗 Trust Policy
 
 The IAM role trusts GitHub Actions when:
+
 1. **Provider**: GitHub Actions OIDC endpoint
 2. **Audience**: sts.amazonaws.com
 3. **Repository**: bthek1/ISO_Standards
@@ -146,16 +160,19 @@ aws iam list-role-policies --role-name github-actions-role --profile ben-sso
 ## 🎬 Next Steps
 
 ### Immediate
+
 1. Push code to GitHub main branch
 2. Monitor GitHub Actions tab
 3. Watch deployment complete (2-10 min)
 
 ### Verify
+
 1. Check GitHub Actions logs (should succeed)
-2. Visit CloudFront URL: https://d1pjttps83iyey.cloudfront.net
+2. Visit CloudFront URL: <https://d1pjttps83iyey.cloudfront.net>
 3. Verify files updated in S3
 
 ### Monitor
+
 1. GitHub Actions: Auto-deploy on every push
 2. CloudFront: Monitor cache hit ratio
 3. S3: Monitor file versions
@@ -223,7 +240,7 @@ aws iam list-role-policies --role-name github-actions-role --profile ben-sso
 
 ---
 
-## 🚀 Ready to Deploy!
+## 🚀 Ready to Deploy
 
 Everything is configured and ready. Simply:
 
@@ -238,6 +255,6 @@ Your frontend will automatically build, deploy, and go live!
 **Status:** ✅ OIDC Authentication Complete
 **Deployment Method:** Automatic (git push)
 **Deploy Time:** 2-10 minutes
-**Live URL:** https://d1pjttps83iyey.cloudfront.net
+**Live URL:** <https://d1pjttps83iyey.cloudfront.net>
 
 **Happy deploying! 🎉**

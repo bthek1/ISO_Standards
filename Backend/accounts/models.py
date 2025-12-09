@@ -53,8 +53,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects: CustomUserManager = CustomUserManager()  # type: ignore[assignment]
 
     USERNAME_FIELD = "email"
-    # TODO: Add required fields when ready
-    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     def __str__(self):
         return self.email

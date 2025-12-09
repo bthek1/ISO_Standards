@@ -9,9 +9,11 @@ Welcome to the ISO Standards project documentation. This platform enables intell
 ## Core Documentation
 
 ### 1. [Project Overview](./PROJECT_OVERVIEW.md)
+
 Complete technical architecture, database schema, API structure, and deployment guide.
 
 **Contents:**
+
 - Vision and purpose
 - Technical architecture (Backend + Frontend)
 - Database schema with PostgreSQL + pgvector
@@ -21,9 +23,11 @@ Complete technical architecture, database schema, API structure, and deployment 
 - Security and performance considerations
 
 ### 2. [React Starter Pack](./REACT_STARTER_PACK.md)
+
 Comprehensive guide for React + TypeScript + Vite frontend development.
 
 **Contents:**
+
 - Core React concepts (components, hooks, props, state)
 - Project setup with Vite + TypeScript
 - Styling with Tailwind CSS
@@ -35,9 +39,11 @@ Comprehensive guide for React + TypeScript + Vite frontend development.
 - Best practices and patterns
 
 ### 3. [Copilot Instructions](../.github/copilot-instructions.md)
+
 GitHub Copilot configuration for code generation assistance.
 
 **Contents:**
+
 - Code style and conventions
 - Django-specific guidelines
 - React-specific guidelines
@@ -52,12 +58,14 @@ GitHub Copilot configuration for code generation assistance.
 ### Setup & Configuration
 
 **[Backend README](../Backend/README.md)**
+
 - Installation instructions
 - Environment setup
 - Running the development server
 - Database migrations
 
 **[Environment Configuration](./Refactor/env_refactor.md)**
+
 - Environment variables reference
 - Settings configuration
 - Development vs Production setup
@@ -65,12 +73,14 @@ GitHub Copilot configuration for code generation assistance.
 ### Testing
 
 **[Pytest Guide](../Backend/PYTEST_GUIDE.md)**
+
 - Test structure and organization
 - Running tests
 - Coverage requirements
 - Best practices
 
 **[Linting Guide](../Backend/LINTING.md)**
+
 - Ruff configuration
 - Code formatting with Black
 - Pre-commit hooks
@@ -80,16 +90,19 @@ GitHub Copilot configuration for code generation assistance.
 ## Frontend Documentation (Coming Soon)
 
 ### Setup & Configuration
+
 - Installation guide
 - Environment setup
 - Development workflow
 
 ### Component Library
+
 - UI components documentation
 - Component patterns
 - Accessibility guidelines
 
 ### API Integration
+
 - API client setup
 - Authentication flow
 - Error handling
@@ -156,6 +169,7 @@ Return Enhanced Response with Sources
 ## API Documentation
 
 ### Base URL
+
 ```
 Development: http://localhost:8000/api/v1/
 Production: https://api.isostandards.example.com/api/v1/
@@ -164,12 +178,14 @@ Production: https://api.isostandards.example.com/api/v1/
 ### Key Endpoints
 
 **Authentication**
+
 - `POST /auth/register/` - User registration
 - `POST /auth/login/` - User login (returns JWT)
 - `POST /auth/logout/` - User logout
 - `GET /auth/me/` - Current user info
 
 **Standards**
+
 - `GET /standards/` - List standards (paginated)
 - `GET /standards/{id}/` - Standard details
 - `POST /search/` - Standard search
@@ -184,12 +200,14 @@ For complete API documentation, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#
 ### Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/bthek1/ISO_Standards.git
    cd ISO_Standards
    ```
 
 2. **Setup Backend**
+
    ```bash
    cd Backend
    python -m venv .venv
@@ -203,6 +221,7 @@ For complete API documentation, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#
    ```
 
 3. **Setup Frontend** (when available)
+
    ```bash
    cd Frontend
    npm install
@@ -214,6 +233,7 @@ For complete API documentation, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#
 ### Testing
 
 **Backend:**
+
 ```bash
 cd Backend
 pytest                          # Run all tests
@@ -222,6 +242,7 @@ pytest accounts/tests/          # Specific app
 ```
 
 **Frontend:**
+
 ```bash
 cd Frontend
 npm test                        # Run all tests
@@ -232,6 +253,7 @@ npm run test:ui                 # Open test UI
 ### Code Quality
 
 **Backend:**
+
 ```bash
 ruff check .                    # Lint
 ruff format .                   # Format
@@ -239,6 +261,7 @@ pytest --cov                    # Test coverage
 ```
 
 **Frontend:**
+
 ```bash
 npm run lint                    # ESLint
 npm run format                  # Prettier
@@ -252,15 +275,18 @@ npm run type-check              # TypeScript
 ### Core Models
 
 **CustomUser**
+
 - Email-based authentication
 - Fields: email, first_name, last_name, is_active, is_staff
 
 **Standard**
+
 - code, title, organization, version
 - published_date, revision_date, status
 - description, document_url
 
 **Embedding**
+
 - document_id, chunk_text, chunk_index
 - embedding (vector), metadata
 
@@ -271,6 +297,7 @@ For complete schema, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#database-sc
 ## Technology Stack
 
 ### Backend
+
 - **Framework:** Django 5.2 + Python 3.13
 - **API:** Django REST Framework
 - **Database:** PostgreSQL 16 + pgvector
@@ -279,6 +306,7 @@ For complete schema, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#database-sc
 - **Testing:** pytest + pytest-django
 
 ### Frontend
+
 - **Framework:** React 18 + TypeScript
 - **Build Tool:** Vite
 - **Styling:** Tailwind CSS
@@ -288,6 +316,7 @@ For complete schema, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#database-sc
 - **Testing:** Vitest + React Testing Library
 
 ### Infrastructure
+
 - **Database:** AWS RDS (PostgreSQL)
 - **Storage:** AWS S3
 - **Hosting:** AWS EC2/ECS
@@ -299,12 +328,14 @@ For complete schema, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#database-sc
 ## Contributing
 
 ### Code Style
+
 - Backend: PEP 8, Black formatter (88 char line limit)
 - Frontend: ESLint + Prettier
 - Type hints required for all functions
 - Comprehensive tests for new features
 
 ### Git Workflow
+
 1. Create feature branch from `main`
 2. Write tests first (TDD)
 3. Implement feature
@@ -314,6 +345,7 @@ For complete schema, see [PROJECT_OVERVIEW.md](./PROJECT_OVERVIEW.md#database-sc
 7. Merge to main
 
 ### Commit Messages
+
 ```
 feat: add RAG search endpoint
 fix: resolve authentication token refresh
@@ -327,17 +359,20 @@ refactor: optimize database queries
 ## Resources
 
 ### Django
+
 - [Django Documentation](https://docs.djangoproject.com/)
 - [DRF Documentation](https://www.django-rest-framework.org/)
 - [django-allauth](https://django-allauth.readthedocs.io/)
 
 ### React
+
 - [React Documentation](https://react.dev/)
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [TanStack Query](https://tanstack.com/query/)
 - [React Router](https://reactrouter.com/)
 
 ### Tools
+
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Vitest](https://vitest.dev/)
 - [PostgreSQL pgvector](https://github.com/pgvector/pgvector)

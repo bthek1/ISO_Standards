@@ -93,6 +93,7 @@ Frontend (React)              Backend API (Django)           Database (RDS)
 ```
 
 **Key Features:**
+
 - Access tokens expire in 60 minutes
 - Refresh tokens expire in 7 days
 - Automatic token refresh via Axios interceptor
@@ -150,6 +151,7 @@ ISO_Standards/
 ## 🎯 Deployment Status
 
 ### ✅ Completed
+
 - [x] Frontend deployed to S3
 - [x] CloudFront distribution configured
 - [x] Frontend CI/CD pipeline active
@@ -162,6 +164,7 @@ ISO_Standards/
 - [x] Documentation created
 
 ### ⏳ Pending
+
 - [ ] RDS PostgreSQL instance created
 - [ ] pgvector extension installed
 - [ ] Backend deployed (choose: EB/ECS/EC2)
@@ -178,6 +181,7 @@ ISO_Standards/
 ## 🚀 Next Steps to Deploy Backend
 
 ### 1. Set Up RDS Database
+
 ```bash
 # Create PostgreSQL instance
 aws rds create-db-instance \
@@ -195,6 +199,7 @@ CREATE EXTENSION vector;
 ```
 
 ### 2. Deploy Backend (EC2 + Docker - Manual)
+
 ```bash
 # SSH to EC2 instance
 ssh -i your-key.pem ec2-user@<ec2-public-ip>
@@ -237,6 +242,7 @@ docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperu
 ```
 
 ### 3. Configure Frontend to Use Backend
+
 ```bash
 # Update Frontend/.env.production
 VITE_API_URL=https://your-ec2-ip-or-domain/api/v1
@@ -248,6 +254,7 @@ git push origin main  # Auto-deploys via GitHub Actions
 ```
 
 ### 4. Test Full Flow
+
 ```bash
 # Test health check
 curl https://your-ec2-ip-or-domain/health/
@@ -267,6 +274,7 @@ curl https://your-ec2-ip-or-domain/api/v1/standards/ \
 ## 📊 Technology Stack
 
 ### Frontend (Deployed ✅)
+
 - **Framework:** React 18 + TypeScript
 - **Build Tool:** Vite
 - **Styling:** TailwindCSS
@@ -277,6 +285,7 @@ curl https://your-ec2-ip-or-domain/api/v1/standards/ \
 - **Hosting:** AWS S3 + CloudFront
 
 ### Backend (Ready to Deploy ⏳)
+
 - **Framework:** Django 5.2 + Python 3.13
 - **API:** Django REST Framework
 - **Authentication:** djangorestframework-simplejwt
@@ -288,6 +297,7 @@ curl https://your-ec2-ip-or-domain/api/v1/standards/ \
 - **Hosting:** AWS EC2 with Docker Compose
 
 ### Infrastructure
+
 - **Cloud:** AWS
 - **Database:** RDS PostgreSQL 16 with pgvector
 - **CDN:** CloudFront

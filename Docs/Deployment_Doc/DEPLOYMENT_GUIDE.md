@@ -37,24 +37,28 @@
 ## 🔧 Deployment Components
 
 ### 1. AWS S3 Bucket
+
 - **Name**: `iso-standards-frontend`
 - **Region**: `ap-southeast-2` (Sydney, Australia)
 - **Purpose**: Store built frontend files
 - **Status**: ✅ Active
 
 ### 2. CloudFront Distribution
+
 - **ID**: `E2494N0PGM4KTG`
 - **Domain**: `d1pjttps83iyey.cloudfront.net`
 - **Purpose**: CDN + HTTPS + SPA routing
 - **Status**: ✅ Active
 
 ### 3. GitHub Actions Workflow
+
 - **File**: `.github/workflows/deploy-frontend.yml`
 - **Trigger**: Push to `main` on `Frontend/**` changes
 - **Steps**: Build → Auth → Deploy → Invalidate
 - **Status**: ✅ Ready
 
 ### 4. IAM Authentication
+
 - **Role**: `github-actions-role`
 - **Method**: OIDC (no static credentials)
 - **Permissions**: S3 + CloudFront
@@ -261,6 +265,7 @@ aws cloudfront get-distribution-statistics \
 ### Issue: CloudFront shows old files
 
 **Solution**: Manually invalidate cache
+
 ```bash
 aws cloudfront create-invalidation \
   --distribution-id E2494N0PGM4KTG \
@@ -271,11 +276,13 @@ aws cloudfront create-invalidation \
 ### Issue: 404 on custom domain
 
 **Possible Causes**:
+
 1. DNS CNAME not configured correctly
 2. CloudFront distribution not deployed (takes 10-30 min)
 3. S3 bucket not public
 
 **Debug Steps**:
+
 ```bash
 # Verify DNS
 nslookup iso.benedictthekkel.com.au
@@ -290,6 +297,7 @@ aws cloudfront get-distribution-config --id E2494N0PGM4KTG --profile ben-sso
 ### Issue: GitHub Actions fails
 
 **Check**:
+
 1. Is OIDC role still attached? `aws iam get-role --role-name github-actions-role`
 2. Are permissions still there? `aws iam get-role-policy --role-name github-actions-role --policy-name s3-cloudfront-policy`
 3. Check GitHub Actions logs for specific error
@@ -297,6 +305,7 @@ aws cloudfront get-distribution-config --id E2494N0PGM4KTG --profile ben-sso
 ### Issue: Files don't cache correctly
 
 **Verify cache headers**:
+
 ```bash
 curl -I https://d1pjttps83iyey.cloudfront.net/assets/main.js | grep Cache-Control
 # Should show: max-age=31536000 (for assets)
@@ -308,22 +317,26 @@ curl -I https://d1pjttps83iyey.cloudfront.net/index.html | grep Cache-Control
 ## 🔒 Security Checklist
 
 ✅ **S3 Bucket**
+
 - [x] Versioning enabled (rollback capability)
 - [x] Block public access disabled (CloudFront can access)
 - [x] Public read policy attached
 - [x] HTTPS enforced via CloudFront
 
 ✅ **CloudFront**
+
 - [x] HTTPS enabled (redirect HTTP)
 - [x] Origin access restricted (S3 only)
 - [x] Security headers configured
 
 ✅ **GitHub Actions**
+
 - [x] OIDC authentication (no static keys)
 - [x] Limited IAM permissions (least privilege)
 - [x] Role restricted to main branch
 
 ✅ **Credentials**
+
 - [x] AWS credentials use ben-sso profile
 - [x] No hardcoded secrets in repo
 - [x] No secrets in GitHub Actions logs
@@ -331,11 +344,13 @@ curl -I https://d1pjttps83iyey.cloudfront.net/index.html | grep Cache-Control
 ## 📝 Cost Optimization
 
 **Current Setup Costs** (Estimated):
+
 - S3: $0.23/GB/month stored → ~$2-5/month
 - CloudFront: $0.085/GB transferred → $5-50/month (varies with traffic)
 - **Total**: $7-55/month depending on traffic
 
 **To Reduce Costs**:
+
 1. Set S3 lifecycle policies (move old versions to Glacier)
 2. Configure CloudFront compression (already enabled)
 3. Use CloudFront security policies (prevent expensive edge locations)
@@ -343,17 +358,20 @@ curl -I https://d1pjttps83iyey.cloudfront.net/index.html | grep Cache-Control
 ## 🎓 Next Steps
 
 1. **Configure DNS** (Manual)
+
    ```
    Add CNAME: iso → d1pjttps83iyey.cloudfront.net
    ```
 
 2. **Test Deployment** (Optional)
+
    ```bash
    cd Frontend && npm run build
    aws s3 sync dist/ s3://iso-standards-frontend --delete --profile ben-sso
    ```
 
 3. **Push to Main** (Automatic)
+
    ```bash
    git commit -m "feat: deploy frontend"
    git push origin main
@@ -361,12 +379,13 @@ curl -I https://d1pjttps83iyey.cloudfront.net/index.html | grep Cache-Control
 
 4. **Monitor**
    - Check GitHub Actions logs
-   - Access https://iso.benedictthekkel.com.au
+   - Access <https://iso.benedictthekkel.com.au>
    - Verify cache headers and performance
 
 ## 📞 Support
 
 For issues or questions:
+
 1. Check GitHub Actions logs (Actions tab)
 2. Review CloudFront distribution in AWS Console
 3. Check S3 bucket contents

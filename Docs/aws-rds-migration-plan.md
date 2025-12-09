@@ -25,12 +25,14 @@ This document outlines the plan to set up AWS RDS PostgreSQL for the ISO Standar
 Before creating the RDS instance:
 
 1. **AWS SSO Access**: Ensure you're logged in
+
    ```bash
    aws sso login --profile ben-sso
    export AWS_PROFILE=ben-sso
    ```
 
 2. **Check VPC and Subnets**: Identify your VPC
+
    ```bash
    # List VPCs
    aws ec2 describe-vpcs --region ap-southeast-2
@@ -42,6 +44,7 @@ Before creating the RDS instance:
    ```
 
 3. **Get Your Public IP**: For security group configuration
+
    ```bash
    curl -s https://checkip.amazonaws.com
    ```
@@ -49,6 +52,7 @@ Before creating the RDS instance:
 ### 1.2 Create Development RDS Instance
 
 **Instance Specifications:**
+
 - **Engine**: PostgreSQL 16.x (latest stable)
 - **Instance Class**: `db.t3.micro` (Free tier eligible, ~$12/month after free tier)
 - **Storage**: 20 GB GP3 (Free tier: 20 GB)
@@ -489,6 +493,7 @@ python manage.py runserver
 ### 8.2 Managing the RDS Instance
 
 **Check instance status:**
+
 ```bash
 export AWS_PROFILE=ben-sso
 aws rds describe-db-instances \
@@ -498,6 +503,7 @@ aws rds describe-db-instances \
 ```
 
 **Stop instance to save costs (when not developing):**
+
 ```bash
 # Stop the instance
 aws rds stop-db-instance \
@@ -508,6 +514,7 @@ echo "RDS instance stopped. It will auto-start after 7 days."
 ```
 
 **Start instance:**
+
 ```bash
 # Start the instance
 aws rds start-db-instance \
@@ -525,6 +532,7 @@ echo "RDS instance is running"
 ### 8.3 Database Management
 
 **Create database backup:**
+
 ```bash
 # Manual snapshot
 aws rds create-db-snapshot \
@@ -534,6 +542,7 @@ aws rds create-db-snapshot \
 ```
 
 **Access database directly:**
+
 ```bash
 ## Phase 9: Monitoring (Optional for Development)
 
@@ -624,6 +633,7 @@ Provide template with all database options.
 ### 10.3 Create Runbook
 
 Document common operations:
+
 ## Phase 10: Documentation Updates
 
 ### 10.1 Update Backend README.md
@@ -654,6 +664,7 @@ aws rds describe-db-instances \
 ```
 
 ## Stop/Start Instance
+
 ```bash
 # Stop (saves costs when not developing)
 aws rds stop-db-instance --db-instance-identifier iso-standards-dev --region ap-southeast-2
@@ -663,9 +674,11 @@ aws rds start-db-instance --db-instance-identifier iso-standards-dev --region ap
 ```
 
 ## Connect with psql
+
 ```bash
 psql -h YOUR_ENDPOINT -U postgres -d iso_standards
 ```
+
 ```
 
 ## Troubleshooting
@@ -708,6 +721,7 @@ aws ec2 authorize-security-group-ingress \
 ```
 
 **4. Django migrations fail**
+
 - Ensure virtual environment is activated
 - Check database name in `.env` matches created database
 - Verify extensions are installed (if using pgvector)
@@ -718,6 +732,7 @@ If you need to revert to SQLite:
 
 1. **Keep SQLite backup**: Don't delete `db.sqlite3.backup`
 2. **Comment out RDS in .env**:
+
    ```bash
    # DB_NAME=iso_standards
    # DB_USER=postgres
@@ -725,7 +740,9 @@ If you need to revert to SQLite:
    # DB_HOST=your-endpoint
    # DB_PORT=5432
    ```
+
 3. **Update development.py** to use SQLite:
+
    ```python
    DATABASES = {
        "default": {
@@ -734,17 +751,20 @@ If you need to revert to SQLite:
        }
    }
    ```
+
 4. **Restore SQLite backup**: `cp db.sqlite3.backup db.sqlite3`
 
 ## Cost Estimation
 
 ### AWS RDS (db.t3.micro) - Development
+
 - **Instance**: ~$12/month (after free tier)
 - **Storage** (20GB GP3): ~$2/month
 - **Backup** (1-day retention): ~$0.50/month
 - **Total**: ~$14.50/month
 
 ### Cost Savings Tips
+
 1. **Stop instance when not developing** (saves ~$12/month during stopped periods)
 2. **Use smaller storage** if you don't need 20GB
 3. **Consider free tier** (750 hours/month for 12 months)
