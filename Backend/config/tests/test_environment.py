@@ -48,10 +48,9 @@ class TestEnvironmentConfiguration:
         db_name = db_config["NAME"]
         is_test_db = (
             db_name == ":memory:"
-            or db_name.startswith("test_")
+            or db_name.startswith(("test_", "file:"))  # test_ prefix or SQLite file URI
             or "test" in db_name.lower()
             or "memorydb" in db_name.lower()  # pytest-xdist shared memory db
-            or db_name.startswith("file:")  # SQLite file-based memory db
         )
         assert is_test_db, f"Database doesn't appear to be a test database: {db_name}"
 
