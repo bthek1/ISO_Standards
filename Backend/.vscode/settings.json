@@ -5,7 +5,9 @@
   "python.testing.pytestArgs": [
     ".",
     "-n",
-    "auto"
+    "auto",
+    "--dist=loadscope",
+    "--color=yes"
   ],
   "python.testing.cwd": "${workspaceFolder}",
   // Python Interpreter
