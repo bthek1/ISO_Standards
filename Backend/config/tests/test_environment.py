@@ -21,6 +21,46 @@ class TestEnvironmentConfiguration:
         assert settings is not None
         assert settings.configured
 
+    def test_pytest_uses_test_settings(self):
+        """Pytest should use config.settings.test."""
+        settings_module = os.environ.get("DJANGO_SETTINGS_MODULE")
+        assert (
+            settings_module == "config.settings.test"
+        ), f"Expected test settings, got: {settings_module}"
+
+    def test_test_mode_enabled(self):
+        """TESTING flag should be True during tests."""
+        assert hasattr(settings, "TESTING")
+        assert settings.TESTING is True, "TESTING flag should be True in test settings"
+
+    def test_test_database_configuration(self):
+        """Test database should be properly configured for testing."""
+        db_config = settings.DATABASES["default"]
+
+        # During pytest runs, the database is managed by pytest-django
+        # It uses the test settings but may create a test database
+        # We just verify it's configured (engine and name exist)
+        assert "ENGINE" in db_config
+        assert "NAME" in db_config
+
+        # The database name should indicate it's for testing
+        # pytest-xdist creates different database names for parallel workers
+        db_name = db_config["NAME"]
+        is_test_db = (
+            db_name == ":memory:"
+            or db_name.startswith("test_")
+            or "test" in db_name.lower()
+            or "memorydb" in db_name.lower()  # pytest-xdist shared memory db
+            or db_name.startswith("file:")  # SQLite file-based memory db
+        )
+        assert is_test_db, f"Database doesn't appear to be a test database: {db_name}"
+
+    def test_debug_disabled_in_tests(self):
+        """DEBUG should be False in test settings."""
+        assert (
+            settings.DEBUG is False
+        ), "DEBUG should be False in tests to match production behavior"
+
     def test_environment_settings_path(self):
         """Settings should be loaded from config.settings."""
         settings_module = os.environ.get("DJANGO_SETTINGS_MODULE")
