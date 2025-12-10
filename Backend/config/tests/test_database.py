@@ -360,6 +360,10 @@ class TestDatabaseEnvironmentVariables(TestCase):
                 has_ssl_in_url or has_ssl_in_options
             ), "DATABASE_URL or Django settings should enforce SSL for RDS"
 
+    @pytest.mark.skipif(
+        os.environ.get("DJANGO_SETTINGS_MODULE", "").endswith(".test"),
+        reason="Not applicable in test environment (uses SQLite, not PostgreSQL)",
+    )
     def test_individual_db_env_vars(self):
         """Individual database environment variables should be set."""
         required_vars = ["DB_NAME", "DB_USER", "DB_HOST", "DB_PORT"]
