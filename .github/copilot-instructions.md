@@ -32,7 +32,7 @@ This is a full-stack application for explaining ISO standards and various global
 
 ## Project Structure
 
-```
+```text
 ISO_Standards/
 ├── Backend/
 │   ├── accounts/          # Custom user authentication
@@ -145,6 +145,45 @@ npm run type-check  # TypeScript type checking
 - `MD041`: Disabled (first line heading)
 - `MD033`: Disabled (inline HTML)
 - `MD036`: Disabled (emphasis as heading)
+
+**Best Practices for Creating Markdown Files:**
+
+1. **Line Length**: Keep lines under 80 characters when possible
+   - Break long lines at natural points (after commas, periods)
+   - Indent continuation lines with 2 spaces for list items
+   - Example:
+
+     ```markdown
+     - Long list item text that exceeds the line length limit
+       should be broken into multiple lines like this
+     ```
+
+2. **Code Blocks**: Always specify the language
+   - ✅ Good: `` ```python ``, `` ```bash ``, `` ```text ``
+   - ❌ Bad: `` ``` `` (no language specified)
+
+3. **Lists**: Use consistent formatting
+   - Use `-` for unordered lists
+   - Indent nested items with 2 spaces
+   - Add blank lines between list groups for clarity
+
+4. **Headers**: Follow proper hierarchy
+   - Use `#` for main title, `##` for sections, `###` for subsections
+   - Don't skip levels (e.g., `#` to `###`)
+
+5. **Links and References**:
+   - Use descriptive link text
+   - Keep URLs on separate lines if they make lines too long
+
+6. **Tables**: Align columns for readability
+   - Use consistent spacing
+   - Keep table content concise
+
+**Linting Command:**
+
+```bash
+npx markdownlint <file>.md
+```
 
 ### Testing
 
@@ -364,12 +403,14 @@ aws sts get-caller-identity --profile ben-sso
 ### Using AWS CLI Commands
 
 Option 1 - Add profile to each command:
+
 ```bash
 aws s3 ls --profile ben-sso
 aws rds describe-db-instances --profile ben-sso
 ```
 
 Option 2 - Set as default profile for session:
+
 ```bash
 export AWS_PROFILE=ben-sso
 aws s3 ls  # Now uses ben-sso by default
@@ -423,7 +464,7 @@ VITE_ENABLE_DEVTOOLS=true
 
 ## Testing Commands
 
-### Backend
+### Backend Testing
 
 ```bash
 # Run all tests
@@ -439,7 +480,7 @@ pytest accounts/tests/test_models.py
 pytest -v
 ```
 
-### Frontend
+### Frontend Testing
 
 ```bash
 # Run all tests
@@ -502,7 +543,7 @@ python manage.py migrate app_name 0001
 
 ## Performance Guidelines
 
-### Backend
+### Backend Performance
 
 - Use `select_related()` and `prefetch_related()` for query optimization
 - Implement database indexing for frequently queried fields
@@ -510,7 +551,7 @@ python manage.py migrate app_name 0001
 - Paginate large querysets
 - Use async views for I/O-bound operations
 
-### Frontend
+### Frontend Performance
 
 - Code splitting with lazy loading
 - Optimize images (WebP, lazy loading)
@@ -521,7 +562,7 @@ python manage.py migrate app_name 0001
 
 ## Deployment
 
-### Backend (Django)
+### Backend Deployment (Django)
 
 - Use Gunicorn/Uvicorn as WSGI/ASGI server
 - Configure static files with WhiteNoise
@@ -529,7 +570,7 @@ python manage.py migrate app_name 0001
 - Environment-specific settings
 - Health check endpoint: `/health/`
 
-### Frontend (React)
+### Frontend Deployment (React)
 
 - Build: `npm run build`
 - Deploy to AWS S3 + CloudFront
@@ -542,6 +583,7 @@ python manage.py migrate app_name 0001
 ### GitHub Actions
 
 **CI Pipeline (`ci.yml`):**
+
 - Runs on every push to `main`/`develop` and all PRs
 - Backend: Python 3.13, PostgreSQL 16, pytest with coverage
 - Frontend: Node.js 20, Vitest, TypeScript type-checking, ESLint
@@ -549,25 +591,29 @@ python manage.py migrate app_name 0001
 - Coverage reports uploaded to Codecov
 
 **Backend Tests (`test-backend.yml`):**
+
 - Triggers on Backend file changes
 - Runs Ruff linting, Black formatting, mypy type checking
 - Executes all Django tests with PostgreSQL
 - Matrix testing across Python versions
 
 **Frontend Tests (`test-frontend.yml`):**
+
 - Triggers on Frontend file changes
 - Runs TypeScript type-check, ESLint, Vitest tests
 - Matrix testing on Node.js 20 and 22
 - Production build verification
 
 **Frontend Deployment (`deploy-frontend.yml`):**
+
 - Only runs after `test-frontend.yml` succeeds
 - Builds production bundle
 - Deploys to AWS S3 (`iso-standards-frontend`)
 - Invalidates CloudFront cache (Distribution: `E2494N0PGM4KTG`)
-- URL: https://d1pjttps83iyey.cloudfront.net
+- URL: <https://d1pjttps83iyey.cloudfront.net>
 
 **Workflow Dependencies:**
+
 1. Push to `main` → `test-frontend.yml` runs
 2. Tests pass → `deploy-frontend.yml` auto-triggers
 3. Tests fail → deployment blocked
@@ -575,6 +621,7 @@ python manage.py migrate app_name 0001
 ### Pre-commit Checks
 
 **Before committing:**
+
 ```bash
 # Backend
 cd Backend

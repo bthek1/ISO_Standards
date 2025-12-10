@@ -11,3 +11,6 @@
 - [ ] make use of aws RDS
 
 - [ ] make ASGI
+
+- [ ] which database is gitub testing using, if not postgres, update the yml file
+- [ ] which database is used for local testing

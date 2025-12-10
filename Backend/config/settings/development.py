@@ -28,11 +28,13 @@ DATABASES = {
     )
 }
 
-# Add connection timeout for PostgreSQL
+# Add connection timeout and SSL requirement for PostgreSQL
 if DATABASES["default"].get("ENGINE") == "django.db.backends.postgresql":
     if "OPTIONS" not in DATABASES["default"]:
         DATABASES["default"]["OPTIONS"] = {}
     DATABASES["default"]["OPTIONS"]["connect_timeout"] = 10
+    # Require SSL/TLS encryption for RDS connections
+    DATABASES["default"]["OPTIONS"]["sslmode"] = "require"
 
 # Email (Console backend for development)
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend

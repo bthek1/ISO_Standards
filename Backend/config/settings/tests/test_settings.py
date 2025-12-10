@@ -260,13 +260,12 @@ class TestDevelopmentSettings:
         assert "localhost" in development_settings["ALLOWED_HOSTS"]
         assert "127.0.0.1" in development_settings["ALLOWED_HOSTS"]
 
-    def test_database_is_sqlite(self, development_settings):
-        """Development should use SQLite."""
+    def test_database_is_postgresql(self, development_settings):
+        """Development should use PostgreSQL (migrated from SQLite)."""
         db_engine = development_settings["DATABASES"]["default"]["ENGINE"]
-        assert db_engine == "django.db.backends.sqlite3"
-        # Note: The exact database NAME may be modified by pytest-django
-        # to use in-memory database during test runs, so we only verify
-        # the ENGINE is correct for development
+        assert db_engine == "django.db.backends.postgresql"
+        # Note: Development now uses AWS RDS PostgreSQL instead of SQLite
+        # Test database will use SQLite or in-memory database during test runs
 
     def test_email_backend_console(self, development_settings):
         """Development should use console email backend."""
