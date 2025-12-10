@@ -44,10 +44,18 @@ class TestDatabaseConfiguration(TestCase):
         db_name = db_config["NAME"]
 
         # Allow test_ prefix for test databases
-        assert db_name in [
+        # pytest-xdist adds _gw0, _gw1, etc. for parallel workers
+        valid_patterns = [
             "iso_standards",
             "test_iso_standards",
-        ], f"Unexpected database name: {db_name}"
+        ]
+
+        # Check if it matches exactly or is a test database with worker suffix
+        is_valid = db_name in valid_patterns or any(
+            db_name.startswith(f"{pattern}_gw") for pattern in valid_patterns
+        )
+
+        assert is_valid, f"Unexpected database name: {db_name}"
 
     @pytest.mark.skipif(
         settings.DATABASES["default"]["ENGINE"] != "django.db.backends.postgresql",
