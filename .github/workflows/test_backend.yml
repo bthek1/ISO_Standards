@@ -24,21 +24,6 @@ jobs:
             matrix:
                 python-version: ["3.13"]
 
-        services:
-            postgres:
-                image: postgres:16
-                env:
-                    POSTGRES_USER: postgres
-                    POSTGRES_PASSWORD: postgres
-                    POSTGRES_DB: test_db
-                ports:
-                    - 5432:5432
-                options: >-
-                    --health-cmd pg_isready
-                    --health-interval 10s
-                    --health-timeout 5s
-                    --health-retries 5
-
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -69,7 +54,6 @@ jobs:
                   SECRET_KEY=test-secret-key-for-ci-testing-only
                   DEBUG=False
                   ALLOWED_HOSTS=localhost,127.0.0.1
-                  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_db
                   EOF
 
             - name: Run linting (Ruff)
@@ -92,24 +76,19 @@ jobs:
 
             - name: Run migrations
               working-directory: Backend
-              env:
-                  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
-                  DJANGO_SETTINGS_MODULE: config.settings.test
               run: |
                   source .venv/bin/activate
                   python manage.py migrate --noinput
 
             - name: Run tests
               working-directory: Backend
-              env:
-                  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
-                  DJANGO_SETTINGS_MODULE: config.settings.test
               run: |
                   source .venv/bin/activate
-                  pytest
+                  pytest -n auto
 
             - name: Test summary
               run: |
                   echo "✅ All backend tests passed!"
                   echo "🐍 Python version: ${{ matrix.python-version }}"
-                  echo "🗄️ Database: PostgreSQL 16"
+                  echo "🗄️ Database: SQLite (in-memory)"
+                  echo "⚡ Parallel execution: enabled"

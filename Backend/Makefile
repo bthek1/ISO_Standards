@@ -30,7 +30,7 @@ collectstatic: ## Collect static files
 	python manage.py collectstatic --noinput
 
 test: ## Run tests
-	pytest
+	pytest . -n auto
 
 # === Code Quality & Linting ===
 
@@ -77,11 +77,11 @@ ci-lint: ## Run CI-style linting (used in CI/CD)
 	mypy .
 	@echo "CI linting passed!"
 
-flush: debug_wrap ## Flush the database (delete all data!) 
+flush: debug_wrap ## Flush the database (delete all data!)
 	@if [ -z "$(DEBUG)" ]; then python manage.py flush; else python manage.py flush --noinput; fi
-  
 
-	
+
+
 
 clean:		## Remove pycache, tmp files and test db, mail, etc
 	find . -name "*.pyc" -delete
