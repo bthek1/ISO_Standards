@@ -1,5 +1,12 @@
 {
-  // Python Testing
+  // ============================================================================
+  // BACKEND - PYTHON & DJANGO CONFIGURATION
+  // ============================================================================
+  // Python Interpreter
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.executeInFileDir": false,
+  // Python Testing (pytest)
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": [
@@ -7,34 +14,125 @@
     "-n",
     "auto",
     "--dist=loadscope",
-    "--color=yes"
+    "--color=yes",
+    "-v"
   ],
   "python.testing.cwd": "${workspaceFolder}",
-  // Python Interpreter
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
-  // Python Analysis
+  "python.testing.autoTestDiscoverOnSaveEnabled": true,
+  "python.testing.debugPort": 3000,
+  // Python Analysis (Pylance)
   "python.analysis.typeCheckingMode": "basic",
   "python.analysis.extraPaths": [],
-  // Type Checking
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.useLibraryCodeForTypes": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": false,
+  "python.analysis.inlayHints.pytestParameters": true,
+  // Type Checking (mypy)
   "mypy-type-checker.args": [
     "--config-file=${workspaceFolder}/pyproject.toml"
   ],
-  // Format python files with ruff
+  "mypy-type-checker.severity": {
+    "error": "Error",
+    "note": "Information"
+  },
+  // Ruff Linter
+  "ruff.enable": true,
+  "ruff.fixAll": true,
+  "ruff.organizeImports": true,
+  "ruff.showNotifications": "onError",
+  // Python Language Settings
   "[python]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.rulers": [
+      88,
+      120
+    ],
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
       "source.fixAll.ruff": "explicit"
     }
   },
-  // Format javascript files with prettier
+  // Django Settings
+  "django.snippets.exclude": [],
+  "django.i18n": true,
+  // HTML/Django Templates
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": "batisteo.vscode-django",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  // JavaScript/JSON
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
   },
-  // Format json files with vscode built-in formatter
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
   "[jsonc]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  }
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.tabSize": 2
+  },
+  // YAML
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  // File Associations
+  "files.associations": {
+    "*.html": "html",
+    "manage.py": "python",
+    "*.py": "python",
+    "Makefile": "makefile",
+    ".env*": "dotenv",
+    "Dockerfile*": "dockerfile"
+  },
+  // Emmet for Django templates
+  "emmet.includeLanguages": {
+    "django-html": "html",
+    "html": "html"
+  },
+  // File Exclusions
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/.ruff_cache": true,
+    "**/staticfiles": false,
+    "**/.venv": true
+  },
+  // Search Exclusions
+  "search.exclude": {
+    "**/.venv": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/staticfiles": true,
+    "**/migrations/*.py": false,
+    "!**/migrations/__init__.py": true
+  },
+  // Editor Settings
+  "editor.formatOnSave": true,
+  "editor.rulers": [
+    88,
+    120
+  ],
+  "editor.tabSize": 4,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n"
 }
